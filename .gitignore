@@ -17,7 +17,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
-.vs/
+.vs/ 
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 *.VisualState.xml
