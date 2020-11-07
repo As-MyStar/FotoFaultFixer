@@ -7,7 +7,7 @@ namespace FotoFaultFixerLib
 {
     public static class ImageUtils
     {
-        public static Bitmap ImpulseNoiseReduction_Universal(Bitmap original, int maxSizeD, int maxSizeL)
+        public static Bitmap ImpulseNoiseReduction_Universal(Bitmap original, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
         {
             CImage workingCopy = new CImage(original);
             workingCopy.DeleteBit0();
@@ -53,7 +53,7 @@ namespace FotoFaultFixerLib
             }
 
             CPnoise PN = new CPnoise(histo, 1000, 4000);
-            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL);
+            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL, progress);
 
             // Clean-up
             for (int i = 0; i < (3 * workingCopy.Width * workingCopy.Height); i++)

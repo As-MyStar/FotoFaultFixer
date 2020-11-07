@@ -35,7 +35,7 @@ namespace FotoFaultFixerLib.ImageProcessor
             }
         }
 
-        public void NoiseFilter(ref CImage image, int[] histo, int minLight, int maxLight, int maxSizeD, int maxSizeL)
+        public void NoiseFilter(ref CImage image, int[] histo, int minLight, int maxLight, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
         {
             bool isColorImage = (image.NBits == 24);
             if (isColorImage)
