@@ -49,7 +49,7 @@ namespace FotoFaultFixerUI
         {
             using (Bitmap original = (Bitmap)System.Drawing.Image.FromFile(originalImageUrl)) {
 
-                using (Bitmap modified = ImageUtils.ImpulseNoiseReduction_Universal(original, 30, 30))
+                using (Bitmap modified = ImageUtils.ImpulseNoiseReduction_Universal(original, (Int32)lightNoiseSupressionSlider.Value, (Int32)darkNoiseSupressionSlider.Value))
                 {
                     modifiedImage.Source = BitmapToImageSource(modified);
                 }

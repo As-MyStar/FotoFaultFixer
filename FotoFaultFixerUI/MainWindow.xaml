@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FotoFaultFixerUI"
         mc:Ignorable="d"
-        Title="FotoFaultFixer" Height="450" Width="800"
+        Title="FotoFaultFixer" Height="768" Width="1024"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -16,6 +16,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14">
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -24,51 +25,95 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <!--<materialDesign:DrawerHost LeftDrawerBackground="{DynamicResource MaterialDesignPaper}">
-        <materialDesign:DrawerHost.LeftDrawerContent>
-            <StackPanel Width="150">
-                <TextBlock Text="Some left content" HorizontalAlignment="Center"/>
-                <materialDesign:PackIcon Kind="Headset" Height="Auto" Width="Auto" />
-            </StackPanel>
-        </materialDesign:DrawerHost.LeftDrawerContent>
-
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            -->
-    <!-- Binding the Is*DrawerOpen, you can also bind this to a boolean in your view model -->
-    <!--
-            <ToggleButton Content="L" 
-                          IsChecked="{Binding IsLeftDrawerOpen, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:DrawerHost}}}" 
-                          Style="{StaticResource MaterialDesignActionLightToggleButton}" 
-                          ToolTip="Open Left Drawer"/>
-            -->
-    <!-- Open the drawer with a routed command -->
-    <!-- You can either specify a specific side by passing a Dock command parameter, or null to open all sides -->
-    <!--
-            <Button Content="Open Left Drawer" Margin="10" 
-                    Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" CommandParameter="{x:Static Dock.Left}"/>
-
-            <materialDesign:Card Padding="10" Margin="10">
-                <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}">FotoFaultFixerUI</TextBlock>
-            </materialDesign:Card>
-        </StackPanel>
-
-    </materialDesign:DrawerHost>-->
-
     <Grid>
         <StackPanel>
             <materialDesign:Card Padding="10" Margin="10">
                 <DockPanel HorizontalAlignment="Stretch">
-                    <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}">Foto Fault-Fixer</TextBlock>
+                    <TextBlock 
+                        Style="{DynamicResource MaterialDesignHeadline6TextBlock}" 
+                        VerticalAlignment="Center">
+                        Foto Fault-Fixer
+                    </TextBlock>
                     <Button Name="exitBtn" 
                             Click="exitBtn_Click"
-                        Style="{StaticResource MaterialDesignToolButton}" 
-                        HorizontalAlignment="Right" Width="40">
+                            Style="{StaticResource MaterialDesignToolButton}" 
+                            HorizontalAlignment="Right" Width="40">
                         X
                     </Button>
                 </DockPanel>
             </materialDesign:Card>
 
-            <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <materialDesign:Card Padding="10" Margin="10">
+                <Grid VerticalAlignment="Top" 
+                      HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0px 0px 10px 0px">
+                        <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}">Light Noise Suppression</TextBlock>
+                        <DockPanel HorizontalAlignment="Center">
+                            <TextBlock
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="left"
+                                Text="0"/>
+
+                            <Slider
+                                Name="lightNoiseSupressionSlider"
+                                TickFrequency="1"
+                                TickPlacement="BottomRight"
+                                Orientation="Horizontal"
+                                Value="20"
+                                Minimum="1"
+                                Maximum="50"
+                                HorizontalAlignment="Center"
+                                Width="440"/>
+
+                            <TextBlock
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="right"
+                                Text="50"/>
+
+                        </DockPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="10px 0px 0px 0px">
+                        <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}">Dark Noise Suppression</TextBlock>
+
+                        <DockPanel HorizontalAlignment="Center">
+                            <TextBlock
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="left"
+                                Text="0"/>
+
+                            <Slider
+                                Name="darkNoiseSupressionSlider"
+                                TickFrequency="1"
+                                TickPlacement="BottomRight"
+                                Orientation="Horizontal"
+                                Value="20"
+                                Minimum="1"
+                                Maximum="50"
+                                HorizontalAlignment="Center"
+                                Width="440"/>
+
+                            <TextBlock
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="right"
+                                Text="50"/>
+
+                        </DockPanel>
+
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+
+            <Grid VerticalAlignment="Top" 
+                  HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -78,7 +123,8 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Column="0" Grid.Row="0">
-                    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid VerticalAlignment="Top" 
+                          HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
@@ -91,31 +137,41 @@
                             Grid.Column="0" Grid.Row="0"
                             Padding="10" Margin="10">
                             <DockPanel HorizontalAlignment="Stretch">
-                                <TextBlock VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource MaterialDesignHeadline6TextBlock}">Original</TextBlock>
-                                <Button Name="selectImageBtn" Click="selectImageBtn_Click" 
-                                    Style="{StaticResource MaterialDesignRaisedButton}" 
-                                    HorizontalAlignment="Right" Width="100">
+                                <TextBlock VerticalAlignment="Center" 
+                                           TextAlignment="Center" 
+                                           HorizontalAlignment="Left" 
+                                           Style="{DynamicResource MaterialDesignHeadline6TextBlock}">
+                                    Original
+                                </TextBlock>
+                                <Button Name="selectImageBtn" 
+                                        Click="selectImageBtn_Click" 
+                                        Style="{StaticResource MaterialDesignRaisedButton}" 
+                                        HorizontalAlignment="Right" Width="100">
                                     Select
                                 </Button>
                             </DockPanel>
                         </materialDesign:Card>
                         <materialDesign:Card 
-                            Grid.Column="0" Grid.Row="1"
-                            Padding="10" Margin="10">
-                            <Image Grid.Column="0" Grid.Row="1"
-                                Name="originalImage" 
-                                   
-                               RenderOptions.BitmapScalingMode="Fant"
-                               Stretch="Uniform"
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Center">
+                            Grid.Column="0" 
+                            Grid.Row="1"
+                            Padding="10" 
+                            Margin="10">
+                            
+                            <Image Grid.Column="0" 
+                                   Grid.Row="1"
+                                   Name="originalImage" 
+                                   RenderOptions.BitmapScalingMode="Fant"
+                                   Stretch="Uniform"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Center">
                             </Image>
                         </materialDesign:Card>
                     </Grid>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Grid.Row="0">
-                    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid VerticalAlignment="Top" 
+                          HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
@@ -124,27 +180,50 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <materialDesign:Card Grid.Column="0" Grid.Row="0"
-                            Padding="10" Margin="10">
+                        <materialDesign:Card Grid.Column="0" 
+                                             Grid.Row="0"
+                                             Padding="10"
+                                             Margin="10">
                             <DockPanel HorizontalAlignment="Stretch">
-                                <TextBlock VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource MaterialDesignHeadline6TextBlock}">Modified</TextBlock>
-                                <Button Name="modifyImageBtn" Click="modifyImageBtn_Click"
-                                        Style="{StaticResource MaterialDesignRaisedButton}" 
-                                        HorizontalAlignment="Right" Width="100">
-                                    Fix
-                                </Button>
+                                <TextBlock VerticalAlignment="Center" 
+                                           TextAlignment="Center" 
+                                           HorizontalAlignment="Left" 
+                                           Style="{DynamicResource MaterialDesignHeadline6TextBlock}">
+                                    Modified
+                                </TextBlock>
+
+                                <StackPanel HorizontalAlignment="Right" 
+                                            FlowDirection="RightToLeft" 
+                                            Orientation="Horizontal" 
+                                            Width="200">
+
+                                    <Button Name="saveImageBtn" 
+                                            Click="modifyImageBtn_Click"
+                                            HorizontalAlignment="Right"
+                                            Style="{StaticResource MaterialDesignRaisedButton}" 
+                                            Width="80" 
+                                            Margin="0px 0px 10px 0px">
+                                        Save
+                                    </Button>
+                                    <Button Name="modifyImageBtn" 
+                                            Click="modifyImageBtn_Click"
+                                            HorizontalAlignment="Right"
+                                            Style="{StaticResource MaterialDesignRaisedButton}" 
+                                            Width="80">
+                                        Fix
+                                    </Button>
+                                </StackPanel>
                             </DockPanel>
                         </materialDesign:Card>
-                        <materialDesign:Card 
-                            Grid.Column="0" Grid.Row="1"
-                            Padding="10" Margin="10">
-
-                            <Image 
-                                Name="modifiedImage"
-                               RenderOptions.BitmapScalingMode="Fant"
-                               Stretch="Uniform"                         
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Center">
+                        <materialDesign:Card Grid.Column="0"
+                                             Grid.Row="1"
+                                             Padding="10"
+                                             Margin="10">
+                            <Image Name="modifiedImage"
+                                   RenderOptions.BitmapScalingMode="Fant"
+                                   Stretch="Uniform"                         
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Center">
                             </Image>
                         </materialDesign:Card>
                     </Grid>
