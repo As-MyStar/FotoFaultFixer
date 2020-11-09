@@ -71,7 +71,8 @@
                                 Minimum="1"
                                 Maximum="50"
                                 HorizontalAlignment="Center"
-                                Width="440"/>
+                                Width="440"
+                                ValueChanged="lightNoiseSupressionSlider_ValueChanged"/>
 
                             <TextBlock
                                 VerticalAlignment="Bottom"
@@ -99,7 +100,8 @@
                                 Minimum="1"
                                 Maximum="50"
                                 HorizontalAlignment="Center"
-                                Width="440"/>
+                                Width="440"
+                                ValueChanged="darkNoiseSupressionSlider_ValueChanged"/>
 
                             <TextBlock
                                 VerticalAlignment="Bottom"
@@ -198,18 +200,21 @@
                                             Width="200">
 
                                     <Button Name="saveImageBtn" 
-                                            Click="modifyImageBtn_Click"
+                                            Click="saveImageBtn_Click"
                                             HorizontalAlignment="Right"
                                             Style="{StaticResource MaterialDesignRaisedButton}" 
                                             Width="80" 
-                                            Margin="0px 0px 10px 0px">
+                                            Margin="0px 0px 10px 0px"
+                                            IsEnabled="{Binding Path=mainWindowVM.CanSave}">
                                         Save
                                     </Button>
                                     <Button Name="modifyImageBtn" 
                                             Click="modifyImageBtn_Click"
                                             HorizontalAlignment="Right"
                                             Style="{StaticResource MaterialDesignRaisedButton}" 
-                                            Width="80">
+                                            Width="80"
+                                            IsEnabled="{Binding Path=mainWindowVM.CanModify}"
+                                            >
                                         Fix
                                     </Button>
                                 </StackPanel>

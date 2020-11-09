@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FotoFaultFixerLib.ImageProcessor
+﻿namespace FotoFaultFixerLib.ImageProcessor
 {
     class CQueue
     {
@@ -64,12 +60,8 @@ namespace FotoFaultFixerLib.ImageProcessor
 
         public bool IsEmpty()
         {
-            if (input == output && !full)
-            {
-                return true;
-            }
+            return ((input == output) && !full);
 
-            return false;
         }
     }
 }

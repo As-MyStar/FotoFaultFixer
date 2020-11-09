@@ -1,21 +1,9 @@
 ﻿using FotoFaultFixerLib;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FotoFaultFixerUI
 {
@@ -24,34 +12,77 @@ namespace FotoFaultFixerUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        string originalImageUrl;
+        MainWindowViewModel mainWindowVM;
+        const string FILEFILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png;";
 
         public MainWindow()
         {
+            mainWindowVM = new MainWindowViewModel();            
             InitializeComponent();
+            this.DataContext = mainWindowVM;
         }
 
+        #region sliderHandlers
+        private void lightNoiseSupressionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            mainWindowVM.LightNoiseSuppressionAmount = (Int32)e.NewValue;
+        }
+
+        private void darkNoiseSupressionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            mainWindowVM.DarkNoiseSupressionAmount = (Int32)e.NewValue;
+        }
+        #endregion
+
+        #region Button Handlers
         private void selectImageBtn_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "Open Image";
-            openFileDialog.Filter = "Image File|*.bmp; *.jpg; *.jpeg; *.png;";
-            if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog selectFileDialog = new OpenFileDialog() {
+                Title = "Open Image",
+                Filter = FILEFILTER
+            };
+            
+            if (selectFileDialog.ShowDialog() == true)
             {
-                originalImageUrl = openFileDialog.FileName;
-                Uri fileUri = new Uri(openFileDialog.FileName);                
-                originalImage.Source = new BitmapImage(fileUri);
+                mainWindowVM.OriginalImagePath = selectFileDialog.FileName;
+                Uri fileUri = new Uri(selectFileDialog.FileName);
                 modifiedImage.Source = null;
+                originalImage.Source = new BitmapImage(fileUri);                
             }
         }
 
         private void modifyImageBtn_Click(object sender, RoutedEventArgs e)
         {
-            using (Bitmap original = (Bitmap)System.Drawing.Image.FromFile(originalImageUrl)) {
+            if (!string.IsNullOrEmpty(mainWindowVM.OriginalImagePath))
+            {
+                modifiedImage.Source = null;
 
-                using (Bitmap modified = ImageUtils.ImpulseNoiseReduction_Universal(original, (Int32)lightNoiseSupressionSlider.Value, (Int32)darkNoiseSupressionSlider.Value))
+                using (Bitmap original = (Bitmap)Image.FromFile(mainWindowVM.OriginalImagePath))
                 {
-                    modifiedImage.Source = BitmapToImageSource(modified);
+                    using (Bitmap modified = ImageUtils.ImpulseNoiseReduction_Universal(original, mainWindowVM.LightNoiseSuppressionAmount, mainWindowVM.DarkNoiseSupressionAmount))
+                    {
+                        modifiedImage.Source = Utils.BitmapToImageSource(modified);
+                        mainWindowVM.CanSave = true;
+                    }
+                }
+            }
+        }
+
+        private void saveImageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (modifiedImage.Source != null)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog() { 
+                    Title= "Save Image",
+                    Filter = FILEFILTER
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    using (Bitmap fileToSave = Utils.ImageSourceToBitmap((BitmapImage)modifiedImage.Source))
+                    {
+                        fileToSave.Save(saveFileDialog.FileName);
+                    }
                 }
             }
         }
@@ -61,20 +92,6 @@ namespace FotoFaultFixerUI
             Application.Current.Shutdown();
         }
 
-        private BitmapImage BitmapToImageSource(Bitmap bitmap)
-        {
-            using (MemoryStream memory = new MemoryStream())
-            {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-                memory.Position = 0;
-                BitmapImage bitmapimage = new BitmapImage();
-                bitmapimage.BeginInit();
-                bitmapimage.StreamSource = memory;
-                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapimage.EndInit();
-
-                return bitmapimage;
-            }
-        }
+        #endregion
     }
 }
