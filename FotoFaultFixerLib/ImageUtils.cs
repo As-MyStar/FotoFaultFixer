@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Reflection;
 using FotoFaultFixerLib.ImageProcessor;
 
 namespace FotoFaultFixerLib
@@ -9,11 +8,56 @@ namespace FotoFaultFixerLib
     {
         public static Bitmap ImpulseNoiseReduction_Universal(Bitmap original, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
         {
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            int[] histo = new int[256];
+            int maxLight = 0, minLight = 0;
+
             CImage workingCopy = new CImage(original);
             workingCopy.DeleteBit0();
+                    
+            GenerateLightHistogram(workingCopy, ref histo, ref maxLight, ref minLight);
 
-            int maxLight, minLight;
-            int[] histo = new int[256];
+            CPnoise PN = new CPnoise(histo, 1000, 4000);
+            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL, progress);
+
+            // Clean-up
+            for (int i = 0; i < (3 * workingCopy.Width * workingCopy.Height); i++)
+            {
+                if (workingCopy.Grid[i] == 252 || workingCopy.Grid[i] == 254)
+                {
+                    workingCopy.Grid[i] = 255;
+                }
+            }
+
+            return workingCopy.ToBitmap();
+        }        
+
+        public static int MaxC(int R, int G, int B)
+        {
+            int max;
+            if (R * 0.713 > G)
+            {
+                max = (int)(R * 0.713);
+            }
+            else
+            {
+                max = G;
+            }
+
+            if (B * 0.527 > max)
+            {
+                max = (int)(B * 0.527);
+            }
+
+            return max;
+        }
+
+        private static void GenerateLightHistogram(CImage workingCopy, ref int[] histo, ref int maxLight, ref int minLight)
+        {
             for (int i = 0; i < 256; i++)
             {
                 histo[i] = 0;
@@ -51,40 +95,6 @@ namespace FotoFaultFixerLib
                     break;
                 }
             }
-
-            CPnoise PN = new CPnoise(histo, 1000, 4000);
-            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL, progress);
-
-            // Clean-up
-            for (int i = 0; i < (3 * workingCopy.Width * workingCopy.Height); i++)
-            {
-                if (workingCopy.Grid[i] == 252 || workingCopy.Grid[i] == 254)
-                {
-                    workingCopy.Grid[i] = 255;
-                }
-            }
-
-            return workingCopy.ToBitmap();
-        }
-
-        public static int MaxC(int R, int G, int B)
-        {
-            int max;
-            if (R * 0.713 > G)
-            {
-                max = (int)(R * 0.713);
-            }
-            else
-            {
-                max = G;
-            }
-
-            if (B * 0.527 > max)
-            {
-                max = (int)(B * 0.527);
-            }
-
-            return max;
         }
     }
 }
