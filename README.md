@@ -1,5 +1,5 @@
 # FotoFaultFixer
-A .net core class library and WPF UI tool to fix faults in old photos.
+A .net5 library and WPF UI tool to fix faults in old photos.
 See a example of it in-action here: https://www.youtube.com/watch?v=9h9NCo1y1H4
 
 This uses techniques from the book "Modern Algorithms for Image Processing" by Vladimir Kovalevsky.
