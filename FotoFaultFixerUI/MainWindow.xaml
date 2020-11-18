@@ -161,7 +161,7 @@
                             
                             <Image Grid.Column="0" 
                                    Grid.Row="1"
-                                   Name="originalImage" 
+                                   Name="sourceImage" 
                                    RenderOptions.BitmapScalingMode="Fant"
                                    Stretch="Uniform"
                                    VerticalAlignment="Top"

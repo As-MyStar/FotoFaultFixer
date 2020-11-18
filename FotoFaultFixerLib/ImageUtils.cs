@@ -13,12 +13,17 @@ namespace FotoFaultFixerLib
                 throw new ArgumentNullException();
             }
 
+            if (original.Width < 100 || original.Height < 100)
+            {
+                throw new ArgumentOutOfRangeException("original", "Image needs to be greater than 100 x 100");
+            }
+
             int[] histo = new int[256];
             int maxLight = 0, minLight = 0;
 
             CImage workingCopy = new CImage(original);
             workingCopy.DeleteBit0();
-                    
+
             GenerateLightHistogram(workingCopy, ref histo, ref maxLight, ref minLight);
 
             CPnoise PN = new CPnoise(histo, 1000, 4000);
@@ -34,7 +39,7 @@ namespace FotoFaultFixerLib
             }
 
             return workingCopy.ToBitmap();
-        }        
+        }
 
         public static int MaxC(int R, int G, int B)
         {

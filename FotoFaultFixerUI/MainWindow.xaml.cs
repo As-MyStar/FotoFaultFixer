@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -17,9 +18,25 @@ namespace FotoFaultFixerUI
 
         public MainWindow()
         {
-            mainWindowVM = new MainWindowViewModel();            
+            mainWindowVM = new MainWindowViewModel();
             InitializeComponent();
             this.DataContext = mainWindowVM;
+        }
+
+        public void SetSourceImage(string path)
+        {
+            mainWindowVM.sourceImagePath = path;
+            if (File.Exists(path))
+            {
+                Uri fileUri = new Uri(path);
+                modifiedImage.Source = null;
+                sourceImage.Source = new BitmapImage(fileUri);
+            }
+            else
+            {
+                string msgBoxText = string.Format("No file exists at indicated path: {0}", path);
+                MessageBox.Show(msgBoxText, "Unable to load File");
+            }
         }
 
         #region sliderHandlers
@@ -37,27 +54,25 @@ namespace FotoFaultFixerUI
         #region Button Handlers
         private void selectImageBtn_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog selectFileDialog = new OpenFileDialog() {
+            OpenFileDialog selectFileDialog = new OpenFileDialog()
+            {
                 Title = "Open Image",
                 Filter = FILEFILTER
             };
-            
+
             if (selectFileDialog.ShowDialog() == true)
             {
-                mainWindowVM.OriginalImagePath = selectFileDialog.FileName;
-                Uri fileUri = new Uri(selectFileDialog.FileName);
-                modifiedImage.Source = null;
-                originalImage.Source = new BitmapImage(fileUri);                
+                SetSourceImage(selectFileDialog.FileName);
             }
         }
 
         private void modifyImageBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(mainWindowVM.OriginalImagePath))
+            if (!string.IsNullOrEmpty(mainWindowVM.sourceImagePath))
             {
                 modifiedImage.Source = null;
 
-                using (Bitmap original = (Bitmap)Image.FromFile(mainWindowVM.OriginalImagePath))
+                using (Bitmap original = (Bitmap)Image.FromFile(mainWindowVM.sourceImagePath))
                 {
                     using (Bitmap modified = ImageUtils.ImpulseNoiseReduction_Universal(original, mainWindowVM.LightNoiseSuppressionAmount, mainWindowVM.DarkNoiseSupressionAmount))
                     {
@@ -72,8 +87,9 @@ namespace FotoFaultFixerUI
         {
             if (modifiedImage.Source != null)
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog() { 
-                    Title= "Save Image",
+                SaveFileDialog saveFileDialog = new SaveFileDialog()
+                {
+                    Title = "Save Image",
                     Filter = FILEFILTER
                 };
 

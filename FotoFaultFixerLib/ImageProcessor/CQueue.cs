@@ -61,7 +61,6 @@
         public bool IsEmpty()
         {
             return ((input == output) && !full);
-
         }
     }
 }

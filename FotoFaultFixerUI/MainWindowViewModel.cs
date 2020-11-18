@@ -8,7 +8,7 @@ namespace FotoFaultFixerUI
         private bool _canModify;
         private bool _canSave;
 
-        public string OriginalImagePath
+        public string sourceImagePath
         {
             get => _originalImagePath;
             set {
