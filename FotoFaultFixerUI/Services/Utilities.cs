@@ -5,9 +5,9 @@ using System.IO;
 using System.Text;
 using System.Windows.Media.Imaging;
 
-namespace FotoFaultFixerUI
+namespace FotoFaultFixerUI.Services
 {
-    public static class Utils
+    public static class Utilities
     {
         /// <summary>
         /// Converts a Bitmap image into the format required to be a source for a WPF Image

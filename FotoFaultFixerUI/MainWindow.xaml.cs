@@ -1,4 +1,5 @@
 ﻿using FotoFaultFixerLib;
+using FotoFaultFixerUI.Services;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
@@ -74,9 +75,9 @@ namespace FotoFaultFixerUI
 
                 using (Bitmap original = (Bitmap)Image.FromFile(mainWindowVM.sourceImagePath))
                 {
-                    using (Bitmap modified = ImageUtils.ImpulseNoiseReduction_Universal(original, mainWindowVM.LightNoiseSuppressionAmount, mainWindowVM.DarkNoiseSupressionAmount))
+                    using (Bitmap modified = ImageFunctions.ImpulseNoiseReduction_Universal(original, mainWindowVM.LightNoiseSuppressionAmount, mainWindowVM.DarkNoiseSupressionAmount))
                     {
-                        modifiedImage.Source = Utils.BitmapToImageSource(modified);
+                        modifiedImage.Source = Utilities.BitmapToImageSource(modified);
                         mainWindowVM.CanSave = true;
                     }
                 }
@@ -95,7 +96,7 @@ namespace FotoFaultFixerUI
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    using (Bitmap fileToSave = Utils.ImageSourceToBitmap((BitmapImage)modifiedImage.Source))
+                    using (Bitmap fileToSave = Utilities.ImageSourceToBitmap((BitmapImage)modifiedImage.Source))
                     {
                         fileToSave.Save(saveFileDialog.FileName);
                     }
