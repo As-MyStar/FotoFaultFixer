@@ -14,19 +14,19 @@ namespace FotoFaultFixerUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowViewModel mainWindowVM;
+        MainWindowViewModel _mainWindowVM;
         const string FILEFILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png;";
 
         public MainWindow()
         {
-            mainWindowVM = new MainWindowViewModel();
+            _mainWindowVM = new MainWindowViewModel();
             InitializeComponent();
-            this.DataContext = mainWindowVM;
+            this.DataContext = _mainWindowVM;
         }
 
         public void SetSourceImage(string path)
         {
-            mainWindowVM.sourceImagePath = path;
+            _mainWindowVM.sourceImagePath = path;
             if (File.Exists(path))
             {
                 Uri fileUri = new Uri(path);
@@ -43,12 +43,12 @@ namespace FotoFaultFixerUI
         #region sliderHandlers
         private void lightNoiseSupressionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            mainWindowVM.LightNoiseSuppressionAmount = (Int32)e.NewValue;
+            _mainWindowVM.LightNoiseSuppressionAmount = (Int32)e.NewValue;
         }
 
         private void darkNoiseSupressionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            mainWindowVM.DarkNoiseSupressionAmount = (Int32)e.NewValue;
+            _mainWindowVM.DarkNoiseSupressionAmount = (Int32)e.NewValue;
         }
         #endregion
 
@@ -69,16 +69,16 @@ namespace FotoFaultFixerUI
 
         private void modifyImageBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(mainWindowVM.sourceImagePath))
+            if (!string.IsNullOrEmpty(_mainWindowVM.sourceImagePath))
             {
                 modifiedImage.Source = null;
 
-                using (Bitmap original = (Bitmap)Image.FromFile(mainWindowVM.sourceImagePath))
+                using (Bitmap original = (Bitmap)Image.FromFile(_mainWindowVM.sourceImagePath))
                 {
-                    using (Bitmap modified = ImageFunctions.ImpulseNoiseReduction_Universal(original, mainWindowVM.LightNoiseSuppressionAmount, mainWindowVM.DarkNoiseSupressionAmount))
+                    using (Bitmap modified = ImageFunctions.ImpulseNoiseReduction_Universal(original, _mainWindowVM.LightNoiseSuppressionAmount, _mainWindowVM.DarkNoiseSupressionAmount))
                     {
                         modifiedImage.Source = Utilities.BitmapToImageSource(modified);
-                        mainWindowVM.CanSave = true;
+                        _mainWindowVM.CanSave = true;
                     }
                 }
             }

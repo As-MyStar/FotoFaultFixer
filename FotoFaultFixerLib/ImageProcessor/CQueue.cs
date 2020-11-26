@@ -2,30 +2,30 @@
 {
     class CQueue
     {
-        private int input;
-        private int output;
-        private int Len;
-        private int[] Array;
-        private bool full;
+        private int _input;
+        private int _output;
+        private int _len;
+        private int[] _arr;
+        private bool _isFull;
 
-        public CQueue(int len)
+        public CQueue(int length)
         {
-            Len = len;
-            input = 0;
-            output = 0;
-            Array = new int[Len];
+            _len = length;
+            _input = 0;
+            _output = 0;
+            _arr = new int[_len];
         }
 
         public void Put(int V)
         {
-            if (input == (Len - 1))
+            if (_input == (_len - 1))
             {
-                full = true;
+                _isFull = true;
                 return;
             }
 
-            Array[input] = V;
-            input++;
+            _arr[_input] = V;
+            _input++;
         }
 
         public int Get()
@@ -35,19 +35,19 @@
                 return -1;
             }
 
-            int i = Array[output];
-            if (output == (Len - 1))
+            int i = _arr[_output];
+            if (_output == (_len - 1))
             {
-                output = 0;
+                _output = 0;
             }
             else
             {
-                output++;
+                _output++;
             }
 
-            if (full == true)
+            if (_isFull == true)
             {
-                full = false;
+                _isFull = false;
             }
 
             return i;
@@ -55,12 +55,12 @@
 
         public void Reset()
         {
-            input = output = 0;
+            _input = _output = 0;
         }
 
         public bool IsEmpty()
         {
-            return ((input == output) && !full);
+            return ((_input == _output) && !_isFull);
         }
     }
 }
