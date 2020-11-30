@@ -56,7 +56,7 @@ namespace FotoFaultFixerLib
             }
 
             //create a new bitmap, same size as original
-            Bitmap newBitmap = new Bitmap(original.Width, original.Height);
+            Bitmap newBitmap = new Bitmap(original.Width, original.Height, original.PixelFormat);
 
             using (Graphics g = Graphics.FromImage(newBitmap))
             {
