@@ -80,6 +80,22 @@ namespace FotoFaultFixerLib
             return newBitmap;
         }
 
+        /// <summary>
+        /// Converts an Image to Sepia
+        /// </summary>
+        /// <param name="original"></param>
+        /// <remarks>Based on explanation here: http://www.aforgenet.com/framework/docs/html/10a0f824-445b-dcae-02ef-349d4057da45.htm</remarks>
+        /// <returns></returns>
+        public static Bitmap ConvertToSepia(Bitmap original)
+        {
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            throw new NotImplementedException();
+        }
+
         public static int MaxC(int R, int G, int B)
         {
             int max;

@@ -1,5 +1,6 @@
 ﻿using FotoFaultFixerLib;
 using FotoFaultFixerUI.Services;
+using FotoFaultFixerUI.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
@@ -7,7 +8,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace FotoFaultFixerUI
+namespace FotoFaultFixerUI.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

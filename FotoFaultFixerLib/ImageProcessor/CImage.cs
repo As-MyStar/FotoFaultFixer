@@ -14,20 +14,20 @@ namespace FotoFaultFixerLib.ImageProcessor
 
         #region Input        
 
-        public CImage(int w, int y, int nBits)
+        public CImage(int w, int h, int nBits)
         {
             PixelFormat = PixelFormat.Format24bppRgb;
             Width = w;
-            Height = y;
+            Height = h;
             NBits = nBits;
-            Grid = new byte[Width * Height * (nBits / 8)];
+            Grid = new byte[Width * Height * nBits / 8];
         }
 
         public CImage(int w, int h, int nBits, PixelFormat pf, byte[] img) : this(w, h, nBits)
         {
             PixelFormat = pf;
 
-            for (int i = 0; i < ((Width * Height * NBits) / 8); i++)
+            for (int i = 0; i < (Width * Height * NBits / 8); i++)
             {
                 Grid[i] = img[i];
             }
@@ -50,6 +50,11 @@ namespace FotoFaultFixerLib.ImageProcessor
                 NBits = 24;
                 BitmapToGrid_24bppRGB(bmp);
             }
+            //else if (PixelFormat == PixelFormat.Format32bppArgb)
+            //{
+            //    NBits = 32;
+            //    BitmapToGrid_32bppARGB(bmp);
+            //}
         }
 
         public void CopyFrom(CImage inp)
@@ -71,11 +76,11 @@ namespace FotoFaultFixerLib.ImageProcessor
             for (int y = 0; y < bmp.Height; y++)
             {
                 for (int x = 0; x < bmp.Width; x++)
-                {
-                    int i = (x + bmp.Width * y);
+                {                    
+                    int i = (x + (bmp.Width * y));
                     color = bmp.GetPixel(x, y);
 
-                    Grid[3 * i] = color.B;
+                    Grid[3 * i + 0] = color.B;
                     Grid[3 * i + 1] = color.G;
                     Grid[3 * i + 2] = color.R;
                 }
@@ -96,13 +101,39 @@ namespace FotoFaultFixerLib.ImageProcessor
             {
                 for (int x = 0; x < bmp.Width; x++)
                 {
-                    Grid[0 + 3 * (x + bmp.Width * y)] = rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y];
-                    Grid[1 + 3 * (x + bmp.Width * y)] = rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y];
-                    Grid[2 + 3 * (x + bmp.Width * y)] = rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y];
+                    Grid[0 + 3 * (x + (bmp.Width * y))] = rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y];
+                    Grid[1 + 3 * (x + (bmp.Width * y))] = rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y];
+                    Grid[2 + 3 * (x + (bmp.Width * y))] = rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y];
                 }
             }
 
             bmp.UnlockBits(bmpData);
+        }
+
+        private void BitmapToGrid_32bppARGB(Bitmap bmp)
+        {
+            throw new NotImplementedException();
+
+            //Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            //BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
+
+            //IntPtr ptr = bmpData.Scan0;
+            //int length = Math.Abs(bmpData.Stride) * bmp.Height;
+            //byte[] rgbaValues = new byte[length];
+            //System.Runtime.InteropServices.Marshal.Copy(ptr, rgbaValues, 0, length);
+
+            //for (int y = 0; y < bmp.Height; y++)
+            //{
+            //    for (int x = 0; x < bmp.Width; x++)
+            //    {
+            //        Grid[0 + 3 * (x + (bmp.Width * y))] = rgbaValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y];
+            //        Grid[1 + 3 * (x + (bmp.Width * y))] = rgbaValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y];
+            //        Grid[2 + 3 * (x + (bmp.Width * y))] = rgbaValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y];
+            //        Grid[3 + 3 * (x + (bmp.Width * y))] = rgbaValues[3 + 3 * x + Math.Abs(bmpData.Stride) * y];
+            //    }
+            //}
+
+            //bmp.UnlockBits(bmpData);
         }
         #endregion
 

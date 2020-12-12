@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FotoFaultFixerUI
+namespace FotoFaultFixerUI.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {

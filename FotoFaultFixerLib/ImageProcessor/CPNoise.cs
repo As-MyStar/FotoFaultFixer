@@ -10,7 +10,7 @@ namespace FotoFaultFixerLib.ImageProcessor
         private int[] _nPixel;   // number of pixels with certain lightness in the image
         private int _maxSize;    // admissible size of a component
         private Point[] _v;
-        private CQueue _cQueue;  // Custom Queue implmentation
+        private CQueue _cQueue;  // Custom Queue iemplmentation
 
         public CPnoise(int[] histo, int Qlength, int Size)
         {
