@@ -205,7 +205,7 @@
                                             Style="{StaticResource MaterialDesignRaisedButton}" 
                                             Width="80" 
                                             Margin="0px 0px 10px 0px"
-                                            IsEnabled="{Binding Path=mainWindowVM.CanSave}">
+                                            IsEnabled="{Binding Path=CanSave}">
                                         Save
                                     </Button>
                                     <Button Name="modifyImageBtn" 
@@ -213,7 +213,7 @@
                                             HorizontalAlignment="Right"
                                             Style="{StaticResource MaterialDesignRaisedButton}" 
                                             Width="80"
-                                            IsEnabled="{Binding Path=mainWindowVM.CanModify}"
+                                            IsEnabled="{Binding Path=CanModify}"
                                             >
                                         Fix
                                     </Button>
