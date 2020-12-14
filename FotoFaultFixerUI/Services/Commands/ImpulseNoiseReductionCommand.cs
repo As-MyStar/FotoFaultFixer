@@ -1,12 +1,11 @@
 ﻿using FotoFaultFixerLib;
-using System;
-using System.Drawing;
+using FotoFaultFixerLib.ImageProcessor;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
-    public class ImpulseNoiseReductionCommand : ICommandBMP
+    public class ImpulseNoiseReductionCommand : ICommandCImage
     {
-        Bitmap _original = null;
+        CImage _original = null;
         int _lightNoiseSuppression = 0;
         int _darkNoiseSuppression = 0;
 
@@ -16,22 +15,13 @@ namespace FotoFaultFixerUI.Services.Commands
             _darkNoiseSuppression = darkNoiseSupp;
         }
 
-        ~ImpulseNoiseReductionCommand()
+        public CImage Execute(CImage img)
         {
-            if (_original != null)
-            {
-                _original.Dispose();
-            }
+            _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
+            return ImageFunctions.ImpulseNoiseReduction_Universal(img, _lightNoiseSuppression, _darkNoiseSuppression);
         }
 
-        public Bitmap Execute(Bitmap bmp)
-        {
-            _original = (Bitmap)bmp.Clone();
-            bmp = ImageFunctions.ImpulseNoiseReduction_Universal(bmp, _lightNoiseSuppression, _darkNoiseSuppression);
-            return bmp;
-        }
-
-        public Bitmap UnExecute(Bitmap bmp)
+        public CImage UnExecute(CImage img)
         {
             return _original;
         }

@@ -1,21 +1,20 @@
-﻿using System.Drawing;
+﻿using FotoFaultFixerLib;
+using FotoFaultFixerLib.ImageProcessor;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
-    public class FlipHorizontalCommand : ICommandBMP
+    public class FlipHorizontalCommand : ICommandCImage
     {
         public FlipHorizontalCommand() { }
 
-        public Bitmap Execute(Bitmap bmp)
+        public CImage Execute(CImage img)
         {
-            bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            return bmp;
+            return ImageFunctions.FlipHorizontal(img);
         }
 
-        public Bitmap UnExecute(Bitmap bmp)
+        public CImage UnExecute(CImage img)
         {
-            bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            return bmp;
+            return ImageFunctions.FlipHorizontal(img);
         }
     }
 }

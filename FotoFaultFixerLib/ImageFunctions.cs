@@ -7,7 +7,8 @@ namespace FotoFaultFixerLib
 {
     public static class ImageFunctions
     {
-        public static Bitmap ImpulseNoiseReduction_Universal(Bitmap original, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
+        #region Filters
+        public static CImage ImpulseNoiseReduction_Universal(CImage original, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
         {
             if (original == null)
             {
@@ -22,7 +23,7 @@ namespace FotoFaultFixerLib
             int[] histo = new int[256];
             int maxLight = 0, minLight = 0;
 
-            CImage workingCopy = new CImage(original);
+            CImage workingCopy = new CImage(original.Width, original.Height, original.NBits, original.PixelFormat, original.Grid); //new CImage(original);
             workingCopy.DeleteBit0();
 
             GenerateLightHistogram(workingCopy, ref histo, ref maxLight, ref minLight);
@@ -39,9 +40,52 @@ namespace FotoFaultFixerLib
                 }
             }
 
-            return workingCopy.ToBitmap();
+            return workingCopy;
         }
 
+        private static void GenerateLightHistogram(CImage workingCopy, ref int[] histo, ref int maxLight, ref int minLight)
+        {
+            for (int i = 0; i < 256; i++)
+            {
+                histo[i] = 0;
+            }
+
+            int light, index;
+            for (int y = 0; y < workingCopy.Height; y++)
+            {
+                for (int x = 0; x < workingCopy.Width; x++)
+                {
+                    index = x + y * workingCopy.Width; // Index of the pixel (x, y)
+                    light = MaxC(workingCopy.Grid[3 * index + 2] & 254,
+                                 workingCopy.Grid[3 * index + 1] & 254,
+                                 workingCopy.Grid[3 * index + 0] & 254);
+
+                    light = Math.Max(light, 0);
+                    light = Math.Min(light, 255);
+
+                    histo[light]++;
+                }
+            }
+
+            // Populate maxLight and minLight values
+            for (maxLight = 255; maxLight > 0; maxLight--)
+            {
+                if (histo[maxLight] != 0)
+                {
+                    break;
+                }
+            }
+            for (minLight = 0; minLight < 256; minLight++)
+            {
+                if (histo[minLight] != 0)
+                {
+                    break;
+                }
+            }
+        }
+        #endregion
+
+        #region Colors
         /// <summary>
         /// Converts an Image to Grayscale
         /// </summary>
@@ -86,7 +130,7 @@ namespace FotoFaultFixerLib
         /// <param name="original"></param>
         /// <remarks>Based on explanation here: http://www.aforgenet.com/framework/docs/html/10a0f824-445b-dcae-02ef-349d4057da45.htm</remarks>
         /// <returns></returns>
-        public static Bitmap ConvertToSepia(Bitmap original)
+        public static CImage ConvertToSepia(CImage original)
         {
             if (original == null)
             {
@@ -96,6 +140,53 @@ namespace FotoFaultFixerLib
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region Transformations
+
+        public static CImage FlipVertical(CImage original)
+        {
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static CImage FlipHorizontal(CImage original)
+        {
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static CImage RotateCW(CImage original)
+        {
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static CImage RotateCCW(CImage original)
+        {
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Utilities
         public static int MaxC(int R, int G, int B)
         {
             int max;
@@ -116,45 +207,8 @@ namespace FotoFaultFixerLib
             return max;
         }
 
-        private static void GenerateLightHistogram(CImage workingCopy, ref int[] histo, ref int maxLight, ref int minLight)
-        {
-            for (int i = 0; i < 256; i++)
-            {
-                histo[i] = 0;
-            }
+        
 
-            int light, index;
-            for (int y = 0; y < workingCopy.Height; y++)
-            {
-                for (int x = 0; x < workingCopy.Width; x++)
-                {
-                    index = x + y * workingCopy.Width; // Index of the pixel (x, y)
-                    light = MaxC(workingCopy.Grid[3 * index + 2] & 254,
-                                 workingCopy.Grid[3 * index + 1] & 254,
-                                 workingCopy.Grid[3 * index + 0] & 254);
-
-                    light = Math.Max(light, 0);
-                    light = Math.Min(light, 255);
-
-                    histo[light]++;
-                }
-            }
-
-            // Populate maxLight and minLight values
-            for (maxLight = 255; maxLight > 0; maxLight--)
-            {
-                if (histo[maxLight] != 0)
-                {
-                    break;
-                }
-            }
-            for (minLight = 0; minLight < 256; minLight++)
-            {
-                if (histo[minLight] != 0)
-                {
-                    break;
-                }
-            }
-        }
+        #endregion
     }
 }

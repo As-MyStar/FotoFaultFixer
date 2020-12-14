@@ -6,6 +6,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace FotoFaultFixerUI.Views
@@ -27,12 +28,13 @@ namespace FotoFaultFixerUI.Views
 
         public void SetSourceImage(string path)
         {
-            _mainWindowVM.sourceImagePath = path;
+            _mainWindowVM.SourceImagePath = path;
             if (File.Exists(path))
             {
                 Uri fileUri = new Uri(path);
-                modifiedImage.Source = null;
-                sourceImage.Source = new BitmapImage(fileUri);
+                imageName.Text = path.Substring(path.LastIndexOf(@"\"));
+                workspaceImage.Source = new BitmapImage(fileUri);
+                _mainWindowVM.CanSave = true;
             }
             else
             {
@@ -54,7 +56,8 @@ namespace FotoFaultFixerUI.Views
         #endregion
 
         #region Button Handlers
-        private void selectImageBtn_Click(object sender, RoutedEventArgs e)
+
+        private void OpenMI_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog selectFileDialog = new OpenFileDialog()
             {
@@ -68,45 +71,33 @@ namespace FotoFaultFixerUI.Views
             }
         }
 
-        private void modifyImageBtn_Click(object sender, RoutedEventArgs e)
+        private void SaveMI_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(_mainWindowVM.sourceImagePath))
+            //if (_mainWindowVM.CanSave)
+            //{
+            SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
-                modifiedImage.Source = null;
+                Title = "Save Image",
+                Filter = FILEFILTER
+            };
 
-                using (Bitmap original = (Bitmap)Image.FromFile(_mainWindowVM.sourceImagePath))
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                using (Bitmap fileToSave = Utilities.ImageSourceToBitmap((BitmapImage)workspaceImage.Source))
                 {
-                    using (Bitmap modified = ImageFunctions.ImpulseNoiseReduction_Universal(original, _mainWindowVM.LightNoiseSuppressionAmount, _mainWindowVM.DarkNoiseSupressionAmount))
-                    {
-                        modifiedImage.Source = Utilities.BitmapToImageSource(modified);
-                        _mainWindowVM.CanSave = true;
-                    }
+                    fileToSave.Save(saveFileDialog.FileName);
                 }
             }
+            //}
         }
 
-        private void saveImageBtn_Click(object sender, RoutedEventArgs e)
+        private void ExitMI_Click(object sender, RoutedEventArgs e)
         {
-            if (modifiedImage.Source != null)
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog()
-                {
-                    Title = "Save Image",
-                    Filter = FILEFILTER
-                };
-
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    using (Bitmap fileToSave = Utilities.ImageSourceToBitmap((BitmapImage)modifiedImage.Source))
-                    {
-                        fileToSave.Save(saveFileDialog.FileName);
-                    }
-                }
-            }
-        }
-
-        private void exitBtn_Click(object sender, RoutedEventArgs e)
-        {
+            // if there are undaved changes
+            // Prompt about saving 
+            // then exit
+            // else 
+            // just exit
             Application.Current.Shutdown();
         }
 

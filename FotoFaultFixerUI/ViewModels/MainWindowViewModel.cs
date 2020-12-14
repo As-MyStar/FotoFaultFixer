@@ -8,7 +8,7 @@ namespace FotoFaultFixerUI.ViewModels
         private bool _canModify;
         private bool _canSave;
 
-        public string sourceImagePath
+        public string SourceImagePath
         {
             get => _originalImagePath;
             set {

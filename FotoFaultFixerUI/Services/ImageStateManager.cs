@@ -1,7 +1,7 @@
-﻿using FotoFaultFixerUI.Services.Commands;
+﻿using FotoFaultFixerLib.ImageProcessor;
+using FotoFaultFixerUI.Services.Commands;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace FotoFaultFixerUI.Services
 {
@@ -12,11 +12,11 @@ namespace FotoFaultFixerUI.Services
     /// <remarks>Command Pattern</remarks>
     public class ImageStateManager
     {
-        private Stack<ICommandBMP> _undoCommands;
-        private Stack<ICommandBMP> _redoCommands;
-        private Bitmap _currentState;
+        private Stack<ICommandCImage> _undoCommands;
+        private Stack<ICommandCImage> _redoCommands;
+        private CImage _currentState;
 
-        public ImageStateManager(Bitmap img)
+        public ImageStateManager(CImage img)
         {
             if (img == null)
             {
@@ -24,15 +24,15 @@ namespace FotoFaultFixerUI.Services
             }
 
             _currentState = img;
-            _undoCommands = new Stack<ICommandBMP>();
-            _redoCommands = new Stack<ICommandBMP>();
+            _undoCommands = new Stack<ICommandCImage>();
+            _redoCommands = new Stack<ICommandCImage>();
         }
 
         /// <summary>
         /// Returns the current state of the Image
         /// </summary>
         /// <returns></returns>
-        public Bitmap GetCurrentState()
+        public CImage GetCurrentState()
         {
             return _currentState;
         }
@@ -41,7 +41,7 @@ namespace FotoFaultFixerUI.Services
         /// Executes a command, updating the current image
         /// </summary>
         /// <param name="cmd"></param>
-        public void Invoke(ICommandBMP cmd)
+        public void Invoke(ICommandCImage cmd)
         {
             _currentState = cmd.Execute(_currentState);
             _undoCommands.Push(cmd);
@@ -59,7 +59,7 @@ namespace FotoFaultFixerUI.Services
         {
             if (CanRedo())
             {
-                ICommandBMP cmd = _redoCommands.Pop();
+                ICommandCImage cmd = _redoCommands.Pop();
                 _currentState = cmd.Execute(_currentState);
                 _undoCommands.Push(cmd);
             }
@@ -77,7 +77,7 @@ namespace FotoFaultFixerUI.Services
         {
             if (CanUndo())
             {
-                ICommandBMP cmd = _undoCommands.Pop();
+                ICommandCImage cmd = _undoCommands.Pop();
                 _currentState = cmd.UnExecute(_currentState);
                 _redoCommands.Push(cmd);
             }

@@ -2,6 +2,7 @@
 using System.Drawing;
 using Xunit;
 using FotoFaultFixerLib;
+using FotoFaultFixerLib.ImageProcessor;
 
 namespace FotoFaultFixerLibTest
 {
@@ -19,7 +20,8 @@ namespace FotoFaultFixerLibTest
         public void ImpulseNoiseReduction_ImageTooSmall()
         {
             Bitmap bmp = new Bitmap(10, 10);
-            Action act = () => ImageFunctions.ImpulseNoiseReduction_Universal(bmp, 20, 20);
+            CImage cImg = new CImage(bmp);
+            Action act = () => ImageFunctions.ImpulseNoiseReduction_Universal(cImg, 20, 20);
             ArgumentOutOfRangeException exc = Assert.Throws<ArgumentOutOfRangeException>(act);
             Assert.Equal("Image needs to be greater than 100 x 100 (Parameter 'original')", exc.Message);
         }

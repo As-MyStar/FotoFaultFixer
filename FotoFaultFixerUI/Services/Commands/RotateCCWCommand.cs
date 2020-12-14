@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FotoFaultFixerLib;
+using FotoFaultFixerLib.ImageProcessor;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
-    public class RotateCCWCommand : ICommandBMP
+    public class RotateCCWCommand : ICommandCImage
     {
         public RotateCCWCommand() { }
 
-        public Bitmap Execute(Bitmap bmp)
+        public CImage Execute(CImage img)
         {
-            bmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
-            return bmp;
+            return ImageFunctions.RotateCCW(img);
         }
 
-        public Bitmap UnExecute(Bitmap bmp)
+        public CImage UnExecute(CImage img)
         {
-            bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            return bmp;
+            return ImageFunctions.RotateCW(img);
         }
     }
 }
