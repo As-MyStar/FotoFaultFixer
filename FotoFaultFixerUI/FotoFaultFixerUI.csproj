@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="screenshots\**" />
+    <EmbeddedResource Remove="screenshots\**" />
+    <None Remove="screenshots\**" />
+    <Page Remove="screenshots\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="ShowMeTheXAML.MSBuild" Version="2.0.0" />
   </ItemGroup>

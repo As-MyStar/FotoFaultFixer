@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using FotoFaultFixerLib;
-using FotoFaultFixerLib.ImageProcessor;
-using Microsoft.ML;
-using Microsoft.ML.Trainers;
-using ML_Tester.Common;
-using ML_Tester.RGB;
-using ML_Tester.YUV;
+﻿using ML_Tester.YUV;
 
 namespace ML_Tester
 {

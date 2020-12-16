@@ -1,5 +1,4 @@
-﻿using FotoFaultFixerLib.ImageProcessor;
-using System.Drawing;
+﻿using FotoFaultFixerLib.ImageProcessing;
 
 namespace FotoFaultFixerUI.Services.Commands
 {

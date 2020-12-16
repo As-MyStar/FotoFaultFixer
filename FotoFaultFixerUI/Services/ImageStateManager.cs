@@ -1,4 +1,4 @@
-﻿using FotoFaultFixerLib.ImageProcessor;
+﻿using FotoFaultFixerLib.ImageProcessing;
 using FotoFaultFixerUI.Services.Commands;
 using System;
 using System.Collections.Generic;

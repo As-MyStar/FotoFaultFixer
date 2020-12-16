@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace FotoFaultFixerLib.ImageProcessor
+namespace FotoFaultFixerLib.ImageProcessing
 {
     public class CImage
     {

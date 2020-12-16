@@ -1,4 +1,4 @@
-﻿namespace FotoFaultFixerLib.ImageProcessor
+﻿namespace FotoFaultFixerLib.ImageProcessing
 {
     class CQueue
     {

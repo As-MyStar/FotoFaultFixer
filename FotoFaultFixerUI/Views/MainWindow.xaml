@@ -15,7 +15,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         TextElement.FontWeight="Medium"
-        TextElement.FontSize="14">
+        TextElement.FontSize="14"
+        xmlns:FFFUI="clr-namespace:FotoFaultFixerUI.Views">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -25,203 +26,64 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
-        <StackPanel>
-            <materialDesign:Card 
+    <DockPanel>
+        <materialDesign:Card 
                 Name="Title" 
+                Height="60"
                 Padding="10"
-                Margin="5">
+                Margin="5"
+                DockPanel.Dock="Top">
 
-                <DockPanel>
-                    <TextBlock 
+            <DockPanel>
+                <TextBlock 
                         Style="{DynamicResource MaterialDesignHeadline6TextBlock}" 
                         DockPanel.Dock="Left"
                         VerticalAlignment="Center">
                         Foto Fault-Fixer
-                    </TextBlock>
+                </TextBlock>
 
-                    <Button 
+                <Button 
                         Name="exitBtn" 
-                        Click="ExitMI_Click"
-                        ToolTip=""
+                        Click="exitBtn_Click"
                         Style="{StaticResource MaterialDesignToolButton}" 
                         DockPanel.Dock="Right"                        
                         Width="40">
-                        X
-                    </Button>
+                    X
+                </Button>
 
-                    <TextBlock 
+                <TextBlock 
                         Name="imageName"                        
-                        ToolTip="{Binding Path=SourceImagePath}"
+                        ToolTip="{Binding Path=WorkingImagePath}"
                         Style="{DynamicResource MaterialDesignSubtitle2TextBlock}" 
                         Margin="20 0 0 0 "
                         Padding="0"
                         VerticalAlignment="Center">
                         Image Name
-                    </TextBlock>
+                </TextBlock>
 
-                </DockPanel>
-            </materialDesign:Card>
+            </DockPanel>
+        </materialDesign:Card>
 
-            <Menu Name="toolbar" HorizontalContentAlignment="Right">
+        <FFFUI:Toolbar 
+            DockPanel.Dock="Top"
+            ToolbarItemClicked="Toolbar_ToolbarItemClicked"/>
 
-                <MenuItem Cursor="Hand" >
-                    <MenuItem.Header>
-                        <StackPanel>
-                            <materialDesign:PackIcon Kind="File"
-                                                     HorizontalAlignment="Center" 
-                                                     Height="30" Width="30">
-                            </materialDesign:PackIcon>
-                            <TextBlock Text="File" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </MenuItem.Header>
-
-                    <MenuItem Header="Open" Cursor="Hand" Click="OpenMI_Click">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="Import" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Save" Cursor="Hand" Click="SaveMI_Click">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="ContentSave" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <Separator />
-                    <MenuItem Header="Exit" Cursor="Hand" Click="ExitMI_Click">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="ExitRun" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
-
-                <MenuItem Cursor="Hand">
-                    <MenuItem.Header>
-                        <StackPanel>
-                            <materialDesign:PackIcon Kind="VectorRectangle" HorizontalAlignment="Center" Height="30" Width="30">
-                                <materialDesign:PackIcon.LayoutTransform>
-                                    <RotateTransform Angle="90" />
-                                </materialDesign:PackIcon.LayoutTransform>
-                            </materialDesign:PackIcon>
-                            <TextBlock Text="Transform" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </MenuItem.Header>
-
-                    <MenuItem Header="Crop"  Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="Crop" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <MenuItem Header="4-pt Straighten"  Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="RectangleOutline" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <Separator />
-
-                    <MenuItem Header="Rotate Left" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="RotateLeft" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Rotate Right" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="RotateRight" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Flip Horizontal" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="FlipHorizontal" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Flip Vertical" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="FlipVertical" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
-
-                <MenuItem Cursor="Hand">
-                    <MenuItem.Header>
-                        <StackPanel>
-                            <materialDesign:PackIcon Kind="Color" HorizontalAlignment="Center" Height="30" Width="30"/>
-                            <TextBlock Text="Color" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </MenuItem.Header>
-
-                    <MenuItem Header="Convert To Greyscale" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="ColorHelper" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Convert to Sepia" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="AssistantPhoto" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                    <Separator />
-
-                    <MenuItem Header="Colorize with Reference" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="ColorHelper" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Colorize with Annotations" Cursor="Hand">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="AssistantPhoto" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-
-                </MenuItem>
-
-                <MenuItem Cursor="Hand">
-                    <MenuItem.Header>
-                        <StackPanel>
-                            <materialDesign:PackIcon Kind="Grid" HorizontalAlignment="Center" Height="30" Width="30"/>
-                            <TextBlock Text="Filter" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </MenuItem.Header>
-                </MenuItem>
-
-                <Separator/>
-
-                <MenuItem Cursor="Hand">
-                    <MenuItem.Header>
-                        <StackPanel>
-                            <materialDesign:PackIcon Kind="Undo" HorizontalAlignment="Center" Height="30" Width="30"/>
-                            <TextBlock Text="Undo" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </MenuItem.Header>
-                </MenuItem>
-
-
-                <MenuItem Cursor="Hand">
-                    <MenuItem.Header>
-                        <StackPanel>
-                            <materialDesign:PackIcon Kind="Redo" HorizontalAlignment="Center" Height="30" Width="30"/>
-                            <TextBlock Text="Redo" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </MenuItem.Header>
-                </MenuItem>
-            </Menu>
-
-            <materialDesign:Card
+        <materialDesign:Card
                 Padding="10" 
-                Margin="5">
-                <Grid
+                Margin="5"
+                DockPanel.Dock="Bottom">
+            <Grid
                     Name="workspace"
                     VerticalAlignment="center" 
                     HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                    <Image 
+                <Image 
                         Grid.Column="0" 
                         Grid.Row="0"
                         Name="workspaceImage" 
@@ -229,9 +91,16 @@
                         Stretch="UniformToFill"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
-                    </Image>
-                </Grid>
-            </materialDesign:Card>
-        </StackPanel>
-    </Grid>
+                </Image>
+            </Grid>
+        </materialDesign:Card>
+    </DockPanel>
+    
+
+            
+
+            
+
+            
+
 </Window>

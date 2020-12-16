@@ -1,43 +1,44 @@
-﻿using System.ComponentModel;
+﻿using FotoFaultFixerLib.ImageProcessing;
+using System.ComponentModel;
+using System.Drawing;
 
 namespace FotoFaultFixerUI.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private string _originalImagePath;
-        private bool _canModify;
-        private bool _canSave;
+        private string _workingImageName;
+        private string _workingImagePath;
+        private CImage _workingImage;
+        private bool _hasUnsavedChanges;
 
-        public string SourceImagePath
+        public void SetImage(string imagePath, Bitmap bmp)
         {
-            get => _originalImagePath;
-            set {
-                _originalImagePath = value;
-                CanModify = true;
-                CanSave = false;
+            _workingImagePath = imagePath;
+            _workingImageName = _workingImagePath.Substring(_workingImagePath.LastIndexOf(@"\") + 1);
+            //_workingImage = new CImage(bmp);
+            _hasUnsavedChanges = false;
+        }
+
+        public string WorkingImagePath {
+            get {
+                return _workingImagePath;
+            }
+            private set
+            {
+                _workingImagePath = value;
+                OnPropertyChanged("WorkingImagePath");
             }
         }
 
-        public bool CanModify {
-            get => _canModify; 
+        public bool HasUnsavedChanges
+        {
+            get => _hasUnsavedChanges;
             set
             {
-                _canModify = value;
-                OnPropertyChanged("CanModify");
+                _hasUnsavedChanges = value;
+                OnPropertyChanged("HasUnsavedChanges");
             }
         }
-        
-        public bool CanSave
-        {
-            get => _canSave;
-            set
-            {
-                _canSave = value;
-                OnPropertyChanged("CanSave");
-            }
-        }
-        public int LightNoiseSuppressionAmount { get; set; }
-        public int DarkNoiseSupressionAmount { get; set; }
 
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;

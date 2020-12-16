@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using FotoFaultFixerLib.ImageFunctions;
 
-namespace FotoFaultFixerLib.ImageProcessor
+namespace FotoFaultFixerLib.ImageProcessing
 {
     class CPnoise
     {
@@ -63,7 +64,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                 {                    
                     pixelIdx = x + y * Image.Width;
 
-                    lightValue = ImageFunctions.MaxC(
+                    lightValue = Utilities.MaxC(
                         Image.Grid[3 * pixelIdx + 2] & 254,
                         Image.Grid[3 * pixelIdx + 1] & 254,
                         Image.Grid[3 * pixelIdx + 0] & 254
@@ -305,7 +306,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                     LabelQ1 = Image.Grid[1 + 3 * Neib] & 1;
                     LabelBig2 = Image.Grid[2 + 3 * Neib] & 1;
 
-                    lightNeb = ImageFunctions.MaxC(
+                    lightNeb = Utilities.MaxC(
                         Image.Grid[2 + 3 * Neib],
                         Image.Grid[1 + 3 * Neib],
                         Image.Grid[0 + 3 * Neib]
@@ -340,7 +341,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                     {
                         if (Neib != index) 
                         {
-                            if (lightNeb < ImageFunctions.MaxC(MinBound[2], MinBound[1], MinBound[0]))
+                            if (lightNeb < Utilities.MaxC(MinBound[2], MinBound[1], MinBound[0]))
                             {
                                 for (int c = 0; c < 3; c++)
                                 {
@@ -370,7 +371,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                 }
                 else
                 {
-                    lightComp = ImageFunctions.MaxC(
+                    lightComp = Utilities.MaxC(
                         Image.Grid[2 + 3 * _comp[m]],
                         Image.Grid[1 + 3 * _comp[m]],
                         Image.Grid[0 + 3 * _comp[m]]
@@ -441,7 +442,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                 {
                     ind3 = 3 * _index[light][i];                    
                     LabelBig2 = Image.Grid[2 + ind3] & 1;
-                    Lum = ImageFunctions.MaxC(Image.Grid[2 + ind3], Image.Grid[1 + ind3], Image.Grid[0 + ind3]) & 254;
+                    Lum = Utilities.MaxC(Image.Grid[2 + ind3], Image.Grid[1 + ind3], Image.Grid[0 + ind3]) & 254;
                     
                     if (Lum == light && LabelBig2 == 0)
                     {
@@ -503,7 +504,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                     ind3 = 3 * _index[light][i];
 
                     LabelBig2 = Image.Grid[2 + 3 * _index[light][i]] & 1;
-                    Lum = ImageFunctions.MaxC(
+                    Lum = Utilities.MaxC(
                         Image.Grid[2 + ind3], 
                         Image.Grid[1 + ind3], 
                         Image.Grid[0 + ind3]
@@ -686,7 +687,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                     LabelQ1 = Image.Grid[1 + 3 * Neib] & 1;
                     LabelBig2 = Image.Grid[2 + 3 * Neib] & 1;
 
-                    lightNeb = ImageFunctions.MaxC(
+                    lightNeb = Utilities.MaxC(
                         Image.Grid[2 + 3 * Neib],
                         Image.Grid[1 + 3 * Neib],
                         Image.Grid[0 + 3 * Neib]
@@ -722,7 +723,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                     {
                         if (Neib != index)
                         {
-                            if (lightNeb > ImageFunctions.MaxC(MaxBound[2], MaxBound[1], MaxBound[0]))
+                            if (lightNeb > Utilities.MaxC(MaxBound[2], MaxBound[1], MaxBound[0]))
                             {
                                 MaxBound[0] = (Image.Grid[0 + 3 * Neib] & MaskColor);
                                 MaxBound[1] = (Image.Grid[1 + 3 * Neib] & MaskColor);
@@ -752,7 +753,7 @@ namespace FotoFaultFixerLib.ImageProcessor
                 }
                 else
                 {
-                    lightComp = ImageFunctions.MaxC(
+                    lightComp = Utilities.MaxC(
                         Image.Grid[2 + 3 * _comp[m]],
                         Image.Grid[1 + 3 * _comp[m]],
                         Image.Grid[0 + 3 * _comp[m]]

@@ -1,5 +1,5 @@
-﻿using FotoFaultFixerLib;
-using FotoFaultFixerLib.ImageProcessor;
+﻿using FotoFaultFixerLib.ImageProcessing;
+using FotoFaultFixerLib.ImageFunctions;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
@@ -9,12 +9,12 @@ namespace FotoFaultFixerUI.Services.Commands
 
         public CImage Execute(CImage img)
         {
-            return ImageFunctions.FlipHorizontal(img);
+            return Transformations.FlipHorizontal(img);
         }
 
         public CImage UnExecute(CImage img)
         {
-            return ImageFunctions.FlipHorizontal(img);
+            return Transformations.FlipHorizontal(img);
         }
     }
 }

@@ -1,13 +1,12 @@
-﻿using FotoFaultFixerLib;
-using FotoFaultFixerLib.ImageProcessor;
+﻿using FotoFaultFixerLib.ImageFunctions;
+using FotoFaultFixerLib.ImageProcessing;
 using Microsoft.ML;
 using ML_Tester.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Utilities = ML_Tester.Common.Utilities;
 
 namespace ML_Tester.RGB
 {
@@ -112,7 +111,7 @@ namespace ML_Tester.RGB
             List<PixelYRGB> imageData = new List<PixelYRGB>();
             CImage colorCImg = new CImage(bmp);
 
-            Bitmap greyBMP = ImageFunctions.ConvertToGrayscale(bmp);
+            Bitmap greyBMP = Coloring.ConvertToGrayscale(bmp);
             //greyBMP.Save(@"C:\Temp\SamplesImages\color\v3\ColoredConvertedToGrey.jpg");
             CImage greyCImg = new CImage(greyBMP);
             greyBMP.Dispose();
@@ -166,7 +165,7 @@ namespace ML_Tester.RGB
             List<PixelYRGB> imageData = new List<PixelYRGB>();
 
             // Really make sure its greyscale
-            Bitmap greyBMP = ImageFunctions.ConvertToGrayscale(bmp);
+            Bitmap greyBMP = Coloring.ConvertToGrayscale(bmp);
             //greyBMP.Save(@"C:\Temp\SamplesImages\color\v3\GreyConvertedToGrey.jpg");
             CImage greyCImg = new CImage(greyBMP);
             greyBMP.Dispose();

@@ -1,5 +1,5 @@
-﻿using FotoFaultFixerLib;
-using FotoFaultFixerLib.ImageProcessor;
+﻿using FotoFaultFixerLib.ImageFunctions;
+using FotoFaultFixerLib.ImageProcessing;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
@@ -18,7 +18,7 @@ namespace FotoFaultFixerUI.Services.Commands
         public CImage Execute(CImage img)
         {
             _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
-            return ImageFunctions.ImpulseNoiseReduction_Universal(img, _lightNoiseSuppression, _darkNoiseSuppression);
+            return Filters.ImpulseNoiseReduction_Universal(img, _lightNoiseSuppression, _darkNoiseSuppression);
         }
 
         public CImage UnExecute(CImage img)
