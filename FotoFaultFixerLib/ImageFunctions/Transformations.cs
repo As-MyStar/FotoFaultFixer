@@ -66,7 +66,27 @@ namespace FotoFaultFixerLib.ImageFunctions
                 throw new ArgumentNullException();
             }
 
-            throw new NotImplementedException();
+            // Height and width are switched here
+            CImage rotatedCW = new CImage(original.Height, original.Width, original.NBits);
+
+            int i_orig;
+            int i_rotated;
+            int maxY = original.Height - 1;
+            int yIdx = -1;
+            for (int y = maxY; y >= 0; y--)
+            {
+                yIdx += 1;
+                for (int x = 0; x < original.Width; x++)
+                {
+                    i_orig = (x + (original.Width * y));
+                    i_rotated = yIdx + (rotatedCW.Width * x);
+                    rotatedCW.Grid[0 + 3 * i_rotated] = original.Grid[0 + 3 * i_orig];
+                    rotatedCW.Grid[1 + 3 * i_rotated] = original.Grid[1 + 3 * i_orig];
+                    rotatedCW.Grid[2 + 3 * i_rotated] = original.Grid[2 + 3 * i_orig];
+                }
+            }
+
+            return rotatedCW;
         }
 
         public static CImage RotateCCW(CImage original)
@@ -76,7 +96,27 @@ namespace FotoFaultFixerLib.ImageFunctions
                 throw new ArgumentNullException();
             }
 
-            throw new NotImplementedException();
+            // Height and width are switched here
+            CImage rotatedCCW = new CImage(original.Height, original.Width, original.NBits);
+
+            int i_orig;
+            int i_rotated;
+            int maxX = original.Width - 1;
+
+            for (int y = 0; y < original.Height; y++)
+            {
+                for (int x = maxX; x >= 0; x--)
+                {
+                    i_orig = (x + (original.Width * y));
+                    i_rotated = y + (rotatedCCW.Width * (maxX - x));
+
+                    rotatedCCW.Grid[0 + 3 * i_rotated] = original.Grid[0 + 3 * i_orig];
+                    rotatedCCW.Grid[1 + 3 * i_rotated] = original.Grid[1 + 3 * i_orig];
+                    rotatedCCW.Grid[2 + 3 * i_rotated] = original.Grid[2 + 3 * i_orig];
+                }
+            }
+
+            return rotatedCCW;
         }
     }
 }
