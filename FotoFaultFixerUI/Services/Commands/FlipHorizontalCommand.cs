@@ -13,7 +13,7 @@ namespace FotoFaultFixerUI.Services.Commands
         }
 
         public CImage UnExecute(CImage img)
-        {
+        {            
             return Transformations.FlipHorizontal(img);
         }
     }

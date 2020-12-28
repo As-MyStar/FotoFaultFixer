@@ -1,5 +1,6 @@
 ﻿using FotoFaultFixerLib.ImageProcessing;
 using System;
+using System.Drawing;
 
 namespace FotoFaultFixerLib.ImageFunctions
 {
@@ -117,6 +118,16 @@ namespace FotoFaultFixerLib.ImageFunctions
             }
 
             return rotatedCCW;
+        }
+
+        public static CImage Crop(CImage original, Point startPoint, int width, int height)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static CImage FourPointStraighten(CImage original, Point[] newCornerPoints)
+        {
+            throw new NotImplementedException();
         }
     }
 }

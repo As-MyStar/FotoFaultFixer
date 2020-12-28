@@ -15,8 +15,7 @@ namespace FotoFaultFixerUI.Views
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        const string FILEFILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png;";
+    {        
         ApplicationService _appService;
         MainWindowViewModel _mainWindowVM;
                 
@@ -52,7 +51,7 @@ namespace FotoFaultFixerUI.Views
 
         private void ExitApplication()
         {
-            // if there are undaved changes
+            // if there are unsaved changes
             if (!_mainWindowVM.HasUnsavedChanges)
             {
                 _appService.Exit();

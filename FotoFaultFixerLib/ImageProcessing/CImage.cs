@@ -4,6 +4,13 @@ using System.Drawing.Imaging;
 
 namespace FotoFaultFixerLib.ImageProcessing
 {
+    /// <summary>
+    /// Computation Image or 'Fast' Image.
+    /// </summary>
+    /// <remarks>
+    /// We need individual pixel access, but .Net's Bitmap implementation is WAY too slow
+    /// By storing all RGB data in a single Byte array, its MUCH more efficient and simpler to work with image data
+    /// </remarks>
     public class CImage
     {
         public int Width { get; set; }
