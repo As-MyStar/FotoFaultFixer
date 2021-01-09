@@ -125,7 +125,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             throw new NotImplementedException();
         }
 
-        public static CImage FourPointStraighten(CImage original, Point[] newCornerPoints)
+        public static CImage FourPointStraighten(CImage original, Point[] newCornerPoints, bool shouldCrop)
         {
             throw new NotImplementedException();
         }

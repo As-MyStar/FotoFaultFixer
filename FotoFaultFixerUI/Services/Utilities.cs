@@ -30,15 +30,15 @@ namespace FotoFaultFixerUI.Services
             }
         }
 
+        // PG: Beware, this can be a 32bitARGB, which we can't reload!
         public static Bitmap ImageSourceToBitmap(BitmapImage bitmapImage)
         {
             using (MemoryStream outStream = new MemoryStream())
             {
-                BitmapEncoder enc = new BmpBitmapEncoder();
+                BitmapEncoder enc = new BmpBitmapEncoder();                
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));
                 enc.Save(outStream);
                 Bitmap bitmap = new Bitmap(outStream);
-
                 return new Bitmap(bitmap);
             }
         }

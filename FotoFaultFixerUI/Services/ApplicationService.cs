@@ -3,32 +3,32 @@ using FotoFaultFixerUI.Services.Commands;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
-using System.Windows;
 
 namespace FotoFaultFixerUI.Services
 {
 
     class ApplicationService
     {
-        const string FILE_EXTENSION_FILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png;";
+        const string FILE_EXTENSION_FILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png; *.tiff";
 
         ImageStateManager _ism;
-        public event EventHandler<ImageUpdateEventArgs> ImageUpdated;
+        internal event EventHandler<ImageUpdateEventArgs> _imageUpdated;
 
         public ApplicationService() { }
 
         private void FireImageUpdate()
         {
-            EventHandler<ImageUpdateEventArgs> handler = ImageUpdated;
+            EventHandler<ImageUpdateEventArgs> handler = _imageUpdated;
             handler?.Invoke(this, new ImageUpdateEventArgs(_ism.GetCurrentState()));
         }
 
-        public void Exit()
+        #region File Actions
+        internal void Exit()
         {
-            Application.Current.Shutdown();
+            System.Windows.Application.Current.Shutdown();
         }
 
-        public void OpenImage()
+        internal void OpenImage()
         {
             OpenFileDialog selectFileDialog = new OpenFileDialog()
             {
@@ -47,7 +47,7 @@ namespace FotoFaultFixerUI.Services
             }
         }
 
-        public void SaveImage(Bitmap fileToSave)
+        internal void SaveImage(Bitmap fileToSave)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
@@ -60,43 +60,61 @@ namespace FotoFaultFixerUI.Services
                 fileToSave.Save(saveFileDialog.FileName);
             }
         }
+        #endregion
 
-        public void Undo()
+        #region Edit Actions
+        internal void Undo()
         {
             _ism.Undo();
             FireImageUpdate();
         }
 
-        public void Redo()
+        internal void Redo()
         {
             _ism.Redo();
             FireImageUpdate();
         }
+        #endregion
 
-        public void RotateClockWise()
+        #region Transformations
+        internal void RotateClockWise()
         {
             _ism.Invoke(new RotateCWCommand());
             FireImageUpdate();
         }
 
-        public void RotateCounterClockWise()
+        internal void RotateCounterClockWise()
         {
             _ism.Invoke(new RotateCCWCommand());
             FireImageUpdate();
         }
 
-        public void FlipHorizontal()
+        internal void FlipHorizontal()
         {
             _ism.Invoke(new FlipHorizontalCommand());
             FireImageUpdate();
         }
 
-        public void FlipVertical()
+        internal void FlipVertical()
         {
             _ism.Invoke(new FlipVerticalCommand());
             FireImageUpdate();
         }
 
+        internal void Crop(Point startingPoint, int newWidth, int newHeight)
+        {
+            _ism.Invoke(new CropCommand(startingPoint, newWidth, newHeight));
+            FireImageUpdate();
+        }
+
+        internal void FourPointStraighten(Point[] points, bool shouldCrop)
+        {
+            _ism.Invoke(new FourPointStraightenCommand(points, shouldCrop));
+            FireImageUpdate();
+        }
+        #endregion
+
+        #region Coloring
         internal void ConvertToGreyScale()
         {
             throw new NotImplementedException();
@@ -106,5 +124,14 @@ namespace FotoFaultFixerUI.Services
         {
             throw new NotImplementedException();
         }
+        #endregion
+
+        #region Filters
+        internal void ImpulseNoiseReduction(int lightNoiseSuppression, int darkNoiseSuppression)
+        {
+            _ism.Invoke(new ImpulseNoiseReductionCommand(lightNoiseSuppression, darkNoiseSuppression));
+            FireImageUpdate();
+        }
+        #endregion
     }
 }

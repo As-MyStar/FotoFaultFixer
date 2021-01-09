@@ -23,7 +23,7 @@ namespace FotoFaultFixerUI.Views
         {
             _mainWindowVM = new MainWindowViewModel();
             _appService = new ApplicationService();
-            _appService.ImageUpdated += _appService_ImageUpdated;            
+            _appService._imageUpdated += _appService_ImageUpdated;            
             InitializeComponent();
             this.DataContext = _mainWindowVM;            
         }
@@ -31,7 +31,7 @@ namespace FotoFaultFixerUI.Views
         #region Event Handlers
         private void _appService_ImageUpdated(object sender, ImageUpdateEventArgs e)
         {
-            workspaceImage.Source = Utilities.BitmapToImageSource(e.Image.ToBitmap());
+            imageWorkspace.SetImage(Utilities.BitmapToImageSource(e.Image.ToBitmap()));
         }
 
         private void exitBtn_Click(object sender, RoutedEventArgs e)
@@ -43,9 +43,9 @@ namespace FotoFaultFixerUI.Views
         #region Toolbar Handlers
         private void SaveImage()
         {
-            using (Bitmap fileToSave = Utilities.ImageSourceToBitmap((BitmapImage)workspaceImage.Source))
+            using (Bitmap fileToSave = imageWorkspace.GetImage())            
             {
-                _appService.SaveImage(fileToSave);                    
+                _appService.SaveImage(fileToSave);
             }           
         }
 
@@ -72,27 +72,35 @@ namespace FotoFaultFixerUI.Views
                     _appService.OpenImage();
                     break;
                 case "Undo":
+                    WorkspaceZoomReset();
                     _appService.Undo();
                     break;
                 case "Redo":
+                    WorkspaceZoomReset();
                     _appService.Redo();
                     break;
                 case "Crop":
+                    WorkspaceZoomReset();
                     // open crop Panel
                     break;
                 case "4-pt Straighten":
+                    WorkspaceZoomReset();
                     // open 4pt-Straighten Panel
                     break;
                 case "Rotate Left":
+                    WorkspaceZoomReset();
                     _appService.RotateCounterClockWise();
                     break;
                 case "Rotate Right":
+                    WorkspaceZoomReset();
                     _appService.RotateClockWise();
                     break;
                 case "Flip Horizontal":
+                    WorkspaceZoomReset();
                     _appService.FlipHorizontal();
                     break;
                 case "Flip Vertical":
+                    WorkspaceZoomReset();
                     _appService.FlipVertical();
                     break;
                 case "Convert To Greyscale":
@@ -120,13 +128,18 @@ namespace FotoFaultFixerUI.Views
             {
                 Uri fileUri = new Uri(path);
                 imageName.Text = path.Substring(path.LastIndexOf(@"\"));
-                workspaceImage.Source = new BitmapImage(fileUri);
+                imageWorkspace.SetImage(new BitmapImage(fileUri));                
             }
             else
             {
                 string msgBoxText = string.Format("No file exists at indicated path: {0}", path);
                 MessageBox.Show(msgBoxText, "Unable to load File");
             }
+        }
+
+        public void WorkspaceZoomReset()
+        {
+            imageWorkspace.ZoomReset();
         }
     }
 }
