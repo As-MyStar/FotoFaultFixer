@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace FotoFaultFixerUI.Controls
@@ -8,17 +9,22 @@ namespace FotoFaultFixerUI.Controls
     /// </summary>
     public partial class Toolbar : UserControl
     {
-        public static RoutedCommand MenuItemSelected { get; } = new RoutedCommand("MenuItemSelected", typeof(Toolbar));
-        public event ExecutedRoutedEventHandler ToolbarItemClicked;
+        public event RoutedEventHandler ToolbarItemClicked;
 
         public Toolbar()
         {
             InitializeComponent();
         }
         
-        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        //private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        //{
+        //    ToolbarItemClicked.Invoke(this, e);
+        //}
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            ToolbarItemClicked.Invoke(this, e);
+
+            ToolbarItemClicked.Invoke(sender, e);
         }
     }
 }

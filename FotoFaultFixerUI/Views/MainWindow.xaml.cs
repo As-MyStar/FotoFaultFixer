@@ -6,6 +6,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -58,10 +59,10 @@ namespace FotoFaultFixerUI.Views
             }
         }
 
-        private void Toolbar_ToolbarItemClicked(object sender, ExecutedRoutedEventArgs e)
-        {            
-            // PG: bad practice! TODO: FIx in future refactor
-            switch (e.Parameter) {
+        private void Toolbar_ToolbarItemClicked(object sender, RoutedEventArgs e)
+        {
+            // PG: bad practice! TODO: Fix in future refactor
+            switch (((Button)sender).Tag) {
                 case "Save":
                     SaveImage();
                     break;

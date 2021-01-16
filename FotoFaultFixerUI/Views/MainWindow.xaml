@@ -71,14 +71,18 @@
         </materialDesign:Card>
 
         <FFFUI_Controls:Toolbar 
-            DockPanel.Dock="Top"
-            ToolbarItemClicked="Toolbar_ToolbarItemClicked"/>
+            DockPanel.Dock="Right"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Top"
+            ToolbarItemClicked="Toolbar_ToolbarItemClicked"
+            Margin="0"
+            Width="42" />
 
         <FFFUI_Controls:Workspace 
             x:Name="imageWorkspace"
-            Padding="10" 
-            Margin="5" 
-            DockPanel.Dock="Bottom"/>
+            Padding="5 5 0 5"
+            Margin="0"
+            DockPanel.Dock="left"/>
 
     </DockPanel>
 </Window>
