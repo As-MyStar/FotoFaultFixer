@@ -1,5 +1,6 @@
 ﻿using FotoFaultFixerLib.ImageFunctions;
 using FotoFaultFixerLib.ImageProcessing;
+using System;
 using System.Drawing;
 
 namespace FotoFaultFixerUI.Services.Commands
@@ -16,7 +17,7 @@ namespace FotoFaultFixerUI.Services.Commands
             _shouldCrop = shouldCrop;
         }
 
-        public CImage Execute(CImage img)
+        public CImage Execute(CImage img, IProgress<int> progressReporter)
         {
             _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
             return Transformations.FourPointStraighten(img, _newCornerPoints, _shouldCrop);

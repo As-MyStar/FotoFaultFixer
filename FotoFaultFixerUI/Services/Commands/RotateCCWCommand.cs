@@ -1,5 +1,6 @@
 ﻿using FotoFaultFixerLib.ImageFunctions;
 using FotoFaultFixerLib.ImageProcessing;
+using System;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
@@ -7,7 +8,7 @@ namespace FotoFaultFixerUI.Services.Commands
     {
         public RotateCCWCommand() { }
 
-        public CImage Execute(CImage img)
+        public CImage Execute(CImage img, IProgress<int> progressReporter)
         {
             return Transformations.RotateCCW(img);
         }

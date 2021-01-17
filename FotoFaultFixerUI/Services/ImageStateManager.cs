@@ -42,11 +42,11 @@ namespace FotoFaultFixerUI.Services
         /// Executes a command, updating the current image
         /// </summary>
         /// <param name="cmd"></param>
-        public async Task Invoke(ICommandCImage cmd)
+        public async Task Invoke(ICommandCImage cmd, IProgress<int> progressReporter)
         {
             await Task.Run(() =>
             {
-                _currentState = cmd.Execute(_currentState);
+                _currentState = cmd.Execute(_currentState, progressReporter);
                 _undoCommands.Push(cmd);
             });
         }
@@ -59,12 +59,12 @@ namespace FotoFaultFixerUI.Services
         /// <summary>
         /// Re-executes a command (after an undo)
         /// </summary>
-        public async Task Redo()
+        public async Task Redo(IProgress<int> progressReporter)
         {
             if (CanRedo())
             {
                 ICommandCImage cmd = _redoCommands.Pop();
-                await Invoke(cmd);
+                await Invoke(cmd, progressReporter);
             }
         }
 

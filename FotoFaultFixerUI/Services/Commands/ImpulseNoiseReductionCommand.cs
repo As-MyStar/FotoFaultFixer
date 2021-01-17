@@ -1,5 +1,6 @@
 ﻿using FotoFaultFixerLib.ImageFunctions;
 using FotoFaultFixerLib.ImageProcessing;
+using System;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
@@ -15,10 +16,10 @@ namespace FotoFaultFixerUI.Services.Commands
             _darkNoiseSuppression = darkNoiseSupp;
         }
 
-        public CImage Execute(CImage img)
+        public CImage Execute(CImage img, IProgress<int> progressReporter)
         {
             _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
-            return Filters.ImpulseNoiseReduction_Universal(img, _lightNoiseSuppression, _darkNoiseSuppression);
+            return Filters.ImpulseNoiseReduction_Universal(img, _lightNoiseSuppression, _darkNoiseSuppression, progressReporter);
         }
 
         public CImage UnExecute(CImage img)

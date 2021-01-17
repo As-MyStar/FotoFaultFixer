@@ -20,13 +20,13 @@ namespace FotoFaultFixerLib.ImageFunctions
             int maxY = original.Height - 1;
             for (int y = 0; y < original.Height; y++)
             {
-                for (int x = 0; x< original.Width; x++)
+                for (int x = 0; x < original.Width; x++)
                 {
                     i_orig = (x + (original.Width * y));
                     i_flipped = (x + (original.Width * (maxY - y)));
                     verticallyFlipped.Grid[0 + 3 * i_flipped] = original.Grid[0 + 3 * i_orig];
                     verticallyFlipped.Grid[1 + 3 * i_flipped] = original.Grid[1 + 3 * i_orig];
-                    verticallyFlipped.Grid[2 + 3 * i_flipped] = original.Grid[2 + 3 * i_orig];                    
+                    verticallyFlipped.Grid[2 + 3 * i_flipped] = original.Grid[2 + 3 * i_orig];
                 }
             }
 
@@ -70,6 +70,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             // Height and width are switched here
             CImage rotatedCW = new CImage(original.Height, original.Width, original.NBits);
 
+            // TODO: Review - this seems real wonky
             int i_orig;
             int i_rotated;
             int maxY = original.Height - 1;
@@ -122,12 +123,24 @@ namespace FotoFaultFixerLib.ImageFunctions
 
         public static CImage Crop(CImage original, Point startPoint, int width, int height)
         {
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             throw new NotImplementedException();
         }
 
-        public static CImage FourPointStraighten(CImage original, Point[] newCornerPoints, bool shouldCrop)
+        public static CImage FourPointStraighten(CImage original, Point[] newCornerPoints, bool shouldCrop, IProgress<int> progressReporter = null)
         {
-            throw new NotImplementedException();
+            if (original == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            Utilities.SetProgress(progressReporter, 0);
+            Utilities.SetProgress(progressReporter, 100);
+            return null;
         }
     }
 }

@@ -18,9 +18,9 @@ namespace FotoFaultFixerUI.Services
 
         public ApplicationService() { }
 
-        private async void InvokeCmdAndUpdate(ICommandCImage cmd)
+        private async void InvokeCmdAndUpdate(ICommandCImage cmd, IProgress<int> progressReporter)
         {
-            await _ism.Invoke(cmd);
+            await _ism.Invoke(cmd, progressReporter);
             FireImageUpdate();
         }
 
@@ -36,7 +36,7 @@ namespace FotoFaultFixerUI.Services
             System.Windows.Application.Current.Shutdown();
         }
 
-        internal void OpenImage()
+        internal string OpenImage()
         {
             OpenFileDialog selectFileDialog = new OpenFileDialog()
             {
@@ -53,6 +53,8 @@ namespace FotoFaultFixerUI.Services
                     FireImageUpdate();
                 }
             }
+
+            return selectFileDialog.SafeFileName;
         }
 
         internal void SaveImage(Bitmap fileToSave)
@@ -77,9 +79,9 @@ namespace FotoFaultFixerUI.Services
             FireImageUpdate();
         }
 
-        internal async void Redo()
+        internal async void Redo(IProgress<int> progressReporter)
         {
-            await _ism.Redo();
+            await _ism.Redo(progressReporter);
             FireImageUpdate();
         }
         #endregion
@@ -87,32 +89,32 @@ namespace FotoFaultFixerUI.Services
         #region Transformations
         internal void RotateClockWise()
         {
-            InvokeCmdAndUpdate(new RotateCWCommand());
+            InvokeCmdAndUpdate(new RotateCWCommand(), null);
         }
 
         internal void RotateCounterClockWise()
         {
-            InvokeCmdAndUpdate(new RotateCCWCommand());
+            InvokeCmdAndUpdate(new RotateCCWCommand(), null);
         }
 
         internal void FlipHorizontal()
         {
-            InvokeCmdAndUpdate(new FlipHorizontalCommand());
+            InvokeCmdAndUpdate(new FlipHorizontalCommand(), null);
         }
 
         internal void FlipVertical()
         {
-            InvokeCmdAndUpdate(new FlipVerticalCommand());
+            InvokeCmdAndUpdate(new FlipVerticalCommand(), null);
         }
 
-        internal void Crop(Point startingPoint, int newWidth, int newHeight)
+        internal void Crop(Point startingPoint, int newWidth, int newHeight, IProgress<int> progressReporter)
         {
-            InvokeCmdAndUpdate(new CropCommand(startingPoint, newWidth, newHeight));
+            InvokeCmdAndUpdate(new CropCommand(startingPoint, newWidth, newHeight), progressReporter);
         }
 
-        internal void FourPointStraighten(Point[] points, bool shouldCrop)
+        internal void FourPointStraighten(Point[] points, bool shouldCrop, IProgress<int> progressReporter)
         {
-            InvokeCmdAndUpdate(new FourPointStraightenCommand(points, shouldCrop));
+            InvokeCmdAndUpdate(new FourPointStraightenCommand(points, shouldCrop), progressReporter);
         }
 
 
@@ -131,9 +133,9 @@ namespace FotoFaultFixerUI.Services
         #endregion
 
         #region Filters
-        internal void ImpulseNoiseReduction(int lightNoiseSuppression, int darkNoiseSuppression)
+        internal void ImpulseNoiseReduction(int lightNoiseSuppression, int darkNoiseSuppression, IProgress<int> progressReporter)
         {
-            InvokeCmdAndUpdate(new ImpulseNoiseReductionCommand(lightNoiseSuppression, darkNoiseSuppression));
+            InvokeCmdAndUpdate(new ImpulseNoiseReductionCommand(lightNoiseSuppression, darkNoiseSuppression), progressReporter);
         }
         #endregion
     }

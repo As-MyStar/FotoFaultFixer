@@ -5,8 +5,10 @@ namespace FotoFaultFixerLib.ImageFunctions
 {
     public static class Filters
     {
-        public static CImage ImpulseNoiseReduction_Universal(CImage original, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
+        public static CImage ImpulseNoiseReduction_Universal(CImage original, int maxSizeD, int maxSizeL, IProgress<int> progressReporter = null)
         {
+            Utilities.SetProgress(progressReporter, 0);
+
             if (original == null)
             {
                 throw new ArgumentNullException();
@@ -26,7 +28,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             GenerateLightHistogram(workingCopy, ref histo, ref maxLight, ref minLight);
 
             CPnoise PN = new CPnoise(histo, 1000, 4000);
-            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL, progress);
+            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL, progressReporter);
 
             // Clean-up
             for (int i = 0; i < (3 * workingCopy.Width * workingCopy.Height); i++)
@@ -37,6 +39,7 @@ namespace FotoFaultFixerLib.ImageFunctions
                 }
             }
 
+            Utilities.SetProgress(progressReporter, 100);
             return workingCopy;
         }
 

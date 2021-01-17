@@ -14,7 +14,7 @@ namespace ML_Tester.YUV
     {
         public ImageColorizerYUV() { }
 
-        public void Colorize(string sourceImagePath, string greyImagePath, string destinationImagePath)
+        public void Colorize(string sourceImagePath, string greyImagePath, string destinationImagePath, IProgress<int> progressReporter = null)
         {
             List<PixelYUV> trainingData;
             List<PixelYUV> validationData;
@@ -43,6 +43,8 @@ namespace ML_Tester.YUV
             Console.WriteLine("Training V Channel Model");
             var v_model = MLFunctions.Train(mlContext, trainingDataView, "V");
 
+            Common.Utilities.SetProgress(progressReporter, 25);
+
             /**************/
             /* Evaluating */
             /**************/
@@ -53,6 +55,8 @@ namespace ML_Tester.YUV
 
             Console.WriteLine("Evaluating U Channel Model:");
             MLFunctions.Evaluate(mlContext, v_model, testDataView);
+
+            Common.Utilities.SetProgress(progressReporter, 50);
 
             /*********************************/
             /* Using Model to Predict Colors */
@@ -72,6 +76,8 @@ namespace ML_Tester.YUV
 
             Console.WriteLine("Predicting V Channel values");
             float[] vData = MLFunctions.MakeColorPredictions(mlContext, v_model, realDataView);
+
+            Common.Utilities.SetProgress(progressReporter, 75);
 
             Console.WriteLine("Populating RGB Values");
             int pixelColorIndex = -1;
@@ -103,6 +109,8 @@ namespace ML_Tester.YUV
             Bitmap greyColored = greyImage.ToBitmap();
             greyColored.Save(destinationImagePath);
             greyColored.Dispose();
+
+            Common.Utilities.SetProgress(progressReporter, 100);
         }
 
         public void Shuffle(ref List<PixelYUV> list)

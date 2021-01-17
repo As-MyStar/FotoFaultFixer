@@ -34,22 +34,33 @@ namespace FotoFaultFixerLib.ImageProcessing
             }
         }
 
-        public void NoiseFilter(ref CImage image, int[] histo, int minLight, int maxLight, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
+        public void NoiseFilter(ref CImage image, int[] histo, int minLight, int maxLight, int maxSizeD, int maxSizeL, IProgress<int> progressReporter = null)
         {
             bool isColorImage = (image.NBits == 24);
             if (isColorImage)
             {
                 Sort_Color(image, histo);
+                Utilities.SetProgress(progressReporter, 25);
+
                 DarkNoise_Color(ref image, minLight, maxLight, maxSizeD);
+                Utilities.SetProgress(progressReporter, 50);
+
                 image.DeleteBit0();
                 LightNoise_Color(ref image, minLight, maxSizeL);
+                Utilities.SetProgress(progressReporter, 75);
+
             }
             else
             {
                 Sort_Greyscale(image, histo);
+                Utilities.SetProgress(progressReporter, 25);
+
                 DarkNoise_Greyscale(ref image, minLight, maxLight, maxSizeD);
+                Utilities.SetProgress(progressReporter, 50);
+
                 image.DeleteBit0();
                 LightNoise_Greyscale(ref image, minLight, maxSizeL);
+                Utilities.SetProgress(progressReporter, 75);
             }
         }
 

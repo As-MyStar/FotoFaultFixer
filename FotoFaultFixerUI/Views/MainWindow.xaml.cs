@@ -39,6 +39,8 @@ namespace FotoFaultFixerUI.Views
                     e.Image.ToBitmap()
                 )
             );
+
+            progressReporter.ResetAndClose();
         }
         #endregion
 
@@ -71,7 +73,7 @@ namespace FotoFaultFixerUI.Views
                     ExitApplication();
                     break;
                 case "Open":
-                    _appService.OpenImage();
+                    imageName.Text = _appService.OpenImage();
                     break;
                 case "Undo":
                     WorkspaceZoomReset();
@@ -79,7 +81,9 @@ namespace FotoFaultFixerUI.Views
                     break;
                 case "Redo":
                     WorkspaceZoomReset();
-                    _appService.Redo();
+                    var progressIndicator = new Progress<int>(ReportImageFunctionProgress);
+                    progressReporter.Start();
+                    _appService.Redo(progressIndicator);
                     break;
                 case "Crop":
                     WorkspaceZoomReset();
@@ -130,7 +134,14 @@ namespace FotoFaultFixerUI.Views
         private void Inr_ImpulseNoiseReductionTriggerEvent(int arg1, int arg2)
         {
             CloseToolOptionsPanel();
-            _appService.ImpulseNoiseReduction(arg1, arg2);
+            var progressIndicator = new Progress<int>(ReportImageFunctionProgress);
+            progressReporter.Start();
+            _appService.ImpulseNoiseReduction(arg1, arg2, progressIndicator);
+        }
+
+        private void ReportImageFunctionProgress(int value)
+        {
+            progressReporter.UpdateProgress(value);
         }
         #endregion
 

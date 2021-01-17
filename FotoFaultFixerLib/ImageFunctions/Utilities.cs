@@ -1,4 +1,6 @@
-﻿namespace FotoFaultFixerLib.ImageFunctions
+﻿using System;
+
+namespace FotoFaultFixerLib.ImageFunctions
 {
     public static class Utilities
     {
@@ -20,6 +22,14 @@
             }
 
             return max;
+        }
+
+        public static void SetProgress(IProgress<int> progressReporter, int progressPercent)
+        {
+            if (progressReporter != null)
+            {
+                progressReporter.Report(progressPercent);
+            }
         }
     }
 }

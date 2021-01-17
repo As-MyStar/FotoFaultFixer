@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="FotoFaultFixerUI.Controls.ProgressReportBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:FotoFaultFixerUI.Controls" 
+             mc:Ignorable="d" >
+    
+    <Grid 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle 
+            Grid.Column="0" Grid.Row="0"
+            Fill="Black"
+            Opacity=".5"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch">
+        </Rectangle>
+
+        <materialDesign:Card 
+                Name="progressBarWrapper"
+            Grid.Column="0" Grid.Row="0"
+                Height="60" Width="190"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                >
+            <Grid>
+                <ProgressBar 
+                x:Name="ProgressBar" 
+                Minimum="0" Maximum="100"
+                Value="0"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Height="50" Width="180">
+                </ProgressBar>
+
+                <TextBlock 
+                x:Name="ProgressBarValue"
+                Text="0%" 
+                FontSize="20"
+                Foreground="White"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"/>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

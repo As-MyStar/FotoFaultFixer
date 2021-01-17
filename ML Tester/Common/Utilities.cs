@@ -94,5 +94,13 @@ namespace ML_Tester.Common
                 return Math.Sqrt(sum_of_squares / neighbours.Count());
             }
         }
+
+        public static void SetProgress(IProgress<int> progressReporter, int progressPercent)
+        {
+            if (progressReporter != null)
+            {
+                progressReporter.Report(progressPercent);
+            }
+        }
     }
 }

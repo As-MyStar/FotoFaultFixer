@@ -1,5 +1,6 @@
 ﻿using FotoFaultFixerLib.ImageFunctions;
 using FotoFaultFixerLib.ImageProcessing;
+using System;
 using System.Drawing;
 
 namespace FotoFaultFixerUI.Services.Commands
@@ -18,7 +19,7 @@ namespace FotoFaultFixerUI.Services.Commands
             _height = height;
         }
 
-        public CImage Execute(CImage img)
+        public CImage Execute(CImage img, IProgress<int> progressReporter)
         {
             _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
             return Transformations.Crop(img, _startingPoint, _width, _height);

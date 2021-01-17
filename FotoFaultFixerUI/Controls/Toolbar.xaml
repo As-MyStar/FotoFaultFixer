@@ -7,7 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignWidth="42">
-    
+
     <Grid Name="toolbar">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="42"/>
@@ -17,14 +17,16 @@
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
+            <RowDefinition Height="0"/>
+            <!--Crop-->
+            <RowDefinition Height="0"/>
+            <!--4-pt transform-->
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
-            <RowDefinition Height="42"/>
-            <RowDefinition Height="42"/>
-            <RowDefinition Height="180"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="42"/>
         </Grid.RowDefinitions>
 
@@ -43,7 +45,7 @@
                 Tag="Save" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
-        <materialDesign:PackIcon Height="30" Width="30" Kind="ContentSave"/>
+            <materialDesign:PackIcon Height="30" Width="30" Kind="ContentSave"/>
         </Button>
 
         <Button Grid.Row="2"
@@ -138,74 +140,4 @@
             <materialDesign:PackIcon Height="30" Width="30" Kind="ExitRun"/>
         </Button>
     </Grid>
-   
-
-    <!--<Menu 
-        Name="toolbar" 
-        HorizontalContentAlignment="Center"
-        VerticalContentAlignment="Top">
-
-        <Menu.CommandBindings>
-            <CommandBinding
-                Command="{x:Static local:Toolbar.MenuItemSelected}"
-                Executed="CommandBinding_OnExecuted" />
-        </Menu.CommandBindings>
-
-        <Menu.ItemsPanel>
-            <ItemsPanelTemplate>
-                <VirtualizingStackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-        </Menu.ItemsPanel>
-
-
-        <MenuItem Cursor="Hand" Padding="0" Margin="0">
-            <MenuItem.Header>
-                <StackPanel>
-                    <materialDesign:PackIcon Kind="Color" HorizontalAlignment="Center" Height="30" Width="30"/>
-                    <TextBlock Text="Color" HorizontalAlignment="Center" FontSize="10"/>
-                </StackPanel>
-            </MenuItem.Header>
-
-            <MenuItem Header="Convert To Greyscale" Cursor="Hand">
-                <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="ColorHelper" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Header="Convert to Sepia" Cursor="Hand">
-                <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="AssistantPhoto" />
-                </MenuItem.Icon>
-            </MenuItem>
-
-            <Separator />
-
-            <MenuItem Header="Colorize with Reference" Cursor="Hand">
-                <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="ColorHelper" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Header="Colorize with Annotations" Cursor="Hand">
-                <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="AssistantPhoto" />
-                </MenuItem.Icon>
-            </MenuItem>
-
-        </MenuItem>
-
-        <MenuItem Cursor="Hand" Padding="0" Margin="0">
-            <MenuItem.Header>
-                <StackPanel>
-                    <materialDesign:PackIcon Kind="Grid" HorizontalAlignment="Center" Height="30" Width="30"/>
-                    <TextBlock Text="Filters" HorizontalAlignment="Center" FontSize="10"/>
-                </StackPanel>
-            </MenuItem.Header>
-
-            <MenuItem Header="Impulse Noise Reduction" Cursor="Hand">
-                <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="Signal" />
-                </MenuItem.Icon>
-            </MenuItem>
-        </MenuItem>
-
-    </Menu>-->
 </UserControl>
