@@ -23,7 +23,8 @@
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
-            <RowDefinition Height="220"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="180"/>
             <RowDefinition Height="42"/>
         </Grid.RowDefinitions>
 
@@ -116,10 +117,19 @@
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipVertical"/>
         </Button>
-        
-        <!-- Invisible row (10)-->
 
-        <Button Grid.Row="11"
+        <Button Grid.Row="10"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Impulse Noise Reduction"
+                Tag="Impulse Noise Reduction" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="AirFilter"/>
+        </Button>
+
+        <!-- Invisible row (11)-->
+
+        <Button Grid.Row="12"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Exit"
                 Tag="Exit" Click="toolbarButton_Click"

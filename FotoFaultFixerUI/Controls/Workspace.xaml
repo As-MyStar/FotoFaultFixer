@@ -26,7 +26,7 @@
                 Background="Gray" 
                 Grid.Column="0" 
                 Grid.Row="0">
-                
+
                 <Image Name="workspaceImage">
                 </Image>
             </local:ZoomBorder>
@@ -39,7 +39,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Visibility="Collapsed">
-                
+
                 <Button 
                     Name="zoomInBtn" Click="zoomInBtn_Click"
                     Background="WhiteSmoke" BorderBrush="LightGray" 
@@ -72,5 +72,4 @@
             </StackPanel>
         </Grid>
     </materialDesign:Card>
-
 </UserControl>

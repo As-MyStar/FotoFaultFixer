@@ -3,6 +3,8 @@ using FotoFaultFixerUI.Services.Commands;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace FotoFaultFixerUI.Services
 {
@@ -15,6 +17,12 @@ namespace FotoFaultFixerUI.Services
         internal event EventHandler<ImageUpdateEventArgs> _imageUpdated;
 
         public ApplicationService() { }
+
+        private async void InvokeCmdAndUpdate(ICommandCImage cmd)
+        {
+            await _ism.Invoke(cmd);
+            FireImageUpdate();
+        }
 
         private void FireImageUpdate()
         {
@@ -63,15 +71,15 @@ namespace FotoFaultFixerUI.Services
         #endregion
 
         #region Edit Actions
-        internal void Undo()
+        internal async void Undo()
         {
-            _ism.Undo();
+            await _ism.Undo();
             FireImageUpdate();
         }
 
-        internal void Redo()
+        internal async void Redo()
         {
-            _ism.Redo();
+            await _ism.Redo();
             FireImageUpdate();
         }
         #endregion
@@ -79,39 +87,35 @@ namespace FotoFaultFixerUI.Services
         #region Transformations
         internal void RotateClockWise()
         {
-            _ism.Invoke(new RotateCWCommand());
-            FireImageUpdate();
+            InvokeCmdAndUpdate(new RotateCWCommand());
         }
 
         internal void RotateCounterClockWise()
         {
-            _ism.Invoke(new RotateCCWCommand());
-            FireImageUpdate();
+            InvokeCmdAndUpdate(new RotateCCWCommand());
         }
 
         internal void FlipHorizontal()
         {
-            _ism.Invoke(new FlipHorizontalCommand());
-            FireImageUpdate();
+            InvokeCmdAndUpdate(new FlipHorizontalCommand());
         }
 
         internal void FlipVertical()
         {
-            _ism.Invoke(new FlipVerticalCommand());
-            FireImageUpdate();
+            InvokeCmdAndUpdate(new FlipVerticalCommand());
         }
 
         internal void Crop(Point startingPoint, int newWidth, int newHeight)
         {
-            _ism.Invoke(new CropCommand(startingPoint, newWidth, newHeight));
-            FireImageUpdate();
+            InvokeCmdAndUpdate(new CropCommand(startingPoint, newWidth, newHeight));
         }
 
         internal void FourPointStraighten(Point[] points, bool shouldCrop)
         {
-            _ism.Invoke(new FourPointStraightenCommand(points, shouldCrop));
-            FireImageUpdate();
+            InvokeCmdAndUpdate(new FourPointStraightenCommand(points, shouldCrop));
         }
+
+
         #endregion
 
         #region Coloring
@@ -129,8 +133,7 @@ namespace FotoFaultFixerUI.Services
         #region Filters
         internal void ImpulseNoiseReduction(int lightNoiseSuppression, int darkNoiseSuppression)
         {
-            _ism.Invoke(new ImpulseNoiseReductionCommand(lightNoiseSuppression, darkNoiseSuppression));
-            FireImageUpdate();
+            InvokeCmdAndUpdate(new ImpulseNoiseReductionCommand(lightNoiseSuppression, darkNoiseSuppression));
         }
         #endregion
     }

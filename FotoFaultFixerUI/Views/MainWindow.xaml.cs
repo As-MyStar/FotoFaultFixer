@@ -1,4 +1,5 @@
 ﻿using FotoFaultFixerLib;
+using FotoFaultFixerUI.Controls.ImageFunctions;
 using FotoFaultFixerUI.Services;
 using FotoFaultFixerUI.ViewModels;
 using Microsoft.Win32;
@@ -16,38 +17,38 @@ namespace FotoFaultFixerUI.Views
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {        
+    {
         ApplicationService _appService;
         MainWindowViewModel _mainWindowVM;
-                
+        object _toolBarOptionsContent = null; // We use this to save reference to the current option panel
+
         public MainWindow()
         {
             _mainWindowVM = new MainWindowViewModel();
             _appService = new ApplicationService();
-            _appService._imageUpdated += _appService_ImageUpdated;            
+            _appService._imageUpdated += _appService_ImageUpdated;
             InitializeComponent();
-            this.DataContext = _mainWindowVM;            
+            this.DataContext = _mainWindowVM;
         }
 
         #region Event Handlers
         private void _appService_ImageUpdated(object sender, ImageUpdateEventArgs e)
         {
-            imageWorkspace.SetImage(Utilities.BitmapToImageSource(e.Image.ToBitmap()));
-        }
-
-        private void exitBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ExitApplication();
+            imageWorkspace.SetImage(
+                Utilities.BitmapToImageSource(
+                    e.Image.ToBitmap()
+                )
+            );
         }
         #endregion
 
         #region Toolbar Handlers
         private void SaveImage()
         {
-            using (Bitmap fileToSave = imageWorkspace.GetImage())            
+            using (Bitmap fileToSave = imageWorkspace.GetImage())
             {
                 _appService.SaveImage(fileToSave);
-            }           
+            }
         }
 
         private void ExitApplication()
@@ -58,11 +59,11 @@ namespace FotoFaultFixerUI.Views
                 _appService.Exit();
             }
         }
-
         private void Toolbar_ToolbarItemClicked(object sender, RoutedEventArgs e)
         {
-            // PG: bad practice! TODO: Fix in future refactor
-            switch (((Button)sender).Tag) {
+            // PG: bad practice! TODO: Fix in future refactoring
+            switch (((Button)sender).Tag)
+            {
                 case "Save":
                     SaveImage();
                     break;
@@ -86,7 +87,9 @@ namespace FotoFaultFixerUI.Views
                     break;
                 case "4-pt Straighten":
                     WorkspaceZoomReset();
-                    // open 4pt-Straighten Panel
+                    _toolBarOptionsContent = new FourPointStraightenPanel();
+                    // TODO: Assign handler to TriggerEvent
+                    OpenToolOptionsPanel();
                     break;
                 case "Rotate Left":
                     WorkspaceZoomReset();
@@ -104,21 +107,30 @@ namespace FotoFaultFixerUI.Views
                     WorkspaceZoomReset();
                     _appService.FlipVertical();
                     break;
-                case "Convert To Greyscale":
-                    _appService.ConvertToGreyScale();
-                    break;
-                case "Convert to Sepia":
-                    _appService.ConvertToSepia();
-                    break;
-                case "Colorize with Reference":
-                    break;
-                case "Colorize with Annotations":
-                    break;
+                //case "Convert To Greyscale":
+                //    _appService.ConvertToGreyScale();
+                //    break;
+                //case "Convert to Sepia":
+                //    _appService.ConvertToSepia();
+                //    break;
+                //case "Colorize with Reference":
+                //    break;
+                //case "Colorize with Annotations":
+                //    break;
                 case "Impulse Noise Reduction":
-                    // open INR Panel
+                    WorkspaceZoomReset();
+                    CloseToolOptionsPanel();
+                    _toolBarOptionsContent = new ImpulseNoiseReductionPanel(); 
+                    ((ImpulseNoiseReductionPanel)_toolBarOptionsContent).ImpulseNoiseReductionTriggerEvent += Inr_ImpulseNoiseReductionTriggerEvent;
+                    OpenToolOptionsPanel();
                     break;
             }
+        }
 
+        private void Inr_ImpulseNoiseReductionTriggerEvent(int arg1, int arg2)
+        {
+            CloseToolOptionsPanel();
+            _appService.ImpulseNoiseReduction(arg1, arg2);
         }
         #endregion
 
@@ -129,7 +141,7 @@ namespace FotoFaultFixerUI.Views
             {
                 Uri fileUri = new Uri(path);
                 imageName.Text = path.Substring(path.LastIndexOf(@"\"));
-                imageWorkspace.SetImage(new BitmapImage(fileUri));                
+                imageWorkspace.SetImage(new BitmapImage(fileUri));
             }
             else
             {
@@ -141,6 +153,21 @@ namespace FotoFaultFixerUI.Views
         public void WorkspaceZoomReset()
         {
             imageWorkspace.ZoomReset();
+        }
+
+        private void OpenToolOptionsPanel()
+        {
+            if (_toolBarOptionsContent != null)
+            {
+                toolOptions.Content = _toolBarOptionsContent;
+                toolOptions.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void CloseToolOptionsPanel()
+        {
+            toolOptions.Content = _toolBarOptionsContent = null;
+            toolOptions.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -2,6 +2,7 @@
 using FotoFaultFixerUI.Services.Commands;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FotoFaultFixerUI.Services
 {
@@ -41,10 +42,13 @@ namespace FotoFaultFixerUI.Services
         /// Executes a command, updating the current image
         /// </summary>
         /// <param name="cmd"></param>
-        public void Invoke(ICommandCImage cmd)
+        public async Task Invoke(ICommandCImage cmd)
         {
-            _currentState = cmd.Execute(_currentState);
-            _undoCommands.Push(cmd);
+            await Task.Run(() =>
+            {
+                _currentState = cmd.Execute(_currentState);
+                _undoCommands.Push(cmd);
+            });
         }
 
         public bool CanRedo()
@@ -55,13 +59,12 @@ namespace FotoFaultFixerUI.Services
         /// <summary>
         /// Re-executes a command (after an undo)
         /// </summary>
-        public void Redo()
+        public async Task Redo()
         {
             if (CanRedo())
             {
                 ICommandCImage cmd = _redoCommands.Pop();
-                _currentState = cmd.Execute(_currentState);
-                _undoCommands.Push(cmd);
+                await Invoke(cmd);
             }
         }
 
@@ -73,13 +76,16 @@ namespace FotoFaultFixerUI.Services
         /// <summary>
         /// Undoes the effects of the last executed command
         /// </summary>
-        public void Undo()
+        public async Task Undo()
         {
             if (CanUndo())
             {
                 ICommandCImage cmd = _undoCommands.Pop();
-                _currentState = cmd.UnExecute(_currentState);
-                _redoCommands.Push(cmd);
+                await Task.Run(() =>
+                {
+                    _currentState = cmd.UnExecute(_currentState);
+                    _redoCommands.Push(cmd);
+                });
             }
         }
 

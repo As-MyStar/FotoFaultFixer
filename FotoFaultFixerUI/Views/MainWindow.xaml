@@ -27,37 +27,36 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
-    <DockPanel>
-        <materialDesign:Card 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Column="0" Grid.Row="0">
+            <materialDesign:Card 
                 Name="Title" 
                 Height="60"
                 Padding="10"
                 Margin="5"
                 DockPanel.Dock="Top">
 
-            <DockPanel>
-                <TextBlock 
+                <DockPanel>
+                    <TextBlock 
                         Style="{DynamicResource MaterialDesignHeadline6TextBlock}" 
                         DockPanel.Dock="Left"
                         VerticalAlignment="Center">
                         Foto Fault-Fixer
-                </TextBlock>
+                    </TextBlock>
 
-                <Button 
-                        Name="exitBtn" 
-                        Click="exitBtn_Click"
-                        Style="{StaticResource MaterialDesignToolButton}" 
-                        DockPanel.Dock="Right"                        
-                        Width="40">
-                    X
-                </Button>
-
-                <TextBlock 
+                    <TextBlock 
                         Name="imageName"                        
                         ToolTip="{Binding Path=WorkingImagePath}"
                         Style="{DynamicResource MaterialDesignSubtitle2TextBlock}" 
@@ -65,24 +64,30 @@
                         Padding="0"
                         VerticalAlignment="Center">
                         Image Name
-                </TextBlock>
+                    </TextBlock>
+                </DockPanel>
+            </materialDesign:Card>
 
-            </DockPanel>
-        </materialDesign:Card>
+            <FFFUI_Controls:Toolbar 
+                DockPanel.Dock="Right"
+                VerticalAlignment="Top"
+                VerticalContentAlignment="Top"
+                ToolbarItemClicked="Toolbar_ToolbarItemClicked"
+                Margin="0"
+                Width="42" />
 
-        <FFFUI_Controls:Toolbar 
-            DockPanel.Dock="Right"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Top"
-            ToolbarItemClicked="Toolbar_ToolbarItemClicked"
-            Margin="0"
-            Width="42" />
+            <FFFUI_Controls:Workspace 
+                x:Name="imageWorkspace"
+                Padding="5 5 0 5"
+                Margin="0"
+                DockPanel.Dock="left"/>
+        </DockPanel>
 
-        <FFFUI_Controls:Workspace 
-            x:Name="imageWorkspace"
-            Padding="5 5 0 5"
-            Margin="0"
-            DockPanel.Dock="left"/>
-
-    </DockPanel>
+        <materialDesign:Card 
+                Name="toolOptions"
+                HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Padding="10" Margin="0 0 0 15"
+                Visibility="Collapsed"/>
+    </Grid>
 </Window>
