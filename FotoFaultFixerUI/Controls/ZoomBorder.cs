@@ -9,6 +9,8 @@ namespace FotoFaultFixerUI.Controls
     // PG: Source: https://stackoverflow.com/a/6782715
     public class ZoomBorder : Border
     {
+        private const double _zoomFactor = 0.2;
+
         private UIElement _child = null;
         private Point _origin;
         private Point _start;
@@ -76,6 +78,26 @@ namespace FotoFaultFixerUI.Controls
             }
         }
 
+        public void ZoomIn()
+        {
+            if (_child != null)
+            {
+                var st = GetScaleTransform(_child);
+                st.ScaleX += _zoomFactor;
+                st.ScaleY += _zoomFactor;
+            }
+        }
+
+        public void ZoomOut()
+        {
+            if (_child != null)
+            {
+                var st = GetScaleTransform(_child);
+                st.ScaleX -= _zoomFactor;
+                st.ScaleY -= _zoomFactor;
+            }
+        }
+
         #region Child Events
 
         private void child_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -85,8 +107,8 @@ namespace FotoFaultFixerUI.Controls
                 var st = GetScaleTransform(_child);
                 var tt = GetTranslateTransform(_child);
 
-                double zoom = e.Delta > 0 ? .2 : -.2;
-                if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
+                double zoom = e.Delta > 0 ? _zoomFactor : -_zoomFactor;
+                if (!(e.Delta > 0) && (st.ScaleX < (_zoomFactor*2) || st.ScaleY < (_zoomFactor*2)))
                 {
                     return;
                 }

@@ -23,106 +23,109 @@
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
+            <RowDefinition Height="220"/>
             <RowDefinition Height="42"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Exit"
-                Tag="Exit" Click="Button_Click"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
-            <materialDesign:PackIcon Height="30" Width="30" Kind="ExitRun"/>
-        </Button>
-        
-        <Button Grid.Row="1" 
+        <Button Grid.Row="0" 
                 Height="40" Width="40"
                 Padding="0" ToolTip="Open"
-                Tag="Open" Click="Button_Click"
+                Tag="Open" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FolderOpen"/>
         </Button>
 
-        <Button Grid.Row="2" 
+        <Button Grid.Row="1" 
                 Height="40" Width="40"
                 Padding="0" ToolTip="Save"
-                Tag="Save" Click="Button_Click"
+                Tag="Save" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
         <materialDesign:PackIcon Height="30" Width="30" Kind="ContentSave"/>
         </Button>
 
-        <Button Grid.Row="3"
+        <Button Grid.Row="2"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Undo"
-                Tag="Undo" Click="Button_Click"
+                Tag="Undo" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="UndoVariant"/>
         </Button>
 
-        <Button Grid.Row="4"
+        <Button Grid.Row="3"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Redo"
-                Tag="Redo" Click="Button_Click"
+                Tag="Redo" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RedoVariant"/>
         </Button>
 
-        <Button Grid.Row="5"
+        <Button Grid.Row="4"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Crop"
-                Tag="Crop" Click="Button_Click"
+                Tag="Crop" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="Crop"/>
         </Button>
 
-        <Button Grid.Row="6"
+        <Button Grid.Row="5"
                 Height="40" Width="40"
-                Tag="4-pt Straighten" Click="Button_Click"
+                Tag="4-pt Straighten" Click="toolbarButton_Click"
                 Padding="0" ToolTip="4pt Transform"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RectangleOutline"/>
         </Button>
 
-        <Button Grid.Row="7"
+        <Button Grid.Row="6"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Rotate Left"
-                Tag="Rotate Left" Click="Button_Click"
+                Tag="Rotate Left" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateLeft"/>
         </Button>
 
-        <Button Grid.Row="8"
+        <Button Grid.Row="7"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Rotate Right"
-                Tag="Rotate Left" Click="Button_Click"
+                Tag="Rotate Left" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateRight"/>
         </Button>
 
-        <Button Grid.Row="9"
+        <Button Grid.Row="8"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Horizontal Flip"
-                Tag="Flip Horizontal" Click="Button_Click"
+                Tag="Flip Horizontal" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipHorizontal"/>
         </Button>
 
-        <Button Grid.Row="10"
+        <Button Grid.Row="9"
                 Height="40" Width="40"
                 Padding="0" ToolTip="Vertical Flip"
-                Tag="Flip Vertical" Click="Button_Click"
+                Tag="Flip Vertical" Click="toolbarButton_Click"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipVertical"/>
+        </Button>
+        
+        <!-- Invisible row (10)-->
+
+        <Button Grid.Row="11"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Exit"
+                Tag="Exit" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="ExitRun"/>
         </Button>
     </Grid>
    

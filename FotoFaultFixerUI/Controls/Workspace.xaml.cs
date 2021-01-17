@@ -23,11 +23,30 @@ namespace FotoFaultFixerUI.Controls
         public void SetImage(BitmapImage bmpImg)
         {
             workspaceImage.Source = bmpImg;
+            zoomBtnsBar.Visibility = System.Windows.Visibility.Visible;
         }
 
         public Bitmap GetImage()
         {
             return Utilities.ImageSourceToBitmap((BitmapImage)workspaceImage.Source);
         }
+
+        #region Button Event Handlers
+
+        private void zoomInBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            workspaceImageWrapper.ZoomIn();
+        }
+
+        private void zoomOutBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            workspaceImageWrapper.ZoomOut();
+        }
+
+        private void zoomResetBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ZoomReset();
+        }
+        #endregion
     }
 }
