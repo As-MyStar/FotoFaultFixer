@@ -14,4 +14,4 @@ The UI has been changed to WPF from Winforms, and implements the Material Design
 There's still plenty of work to be done, but the current state is easy to read and has plenty of scope for extension/improvement.
 
 ## Screenshots
-![Screenshot of version Alpha1](https://github.com/FiddlyDigital/FotoFaultFixer/blob/CommandExecution/FotoFaultFixerUI/screenshots/alpha1.PNG?raw=true)
+![Screenshot of version Alpha1](https://github.com/FiddlyDigital/FotoFaultFixer/blob/CommandExecution/FotoFaultFixerUI/screenshots/Alpha3.PNG?raw=true)
