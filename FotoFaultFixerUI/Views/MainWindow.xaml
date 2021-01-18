@@ -1,0 +1,100 @@
+﻿<Window x:Class="FotoFaultFixerUI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+
+        xmlns:local="clr-namespace:FotoFaultFixerUI"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:FFFUI_Controls="clr-namespace:FotoFaultFixerUI.Controls"
+        xmlns:FFFUI_Views="clr-namespace:FotoFaultFixerUI.Views"
+
+        Title="FotoFaultFixer" Height="768" Width="1024"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        TextElement.FontSize="14" 
+        TextElement.FontWeight="Medium"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Column="0" Grid.Row="0">
+            <materialDesign:Card 
+                Name="Title" 
+                Height="60"
+                Padding="10"
+                Margin="5"
+                DockPanel.Dock="Top">
+
+                <DockPanel>
+                    <TextBlock 
+                        Style="{DynamicResource MaterialDesignHeadline6TextBlock}" 
+                        DockPanel.Dock="Left"
+                        VerticalAlignment="Center">
+                        Foto Fault-Fixer
+                    </TextBlock>
+
+                    <TextBlock 
+                        Name="imageName"                        
+                        ToolTip="{Binding Path=WorkingImagePath}"
+                        Style="{DynamicResource MaterialDesignSubtitle2TextBlock}" 
+                        Margin="20 0 0 0 "
+                        Padding="0"
+                        VerticalAlignment="Center">
+                        Image Name
+                    </TextBlock>
+                </DockPanel>
+            </materialDesign:Card>
+
+            <FFFUI_Controls:Toolbar 
+                DockPanel.Dock="Right"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                ToolbarItemClicked="Toolbar_ToolbarItemClicked"
+                Margin="0"
+                Width="42" />
+
+            <FFFUI_Controls:Workspace 
+                x:Name="imageWorkspace"
+                Padding="5 5 0 5"
+                Margin="0"
+                DockPanel.Dock="left"/>
+        </DockPanel>
+
+        <materialDesign:Card 
+                Name="toolOptions"
+                HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Padding="10" Margin="0 0 0 15"
+                Visibility="Collapsed"/>
+
+        <FFFUI_Controls:ProgressReportBar
+            x:Name="progressReporter"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Visibility="Collapsed">
+        </FFFUI_Controls:ProgressReportBar>
+    </Grid>
+</Window>

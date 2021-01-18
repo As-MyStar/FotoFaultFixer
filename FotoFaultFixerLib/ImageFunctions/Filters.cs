@@ -1,13 +1,14 @@
-﻿using System;
-using System.Drawing;
-using FotoFaultFixerLib.ImageProcessor;
+﻿using FotoFaultFixerLib.ImageProcessing;
+using System;
 
-namespace FotoFaultFixerLib
+namespace FotoFaultFixerLib.ImageFunctions
 {
-    public static class ImageUtils
+    public static class Filters
     {
-        public static Bitmap ImpulseNoiseReduction_Universal(Bitmap original, int maxSizeD, int maxSizeL, IProgress<int> progress = null)
+        public static CImage ImpulseNoiseReduction_Universal(CImage original, int maxSizeD, int maxSizeL, IProgress<int> progressReporter = null)
         {
+            Utilities.SetProgress(progressReporter, 0);
+
             if (original == null)
             {
                 throw new ArgumentNullException();
@@ -21,13 +22,13 @@ namespace FotoFaultFixerLib
             int[] histo = new int[256];
             int maxLight = 0, minLight = 0;
 
-            CImage workingCopy = new CImage(original);
+            CImage workingCopy = new CImage(original.Width, original.Height, original.NBits, original.PixelFormat, original.Grid); //new CImage(original);
             workingCopy.DeleteBit0();
 
             GenerateLightHistogram(workingCopy, ref histo, ref maxLight, ref minLight);
 
             CPnoise PN = new CPnoise(histo, 1000, 4000);
-            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL, progress);
+            PN.NoiseFilter(ref workingCopy, histo, minLight, maxLight, maxSizeD, maxSizeL, progressReporter);
 
             // Clean-up
             for (int i = 0; i < (3 * workingCopy.Width * workingCopy.Height); i++)
@@ -38,27 +39,8 @@ namespace FotoFaultFixerLib
                 }
             }
 
-            return workingCopy.ToBitmap();
-        }
-
-        public static int MaxC(int R, int G, int B)
-        {
-            int max;
-            if (R * 0.713 > G)
-            {
-                max = (int)(R * 0.713);
-            }
-            else
-            {
-                max = G;
-            }
-
-            if (B * 0.527 > max)
-            {
-                max = (int)(B * 0.527);
-            }
-
-            return max;
+            Utilities.SetProgress(progressReporter, 100);
+            return workingCopy;
         }
 
         private static void GenerateLightHistogram(CImage workingCopy, ref int[] histo, ref int maxLight, ref int minLight)
@@ -74,7 +56,7 @@ namespace FotoFaultFixerLib
                 for (int x = 0; x < workingCopy.Width; x++)
                 {
                     index = x + y * workingCopy.Width; // Index of the pixel (x, y)
-                    light = MaxC(workingCopy.Grid[3 * index + 2] & 254,
+                    light = Utilities.MaxC(workingCopy.Grid[3 * index + 2] & 254,
                                  workingCopy.Grid[3 * index + 1] & 254,
                                  workingCopy.Grid[3 * index + 0] & 254);
 

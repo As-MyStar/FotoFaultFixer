@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using FotoFaultFixerUI.Views;
+using System.Windows;
 
 namespace FotoFaultFixerUI
 {
@@ -11,8 +12,10 @@ namespace FotoFaultFixerUI
         {
             MainWindow mainAppWindow = new MainWindow();
             
+            // If a image path is passed in as a console param
             if (e.Args.Length == 1)
             {
+                // apply it and load its image
                 mainAppWindow.SetSourceImage(e.Args[0]);
             }
 

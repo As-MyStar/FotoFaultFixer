@@ -5,9 +5,9 @@ using System.IO;
 using System.Text;
 using System.Windows.Media.Imaging;
 
-namespace FotoFaultFixerUI
+namespace FotoFaultFixerUI.Services
 {
-    public static class Utils
+    public static class Utilities
     {
         /// <summary>
         /// Converts a Bitmap image into the format required to be a source for a WPF Image
@@ -30,15 +30,15 @@ namespace FotoFaultFixerUI
             }
         }
 
+        // PG: Beware, this can be a 32bitARGB, which we can't reload!
         public static Bitmap ImageSourceToBitmap(BitmapImage bitmapImage)
         {
             using (MemoryStream outStream = new MemoryStream())
             {
-                BitmapEncoder enc = new BmpBitmapEncoder();
+                BitmapEncoder enc = new BmpBitmapEncoder();                
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));
                 enc.Save(outStream);
                 Bitmap bitmap = new Bitmap(outStream);
-
                 return new Bitmap(bitmap);
             }
         }

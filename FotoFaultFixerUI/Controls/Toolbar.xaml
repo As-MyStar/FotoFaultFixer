@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="FotoFaultFixerUI.Controls.Toolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FotoFaultFixerUI.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignWidth="42">
+
+    <Grid Name="toolbar">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="42"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="0"/>
+            <!--Crop-->
+            <RowDefinition Height="0"/>
+            <!--4-pt transform-->
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="42"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" 
+                Height="40" Width="40"
+                Padding="0" ToolTip="Open"
+                Tag="Open" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="FolderOpen"/>
+        </Button>
+
+        <Button Grid.Row="1" 
+                Height="40" Width="40"
+                Padding="0" ToolTip="Save"
+                Tag="Save" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="ContentSave"/>
+        </Button>
+
+        <Button Grid.Row="2"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Undo"
+                Tag="Undo" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="UndoVariant"/>
+        </Button>
+
+        <Button Grid.Row="3"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Redo"
+                Tag="Redo" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="RedoVariant"/>
+        </Button>
+
+        <Button Grid.Row="4"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Crop"
+                Tag="Crop" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="Crop"/>
+        </Button>
+
+        <Button Grid.Row="5"
+                Height="40" Width="40"
+                Tag="4-pt Straighten" Click="toolbarButton_Click"
+                Padding="0" ToolTip="4pt Transform"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="RectangleOutline"/>
+        </Button>
+
+        <Button Grid.Row="6"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Rotate Left"
+                Tag="Rotate Left" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="RotateLeft"/>
+        </Button>
+
+        <Button Grid.Row="7"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Rotate Right"
+                Tag="Rotate Left" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="RotateRight"/>
+        </Button>
+
+        <Button Grid.Row="8"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Horizontal Flip"
+                Tag="Flip Horizontal" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="FlipHorizontal"/>
+        </Button>
+
+        <Button Grid.Row="9"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Vertical Flip"
+                Tag="Flip Vertical" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="FlipVertical"/>
+        </Button>
+
+        <Button Grid.Row="10"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Impulse Noise Reduction"
+                Tag="Impulse Noise Reduction" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="AirFilter"/>
+        </Button>
+
+        <!-- Invisible row (11)-->
+
+        <Button Grid.Row="12"
+                Height="40" Width="40"
+                Padding="0" ToolTip="Exit"
+                Tag="Exit" Click="toolbarButton_Click"
+                Background="WhiteSmoke" BorderBrush="LightGray" 
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Height="30" Width="30" Kind="ExitRun"/>
+        </Button>
+    </Grid>
+</UserControl>
