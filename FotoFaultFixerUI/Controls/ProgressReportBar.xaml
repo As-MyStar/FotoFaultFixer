@@ -27,28 +27,30 @@
         </Rectangle>
 
         <materialDesign:Card 
-                Name="progressBarWrapper"
+            Name="progressBarWrapper"
             Grid.Column="0" Grid.Row="0"
-                Height="60" Width="190"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                >
+            Height="60" Width="190"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            
             <Grid>
                 <ProgressBar 
-                x:Name="ProgressBar" 
-                Minimum="0" Maximum="100"
-                Value="0"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Height="50" Width="180">
+                    x:Name="ProgressBar" 
+                    IsIndeterminate="true"
+                    Minimum="0" Maximum="100"
+                    Value="0"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Height="50" Width="180">
+
                 </ProgressBar>
 
                 <TextBlock 
-                x:Name="ProgressBarValue"
-                Text="0%" 
-                FontSize="20"
-                Foreground="White"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"/>
+                    x:Name="ProgressBarValue"
+                    Text="0%" 
+                    FontSize="20"
+                    Foreground="White"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"/>
             </Grid>
         </materialDesign:Card>
     </Grid>

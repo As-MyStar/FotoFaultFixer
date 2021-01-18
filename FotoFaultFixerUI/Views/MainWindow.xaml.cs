@@ -40,6 +40,8 @@ namespace FotoFaultFixerUI.Views
                 )
             );
 
+            // When an image updates it due to an ImageFunction
+            // So progressReporter is no longer required.
             progressReporter.ResetAndClose();
         }
         #endregion
@@ -63,6 +65,9 @@ namespace FotoFaultFixerUI.Views
         }
         private void Toolbar_ToolbarItemClicked(object sender, RoutedEventArgs e)
         {
+            ClearToolOptionsPanel();
+            WorkspaceZoomReset();
+
             // PG: bad practice! TODO: Fix in future refactoring
             switch (((Button)sender).Tag)
             {
@@ -76,39 +81,30 @@ namespace FotoFaultFixerUI.Views
                     imageName.Text = _appService.OpenImage();
                     break;
                 case "Undo":
-                    WorkspaceZoomReset();
                     _appService.Undo();
                     break;
                 case "Redo":
-                    WorkspaceZoomReset();
                     var progressIndicator = new Progress<int>(ReportImageFunctionProgress);
                     progressReporter.Start();
                     _appService.Redo(progressIndicator);
                     break;
                 case "Crop":
-                    WorkspaceZoomReset();
                     // open crop Panel
                     break;
                 case "4-pt Straighten":
-                    WorkspaceZoomReset();
                     _toolBarOptionsContent = new FourPointStraightenPanel();
-                    // TODO: Assign handler to TriggerEvent
-                    OpenToolOptionsPanel();
+                    // TODO: Assign handler to TriggerEvent                    
                     break;
                 case "Rotate Left":
-                    WorkspaceZoomReset();
                     _appService.RotateCounterClockWise();
                     break;
                 case "Rotate Right":
-                    WorkspaceZoomReset();
                     _appService.RotateClockWise();
                     break;
                 case "Flip Horizontal":
-                    WorkspaceZoomReset();
                     _appService.FlipHorizontal();
                     break;
                 case "Flip Vertical":
-                    WorkspaceZoomReset();
                     _appService.FlipVertical();
                     break;
                 //case "Convert To Greyscale":
@@ -122,18 +118,20 @@ namespace FotoFaultFixerUI.Views
                 //case "Colorize with Annotations":
                 //    break;
                 case "Impulse Noise Reduction":
-                    WorkspaceZoomReset();
-                    CloseToolOptionsPanel();
-                    _toolBarOptionsContent = new ImpulseNoiseReductionPanel(); 
+                    _toolBarOptionsContent = new ImpulseNoiseReductionPanel();
                     ((ImpulseNoiseReductionPanel)_toolBarOptionsContent).ImpulseNoiseReductionTriggerEvent += Inr_ImpulseNoiseReductionTriggerEvent;
-                    OpenToolOptionsPanel();
                     break;
+            }
+
+            if (_toolBarOptionsContent != null)
+            {
+                OpenToolOptionsPanel();
             }
         }
 
         private void Inr_ImpulseNoiseReductionTriggerEvent(int arg1, int arg2)
         {
-            CloseToolOptionsPanel();
+            ClearToolOptionsPanel();
             var progressIndicator = new Progress<int>(ReportImageFunctionProgress);
             progressReporter.Start();
             _appService.ImpulseNoiseReduction(arg1, arg2, progressIndicator);
@@ -168,14 +166,11 @@ namespace FotoFaultFixerUI.Views
 
         private void OpenToolOptionsPanel()
         {
-            if (_toolBarOptionsContent != null)
-            {
-                toolOptions.Content = _toolBarOptionsContent;
-                toolOptions.Visibility = Visibility.Visible;
-            }
+            toolOptions.Content = _toolBarOptionsContent;
+            toolOptions.Visibility = Visibility.Visible;
         }
 
-        private void CloseToolOptionsPanel()
+        private void ClearToolOptionsPanel()
         {
             toolOptions.Content = _toolBarOptionsContent = null;
             toolOptions.Visibility = Visibility.Collapsed;
