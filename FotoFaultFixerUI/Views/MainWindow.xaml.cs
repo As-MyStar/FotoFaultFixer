@@ -59,7 +59,7 @@ namespace FotoFaultFixerUI.Views
         private void ExitApplication()
         {
             // if there are unsaved changes
-            if (!_mainWindowVM.HasUnsavedChanges)
+            //if (!_mainWindowVM.HasUnsavedChanges)
             {
                 _appService.Exit();
             }
