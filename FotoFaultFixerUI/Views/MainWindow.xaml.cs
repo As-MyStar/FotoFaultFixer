@@ -29,6 +29,7 @@ namespace FotoFaultFixerUI.Views
             _appService._imageUpdated += _appService_ImageUpdated;
             InitializeComponent();
             this.DataContext = _mainWindowVM;
+            ToolBarControl.DataContext = _mainWindowVM;
         }
 
         #region Event Handlers
@@ -65,6 +66,7 @@ namespace FotoFaultFixerUI.Views
         }
         private void Toolbar_ToolbarItemClicked(object sender, RoutedEventArgs e)
         {
+            bool imageHasBeenModified = true;
             ClearToolOptionsPanel();
             WorkspaceZoomReset();
 
@@ -73,12 +75,13 @@ namespace FotoFaultFixerUI.Views
             {
                 case "Save":
                     SaveImage();
+                    imageHasBeenModified = false;
                     break;
                 case "Exit":
                     ExitApplication();
                     break;
-                case "Open":
-                    imageName.Text = _appService.OpenImage();
+                case "Open":                    
+                    _mainWindowVM.SetImage(_appService.OpenImage());
                     break;
                 case "Undo":
                     _appService.Undo();
@@ -118,14 +121,23 @@ namespace FotoFaultFixerUI.Views
                 //case "Colorize with Annotations":
                 //    break;
                 case "Impulse Noise Reduction":
+                    imageHasBeenModified = false;
                     _toolBarOptionsContent = new ImpulseNoiseReductionPanel();
                     ((ImpulseNoiseReductionPanel)_toolBarOptionsContent).ImpulseNoiseReductionTriggerEvent += Inr_ImpulseNoiseReductionTriggerEvent;
+                    break;
+                default:
+                    // Do nothing
                     break;
             }
 
             if (_toolBarOptionsContent != null)
             {
                 OpenToolOptionsPanel();
+            }
+
+            if (imageHasBeenModified)
+            {
+                _mainWindowVM.HasUnsavedChanges = true;
             }
         }
 
@@ -135,6 +147,7 @@ namespace FotoFaultFixerUI.Views
             var progressIndicator = new Progress<int>(ReportImageFunctionProgress);
             progressReporter.Start();
             _appService.ImpulseNoiseReduction(arg1, arg2, progressIndicator);
+            _mainWindowVM.HasUnsavedChanges = true;
         }
 
         private void ReportImageFunctionProgress(int value)
@@ -143,9 +156,10 @@ namespace FotoFaultFixerUI.Views
         }
         #endregion
 
+        // TODO: Refactor
         public void SetSourceImage(string path)
         {
-            _mainWindowVM.SetImage(path, null);
+            _mainWindowVM.SetImage(path);
             if (File.Exists(path))
             {
                 Uri fileUri = new Uri(path);

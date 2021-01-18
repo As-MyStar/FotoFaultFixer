@@ -57,18 +57,19 @@
                     </TextBlock>
 
                     <TextBlock 
-                        Name="imageName"                        
+                        Name="imageName"
+                        Text="{Binding Path=WorkingImageName}"
                         ToolTip="{Binding Path=WorkingImagePath}"
                         Style="{DynamicResource MaterialDesignSubtitle2TextBlock}" 
                         Margin="20 0 0 0 "
                         Padding="0"
                         VerticalAlignment="Center">
-                        Image Name
                     </TextBlock>
                 </DockPanel>
             </materialDesign:Card>
 
             <FFFUI_Controls:Toolbar 
+                x:Name="ToolBarControl"
                 DockPanel.Dock="Right"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Stretch"

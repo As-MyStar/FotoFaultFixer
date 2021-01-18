@@ -6,27 +6,46 @@ namespace FotoFaultFixerUI.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private string _workingImageName;
-        private string _workingImagePath;
-        private CImage _workingImage;
-        private bool _hasUnsavedChanges;
+        private string _workingImageName = null;
+        private string _workingImagePath = null;
+        private bool _hasUnsavedChanges = false;
 
-        public void SetImage(string imagePath, Bitmap bmp)
+        public void SetImage(string imagePath)
         {
-            _workingImagePath = imagePath;
-            _workingImageName = _workingImagePath.Substring(_workingImagePath.LastIndexOf(@"\") + 1);
-            //_workingImage = new CImage(bmp);
-            _hasUnsavedChanges = false;
+            WorkingImagePath = imagePath;
+            WorkingImageName = _workingImagePath.Substring(_workingImagePath.LastIndexOf(@"\") + 1);
+            HasUnsavedChanges = false;
+        }
+
+        public bool ImageHasBeenLoaded {
+            get
+            {
+                return !(string.IsNullOrEmpty(_workingImagePath));
+            }
+        }
+
+        public string WorkingImageName
+        {
+            get
+            {
+                return _workingImageName;
+            }
+            private set
+            {
+                _workingImageName = value;
+                OnPropertyChanged("WorkingImageName");
+            }
         }
 
         public string WorkingImagePath {
             get {
                 return _workingImagePath;
             }
-            private set
+            set
             {
                 _workingImagePath = value;
                 OnPropertyChanged("WorkingImagePath");
+                OnPropertyChanged("ImageHasBeenLoaded");
             }
         }
 

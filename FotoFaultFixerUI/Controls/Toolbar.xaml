@@ -43,6 +43,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Save"
                 Tag="Save" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="ContentSave"/>
@@ -52,6 +53,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Undo"
                 Tag="Undo" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="UndoVariant"/>
@@ -61,6 +63,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Redo"
                 Tag="Redo" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RedoVariant"/>
@@ -70,6 +73,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Crop"
                 Tag="Crop" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="Crop"/>
@@ -79,6 +83,7 @@
                 Height="40" Width="40"
                 Tag="4-pt Straighten" Click="toolbarButton_Click"
                 Padding="0" ToolTip="4pt Transform"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RectangleOutline"/>
@@ -88,6 +93,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Rotate Left"
                 Tag="Rotate Left" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateLeft"/>
@@ -97,6 +103,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Rotate Right"
                 Tag="Rotate Left" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateRight"/>
@@ -106,6 +113,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Horizontal Flip"
                 Tag="Flip Horizontal" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipHorizontal"/>
@@ -115,6 +123,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Vertical Flip"
                 Tag="Flip Vertical" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipVertical"/>
@@ -124,6 +133,7 @@
                 Height="40" Width="40"
                 Padding="0" ToolTip="Impulse Noise Reduction"
                 Tag="Impulse Noise Reduction" Click="toolbarButton_Click"
+                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Background="WhiteSmoke" BorderBrush="LightGray" 
                 Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="AirFilter"/>
