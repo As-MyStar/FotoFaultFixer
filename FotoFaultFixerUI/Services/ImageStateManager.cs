@@ -19,12 +19,7 @@ namespace FotoFaultFixerUI.Services
 
         public ImageStateManager(CImage img)
         {
-            if (img == null)
-            {
-                throw new ArgumentNullException("img");
-            }
-
-            _currentState = img;
+            _currentState = img ?? throw new ArgumentNullException(nameof(img));
             _undoCommands = new Stack<ICommandCImage>();
             _redoCommands = new Stack<ICommandCImage>();
         }

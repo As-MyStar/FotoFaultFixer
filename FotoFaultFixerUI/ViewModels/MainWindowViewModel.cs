@@ -9,6 +9,8 @@ namespace FotoFaultFixerUI.ViewModels
         private string _workingImageName = null;
         private string _workingImagePath = null;
         private bool _hasUnsavedChanges = false;
+        private bool _canUndo = false;
+        private bool _canRedo = false;
 
         public void SetImage(string imagePath)
         {
@@ -56,6 +58,26 @@ namespace FotoFaultFixerUI.ViewModels
             {
                 _hasUnsavedChanges = value;
                 OnPropertyChanged("HasUnsavedChanges");
+            }
+        }
+
+        public bool CanUndo
+        {
+            get => _canUndo;
+            set
+            {
+                _canUndo = value;
+                OnPropertyChanged("CanUndo");
+            }
+        }
+
+        public bool CanRedo
+        {
+            get => _canRedo;
+            set
+            {
+                _canRedo = value;
+                OnPropertyChanged("CanRedo");
             }
         }
 

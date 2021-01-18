@@ -26,24 +26,28 @@ namespace FotoFaultFixerUI.Views
         {
             _mainWindowVM = new MainWindowViewModel();
             _appService = new ApplicationService();
-            _appService._imageUpdated += _appService_ImageUpdated;
+            _appService.ImageUpdated += AppService_ImageUpdated;
             InitializeComponent();
             this.DataContext = _mainWindowVM;
             ToolBarControl.DataContext = _mainWindowVM;
         }
 
         #region Event Handlers
-        private void _appService_ImageUpdated(object sender, ImageUpdateEventArgs e)
+        private void AppService_ImageUpdated(object sender, ImageUpdateEventArgs e)
         {
             imageWorkspace.SetImage(
                 Utilities.BitmapToImageSource(
                     e.Image.ToBitmap()
                 )
             );
-
+            
             // When an image updates it due to an ImageFunction
             // So progressReporter is no longer required.
             progressReporter.ResetAndClose();
+
+            // Lets update CanRedo and CanUndo so their toolbar buttons update
+            _mainWindowVM.CanRedo = _appService.CanRedo;
+            _mainWindowVM.CanUndo = _appService.CanUndo;
         }
         #endregion
 

@@ -14,9 +14,12 @@ namespace FotoFaultFixerUI.Services
         const string FILE_EXTENSION_FILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png; *.tiff";
 
         ImageStateManager _ism;
-        internal event EventHandler<ImageUpdateEventArgs> _imageUpdated;
+        internal event EventHandler<ImageUpdateEventArgs> ImageUpdated;
 
         public ApplicationService() { }
+
+        public bool CanUndo => (_ism != null && _ism.CanUndo());
+        public bool CanRedo => (_ism != null && _ism.CanRedo());
 
         private async void InvokeCmdAndUpdate(ICommandCImage cmd, IProgress<int> progressReporter)
         {
@@ -26,7 +29,7 @@ namespace FotoFaultFixerUI.Services
 
         private void FireImageUpdate()
         {
-            EventHandler<ImageUpdateEventArgs> handler = _imageUpdated;
+            EventHandler<ImageUpdateEventArgs> handler = ImageUpdated;
             handler?.Invoke(this, new ImageUpdateEventArgs(_ism.GetCurrentState()));
         }
 

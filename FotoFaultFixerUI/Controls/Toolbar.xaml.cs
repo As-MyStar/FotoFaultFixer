@@ -16,12 +16,7 @@ namespace FotoFaultFixerUI.Controls
             InitializeComponent();
         }
         
-        //private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
-        //{
-        //    ToolbarItemClicked.Invoke(this, e);
-        //}
-
-        private void toolbarButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void ToolbarButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
 
             ToolbarItemClicked.Invoke(sender, e);

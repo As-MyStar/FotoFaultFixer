@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FotoFaultFixerUI.Controls"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:FFFUI_Converters="clr-namespace:FotoFaultFixerUI.Converters" 
+             xmlns:viewmodels="clr-namespace:FotoFaultFixerUI.ViewModels"              
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
              d:DesignWidth="42">
+    
     <UserControl.Resources>
         <Style x:Key="toolbarButtonStyle" 
                 TargetType="Button" 
@@ -17,6 +21,7 @@
             <Setter Property="Background" Value="WhiteSmoke" />
             <Setter Property="BorderBrush" Value="LightGray"  />
         </Style>
+        <FFFUI_Converters:BooleanAndConverter x:Key="booleanAndConverter" />
     </UserControl.Resources>
 
     <Grid Name="toolbar">
@@ -43,14 +48,14 @@
 
         <Button Grid.Row="0" 
                 ToolTip="Open" Tag="Open" 
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FolderOpen"/>
         </Button>
 
         <Button Grid.Row="1" 
                 ToolTip="Save" Tag="Save" 
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="ContentSave"/>
@@ -58,23 +63,33 @@
 
         <Button Grid.Row="2"
                 ToolTip="Undo" Tag="Undo"
-                Click="toolbarButton_Click"
-                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
+                Click="ToolbarButton_Click"
                 Style="{StaticResource toolbarButtonStyle}">
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource booleanAndConverter}">
+                    <Binding Path="ImageHasBeenLoaded" />
+                    <Binding Path="CanUndo" />
+                </MultiBinding>
+            </Button.IsEnabled>
             <materialDesign:PackIcon Height="30" Width="30" Kind="UndoVariant"/>
         </Button>
 
         <Button Grid.Row="3"
                 ToolTip="Redo" Tag="Redo"
-                Click="toolbarButton_Click"
-                IsEnabled="{Binding Path=ImageHasBeenLoaded}"
+                Click="ToolbarButton_Click"
                 Style="{StaticResource toolbarButtonStyle}">
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource booleanAndConverter}">
+                    <Binding Path="ImageHasBeenLoaded" />
+                    <Binding Path="CanRedo" />
+                </MultiBinding>
+            </Button.IsEnabled>
             <materialDesign:PackIcon Height="30" Width="30" Kind="RedoVariant"/>
         </Button>
 
         <Button Grid.Row="4"
                 ToolTip="Crop" Tag="Crop" 
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="Crop"/>
@@ -82,7 +97,7 @@
 
         <Button Grid.Row="5"
                 Tag="4-pt Straighten" ToolTip="4pt Transform"
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RectangleOutline"/>
@@ -90,7 +105,7 @@
 
         <Button Grid.Row="6"
                 ToolTip="Rotate Left" Tag="Rotate Left"
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateLeft"/>
@@ -98,7 +113,7 @@
 
         <Button Grid.Row="7"
                 ToolTip="Rotate Right" Tag="Rotate Left"
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateRight"/>
@@ -106,7 +121,7 @@
 
         <Button Grid.Row="8"
                 ToolTip="Horizontal Flip" Tag="Flip Horizontal"
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipHorizontal"/>
@@ -114,7 +129,7 @@
 
         <Button Grid.Row="9"
                 ToolTip="Vertical Flip" Tag="Flip Vertical" 
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipVertical"/>
@@ -122,7 +137,7 @@
 
         <Button Grid.Row="10"
                 ToolTip="Impulse Noise Reduction" Tag="Impulse Noise Reduction"
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="AirFilter"/>
@@ -132,7 +147,7 @@
 
         <Button Grid.Row="12"
                 ToolTip="Exit" Tag="Exit" 
-                Click="toolbarButton_Click"
+                Click="ToolbarButton_Click"
                 Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="ExitRun"/>
         </Button>
