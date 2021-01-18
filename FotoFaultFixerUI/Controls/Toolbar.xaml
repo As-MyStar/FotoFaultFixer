@@ -7,6 +7,17 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignWidth="42">
+    <UserControl.Resources>
+        <Style x:Key="toolbarButtonStyle" 
+                TargetType="Button" 
+                BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="WhiteSmoke" />
+            <Setter Property="BorderBrush" Value="LightGray"  />
+        </Style>
+    </UserControl.Resources>
 
     <Grid Name="toolbar">
         <Grid.ColumnDefinitions>
@@ -31,122 +42,98 @@
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" 
-                Height="40" Width="40"
-                Padding="0" ToolTip="Open"
-                Tag="Open" Click="toolbarButton_Click"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                ToolTip="Open" Tag="Open" 
+                Click="toolbarButton_Click"
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FolderOpen"/>
         </Button>
 
         <Button Grid.Row="1" 
-                Height="40" Width="40"
-                Padding="0" ToolTip="Save"
-                Tag="Save" Click="toolbarButton_Click"
+                ToolTip="Save" Tag="Save" 
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="ContentSave"/>
         </Button>
 
         <Button Grid.Row="2"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Undo"
-                Tag="Undo" Click="toolbarButton_Click"
+                ToolTip="Undo" Tag="Undo"
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="UndoVariant"/>
         </Button>
 
         <Button Grid.Row="3"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Redo"
-                Tag="Redo" Click="toolbarButton_Click"
+                ToolTip="Redo" Tag="Redo"
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RedoVariant"/>
         </Button>
 
         <Button Grid.Row="4"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Crop"
-                Tag="Crop" Click="toolbarButton_Click"
+                ToolTip="Crop" Tag="Crop" 
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="Crop"/>
         </Button>
 
         <Button Grid.Row="5"
-                Height="40" Width="40"
-                Tag="4-pt Straighten" Click="toolbarButton_Click"
-                Padding="0" ToolTip="4pt Transform"
+                Tag="4-pt Straighten" ToolTip="4pt Transform"
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RectangleOutline"/>
         </Button>
 
         <Button Grid.Row="6"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Rotate Left"
-                Tag="Rotate Left" Click="toolbarButton_Click"
+                ToolTip="Rotate Left" Tag="Rotate Left"
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateLeft"/>
         </Button>
 
         <Button Grid.Row="7"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Rotate Right"
-                Tag="Rotate Left" Click="toolbarButton_Click"
+                ToolTip="Rotate Right" Tag="Rotate Left"
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="RotateRight"/>
         </Button>
 
         <Button Grid.Row="8"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Horizontal Flip"
-                Tag="Flip Horizontal" Click="toolbarButton_Click"
+                ToolTip="Horizontal Flip" Tag="Flip Horizontal"
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipHorizontal"/>
         </Button>
 
         <Button Grid.Row="9"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Vertical Flip"
-                Tag="Flip Vertical" Click="toolbarButton_Click"
+                ToolTip="Vertical Flip" Tag="Flip Vertical" 
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="FlipVertical"/>
         </Button>
 
         <Button Grid.Row="10"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Impulse Noise Reduction"
-                Tag="Impulse Noise Reduction" Click="toolbarButton_Click"
+                ToolTip="Impulse Noise Reduction" Tag="Impulse Noise Reduction"
+                Click="toolbarButton_Click"
                 IsEnabled="{Binding Path=ImageHasBeenLoaded}"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="AirFilter"/>
         </Button>
 
         <!-- Invisible row (11)-->
 
         <Button Grid.Row="12"
-                Height="40" Width="40"
-                Padding="0" ToolTip="Exit"
-                Tag="Exit" Click="toolbarButton_Click"
-                Background="WhiteSmoke" BorderBrush="LightGray" 
-                Style="{StaticResource MaterialDesignFlatButton}">
+                ToolTip="Exit" Tag="Exit" 
+                Click="toolbarButton_Click"
+                Style="{StaticResource toolbarButtonStyle}">
             <materialDesign:PackIcon Height="30" Width="30" Kind="ExitRun"/>
         </Button>
     </Grid>

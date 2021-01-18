@@ -9,7 +9,6 @@
         xmlns:local="clr-namespace:FotoFaultFixerUI"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:FFFUI_Controls="clr-namespace:FotoFaultFixerUI.Controls"
-        xmlns:FFFUI_Views="clr-namespace:FotoFaultFixerUI.Views"
 
         Title="FotoFaultFixer" Height="768" Width="1024"
         WindowStartupLocation="CenterScreen"
