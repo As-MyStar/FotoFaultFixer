@@ -121,14 +121,59 @@ namespace FotoFaultFixerLib.ImageFunctions
             return rotatedCCW;
         }
 
-        public static CImage Crop(CImage original, Point startPoint, int width, int height)
+        public static CImage Crop(CImage original, Point startPoint, int newWidth, int newHeight)
         {
             if (original == null)
             {
                 throw new ArgumentNullException();
             }
 
-            throw new NotImplementedException();
+            if (newWidth <= 0)
+            {
+                throw new ArgumentException("Cropped Width needs to be greater than 0", "newWidth");
+            }
+
+            if (newHeight <= 0)
+            {
+                throw new ArgumentException("Cropped Height needs to be greater than 0", "newHeight");
+            }
+
+            if ((startPoint.X + newWidth) > original.Width)
+            {
+                throw new ArgumentException("Values would put Crop out of Bounds", "newWidth");
+            }
+
+            if ((startPoint.Y + newHeight) > original.Height)
+            {
+                throw new ArgumentException("Values would put Crop out of Bounds", "newHeight");
+            }
+
+            int croppedIdx_X = 0;
+            int croppedIdx_Y = 0;
+            int originalPixelIdx;
+            int croppedPixelIdx;
+
+            CImage cropped = new CImage(newWidth, newHeight, original.NBits);
+
+            for (int y = startPoint.Y; y < (startPoint.Y + newHeight); y++)
+            {
+                for (int x = startPoint.X; x < (startPoint.X + newWidth); x++)
+                {
+                    originalPixelIdx = (x + (original.Width * y));
+                    croppedPixelIdx = (croppedIdx_X + (newWidth * croppedIdx_Y));
+
+                    cropped.Grid[0 + 3 * croppedPixelIdx] = original.Grid[0 + 3 * originalPixelIdx];
+                    cropped.Grid[1 + 3 * croppedPixelIdx] = original.Grid[1 + 3 * originalPixelIdx];
+                    cropped.Grid[2 + 3 * croppedPixelIdx] = original.Grid[2 + 3 * originalPixelIdx];
+
+                    croppedIdx_X += 1;
+                }
+
+                croppedIdx_X = 0;
+                croppedIdx_Y += 1;
+            }
+
+            return cropped;
         }
 
         public static CImage FourPointStraighten(CImage original, Point[] newCornerPoints, bool shouldCrop, IProgress<int> progressReporter = null)
