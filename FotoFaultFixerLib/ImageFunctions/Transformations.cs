@@ -121,7 +121,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             return rotatedCCW;
         }
 
-        public static CImage Crop(CImage original, Point startPoint, int newWidth, int newHeight)
+        public static CImage Crop(CImage original, int startX, int startY, int newWidth, int newHeight)
         {
             if (original == null)
             {
@@ -138,14 +138,14 @@ namespace FotoFaultFixerLib.ImageFunctions
                 throw new ArgumentException("Cropped Height needs to be greater than 0", "newHeight");
             }
 
-            if ((startPoint.X + newWidth) > original.Width)
+            if ((startX + newWidth) > original.Width)
             {
-                throw new ArgumentException("Values would put Crop out of Bounds", "newWidth");
+                newWidth = original.Width - startX;
             }
 
-            if ((startPoint.Y + newHeight) > original.Height)
+            if ((startY + newHeight) > original.Height)
             {
-                throw new ArgumentException("Values would put Crop out of Bounds", "newHeight");
+                newHeight = original.Height - startY;
             }
 
             int croppedIdx_X = 0;
@@ -155,9 +155,9 @@ namespace FotoFaultFixerLib.ImageFunctions
 
             CImage cropped = new CImage(newWidth, newHeight, original.NBits);
 
-            for (int y = startPoint.Y; y < (startPoint.Y + newHeight); y++)
+            for (int y = startY; y < (startY + newHeight); y++)
             {
-                for (int x = startPoint.X; x < (startPoint.X + newWidth); x++)
+                for (int x = startX; x < (startX + newWidth); x++)
                 {
                     originalPixelIdx = (x + (original.Width * y));
                     croppedPixelIdx = (croppedIdx_X + (newWidth * croppedIdx_Y));

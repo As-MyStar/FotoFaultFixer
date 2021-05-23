@@ -23,8 +23,16 @@ namespace FotoFaultFixerUI.Services
 
         private async void InvokeCmdAndUpdate(ICommandCImage cmd, IProgress<int> progressReporter)
         {
-            await _ism.Invoke(cmd, progressReporter);
-            FireImageUpdate();
+            try
+            {
+                await _ism.Invoke(cmd, progressReporter);
+                FireImageUpdate();
+            } 
+            catch(Exception exc)
+            {
+                // PG: Best way to handle this?
+                // Message Box?
+            }
         }
 
         private void FireImageUpdate()
@@ -110,17 +118,15 @@ namespace FotoFaultFixerUI.Services
             InvokeCmdAndUpdate(new FlipVerticalCommand(), null);
         }
 
-        internal void Crop(Point startingPoint, int newWidth, int newHeight, IProgress<int> progressReporter)
+        internal void Crop(int x, int y, int newWidth, int newHeight, IProgress<int> progressReporter)
         {
-            InvokeCmdAndUpdate(new CropCommand(startingPoint, newWidth, newHeight), progressReporter);
+            InvokeCmdAndUpdate(new CropCommand(x, y, newWidth, newHeight), progressReporter);
         }
 
         internal void FourPointStraighten(Point[] points, bool shouldCrop, IProgress<int> progressReporter)
         {
             InvokeCmdAndUpdate(new FourPointStraightenCommand(points, shouldCrop), progressReporter);
         }
-
-
         #endregion
 
         #region Coloring

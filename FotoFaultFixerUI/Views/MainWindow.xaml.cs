@@ -30,6 +30,7 @@ namespace FotoFaultFixerUI.Views
             InitializeComponent();
             this.DataContext = _mainWindowVM;
             ToolBarControl.DataContext = _mainWindowVM;
+            imageWorkspace.Workspace_TriggerCropEvent += ImageWorkspace_Workspace_TriggerCropEvent;
         }
 
         #region Event Handlers
@@ -40,7 +41,7 @@ namespace FotoFaultFixerUI.Views
                     e.Image.ToBitmap()
                 )
             );
-            
+
             // When an image updates it due to an ImageFunction
             // So progressReporter is no longer required.
             progressReporter.ResetAndClose();
@@ -48,6 +49,11 @@ namespace FotoFaultFixerUI.Views
             // Lets update CanRedo and CanUndo so their toolbar buttons update
             _mainWindowVM.CanRedo = _appService.CanRedo;
             _mainWindowVM.CanUndo = _appService.CanUndo;
+        }
+
+        private void ImageWorkspace_Workspace_TriggerCropEvent(int x, int y, int width, int height)
+        {
+            _appService.Crop(x, y, width, height, null);
         }
         #endregion
 
@@ -84,7 +90,7 @@ namespace FotoFaultFixerUI.Views
                 case "Exit":
                     ExitApplication();
                     break;
-                case "Open":                    
+                case "Open":
                     _mainWindowVM.SetImage(_appService.OpenImage());
                     break;
                 case "Undo":
@@ -96,7 +102,7 @@ namespace FotoFaultFixerUI.Views
                     _appService.Redo(progressIndicator);
                     break;
                 case "Crop":
-                    // open crop Panel
+                    imageWorkspace.ActivateCrop();
                     break;
                 case "4-pt Straighten":
                     _toolBarOptionsContent = new FourPointStraightenPanel();

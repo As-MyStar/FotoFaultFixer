@@ -18,7 +18,7 @@ namespace FotoFaultFixerUI.Controls
         
         private void ToolbarButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            e.Handled = true;
             ToolbarItemClicked.Invoke(sender, e);
         }
     }

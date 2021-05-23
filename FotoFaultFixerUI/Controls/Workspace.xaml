@@ -27,8 +27,16 @@
                 Grid.Column="0" 
                 Grid.Row="0">
 
-                <Image Name="workspaceImage">
-                </Image>
+                <Grid>
+                    <Image Name="workspaceImage">
+                    </Image>
+
+                    <local:CropCanvas 
+                        x:Name="CropCanvas"
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
+                </Grid>
             </local:ZoomBorder>
 
             <StackPanel

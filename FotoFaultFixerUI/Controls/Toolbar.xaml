@@ -33,7 +33,7 @@
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
-            <RowDefinition Height="0"/>
+            <RowDefinition Height="42"/>
             <!--Crop-->
             <RowDefinition Height="0"/>
             <!--4-pt transform-->

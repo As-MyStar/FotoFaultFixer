@@ -47,21 +47,20 @@ namespace FotoFaultFixerLib.ImageProcessing
             PixelFormat = bmp.PixelFormat;
             Grid = new byte[3 * bmp.Width * bmp.Height];
 
-            if (PixelFormat == PixelFormat.Format8bppIndexed)
-            {
-                NBits = 8;
-                BitmapToGrid_8bppIndexed(bmp);
+            switch (PixelFormat) {
+                case PixelFormat.Format8bppIndexed:
+                    NBits = 8;
+                    BitmapToGrid_8bppIndexed(bmp);
+                    break;
+                case PixelFormat.Format24bppRgb:
+                    NBits = 24;
+                    BitmapToGrid_24bppRGB(bmp);
+                    break;
+                //case PixelFormat.Format32bppArgb:
+                //    NBits = 32;
+                //    BitmapToGrid_32bppARGB(bmp);
+                //    break;
             }
-            else if (PixelFormat == PixelFormat.Format24bppRgb)
-            {
-                NBits = 24;
-                BitmapToGrid_24bppRGB(bmp);
-            }
-            //else if (PixelFormat == PixelFormat.Format32bppArgb)
-            //{
-            //    NBits = 32;
-            //    BitmapToGrid_32bppARGB(bmp);
-            //}
         }
 
         public void CopyFrom(CImage inp)

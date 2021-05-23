@@ -102,6 +102,8 @@ namespace FotoFaultFixerUI.Controls
 
         private void child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            e.Handled = true;
+
             if (_child != null)
             {
                 var st = GetScaleTransform(_child);
@@ -127,6 +129,8 @@ namespace FotoFaultFixerUI.Controls
 
         private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            e.Handled = true;
+
             if (_child != null)
             {
                 var tt = GetTranslateTransform(_child);
@@ -140,6 +144,8 @@ namespace FotoFaultFixerUI.Controls
 
         private void child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            e.Handled = true;
+
             if (_child != null)
             {
                 _child.ReleaseMouseCapture();
@@ -149,11 +155,15 @@ namespace FotoFaultFixerUI.Controls
 
         void child_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            e.Handled = true;
+
             this.Reset();
         }
 
         private void child_MouseMove(object sender, MouseEventArgs e)
         {
+            e.Handled = true;
+
             if (_child != null)
             {
                 if (_child.IsMouseCaptured)
