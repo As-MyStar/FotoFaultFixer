@@ -68,14 +68,16 @@ namespace FotoFaultFixerLib.ImageProcessing
         {
             int lightValue, 
                 pixelIdx;
-            
+
+            var memoizeMaxC = Utilities.MaxC.Memoize();
+
             for (int y = 0; y < Image.Height; y++)
             {
                 for (int x = 0; x < Image.Width; x++)
                 {                    
                     pixelIdx = x + y * Image.Width;
 
-                    lightValue = Utilities.MaxC(
+                    lightValue = memoizeMaxC(
                         Image.Grid[3 * pixelIdx + 2] & 254,
                         Image.Grid[3 * pixelIdx + 1] & 254,
                         Image.Grid[3 * pixelIdx + 0] & 254
@@ -303,6 +305,8 @@ namespace FotoFaultFixerLib.ImageProcessing
             _cQueue.Reset();
             _cQueue.Put(index); // putting index into the queue
 
+            var memoizeMaxC = Utilities.MaxC.Memoize();
+
             while (!_cQueue.IsEmpty()) 
             {
                 nextIndex = _cQueue.Get();
@@ -317,7 +321,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                     LabelQ1 = Image.Grid[1 + 3 * Neib] & 1;
                     LabelBig2 = Image.Grid[2 + 3 * Neib] & 1;
 
-                    lightNeb = Utilities.MaxC(
+                    lightNeb = memoizeMaxC(
                         Image.Grid[2 + 3 * Neib],
                         Image.Grid[1 + 3 * Neib],
                         Image.Grid[0 + 3 * Neib]
@@ -352,7 +356,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                     {
                         if (Neib != index) 
                         {
-                            if (lightNeb < Utilities.MaxC(MinBound[2], MinBound[1], MinBound[0]))
+                            if (lightNeb < memoizeMaxC(MinBound[2], MinBound[1], MinBound[0]))
                             {
                                 for (int c = 0; c < 3; c++)
                                 {
@@ -382,7 +386,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                 }
                 else
                 {
-                    lightComp = Utilities.MaxC(
+                    lightComp = memoizeMaxC(
                         Image.Grid[2 + 3 * _comp[m]],
                         Image.Grid[1 + 3 * _comp[m]],
                         Image.Grid[0 + 3 * _comp[m]]
@@ -447,13 +451,15 @@ namespace FotoFaultFixerLib.ImageProcessing
                 return 0;
             }
 
+            var memoizeMaxC = Utilities.MaxC.Memoize();
+
             for (int light = maxLight - 2; light >= minLight; light--)
             {
                 for (int i = 0; i < _nPixel[light]; i++)
                 {
                     ind3 = 3 * _index[light][i];                    
                     LabelBig2 = Image.Grid[2 + ind3] & 1;
-                    Lum = Utilities.MaxC(Image.Grid[2 + ind3], Image.Grid[1 + ind3], Image.Grid[0 + ind3]) & 254;
+                    Lum = memoizeMaxC(Image.Grid[2 + ind3], Image.Grid[1 + ind3], Image.Grid[0 + ind3]) & 254;
                     
                     if (Lum == light && LabelBig2 == 0)
                     {
@@ -508,6 +514,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                 return 0;
             }
 
+            var memoizeMaxC = Utilities.MaxC.Memoize();
             for (int light = minLight; light <= 255; light++) 
             {
                 for (int i = 0; i <= _nPixel[light]; i++) 
@@ -515,7 +522,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                     ind3 = 3 * _index[light][i];
 
                     LabelBig2 = Image.Grid[2 + 3 * _index[light][i]] & 1;
-                    Lum = Utilities.MaxC(
+                    Lum = memoizeMaxC(
                         Image.Grid[2 + ind3], 
                         Image.Grid[1 + ind3], 
                         Image.Grid[0 + ind3]
@@ -684,6 +691,8 @@ namespace FotoFaultFixerLib.ImageProcessing
             _cQueue.Reset();
             _cQueue.Put(index); // putting index into the queue
 
+            var memoizeMaxC = Utilities.MaxC.Memoize();
+
             while (!_cQueue.IsEmpty()) 
             {
                 nextIndex = _cQueue.Get();
@@ -698,7 +707,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                     LabelQ1 = Image.Grid[1 + 3 * Neib] & 1;
                     LabelBig2 = Image.Grid[2 + 3 * Neib] & 1;
 
-                    lightNeb = Utilities.MaxC(
+                    lightNeb = memoizeMaxC(
                         Image.Grid[2 + 3 * Neib],
                         Image.Grid[1 + 3 * Neib],
                         Image.Grid[0 + 3 * Neib]
@@ -734,7 +743,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                     {
                         if (Neib != index)
                         {
-                            if (lightNeb > Utilities.MaxC(MaxBound[2], MaxBound[1], MaxBound[0]))
+                            if (lightNeb > memoizeMaxC(MaxBound[2], MaxBound[1], MaxBound[0]))
                             {
                                 MaxBound[0] = (Image.Grid[0 + 3 * Neib] & MaskColor);
                                 MaxBound[1] = (Image.Grid[1 + 3 * Neib] & MaskColor);
@@ -764,7 +773,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                 }
                 else
                 {
-                    lightComp = Utilities.MaxC(
+                    lightComp = memoizeMaxC(
                         Image.Grid[2 + 3 * _comp[m]],
                         Image.Grid[1 + 3 * _comp[m]],
                         Image.Grid[0 + 3 * _comp[m]]

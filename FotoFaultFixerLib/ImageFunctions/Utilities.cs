@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 
 namespace FotoFaultFixerLib.ImageFunctions
 {
     public static class Utilities
     {
-        public static int MaxC(int R, int G, int B)
+        public static Func<int, int, int, int> MaxC = (R, G, B) =>
         {
             int max;
             if (R * 0.713 > G)
@@ -22,7 +23,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             }
 
             return max;
-        }
+        };
 
         public static void SetProgress(IProgress<int> progressReporter, int progressPercent)
         {

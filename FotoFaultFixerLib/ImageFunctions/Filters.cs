@@ -51,14 +51,17 @@ namespace FotoFaultFixerLib.ImageFunctions
             }
 
             int light, index;
+            var memoizeMaxC = Utilities.MaxC.Memoize();
             for (int y = 0; y < workingCopy.Height; y++)
             {
                 for (int x = 0; x < workingCopy.Width; x++)
                 {
                     index = x + y * workingCopy.Width; // Index of the pixel (x, y)
-                    light = Utilities.MaxC(workingCopy.Grid[3 * index + 2] & 254,
-                                 workingCopy.Grid[3 * index + 1] & 254,
-                                 workingCopy.Grid[3 * index + 0] & 254);
+                    light = memoizeMaxC(
+                        workingCopy.Grid[3 * index + 2] & 254,
+                        workingCopy.Grid[3 * index + 1] & 254,
+                        workingCopy.Grid[3 * index + 0] & 254
+                    );
 
                     light = Math.Max(light, 0);
                     light = Math.Min(light, 255);

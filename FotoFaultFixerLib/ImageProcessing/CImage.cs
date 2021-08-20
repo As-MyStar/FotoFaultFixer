@@ -107,9 +107,9 @@ namespace FotoFaultFixerLib.ImageProcessing
             {
                 for (int x = 0; x < bmp.Width; x++)
                 {
-                    Grid[0 + 3 * (x + (bmp.Width * y))] = rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y];
-                    Grid[1 + 3 * (x + (bmp.Width * y))] = rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y];
-                    Grid[2 + 3 * (x + (bmp.Width * y))] = rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y];
+                    Grid[0 + 3 * (x + (bmp.Width * y))] = rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y]; // B
+                    Grid[1 + 3 * (x + (bmp.Width * y))] = rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y]; // G
+                    Grid[2 + 3 * (x + (bmp.Width * y))] = rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y]; // R
                 }
             }
 
@@ -202,9 +202,9 @@ namespace FotoFaultFixerLib.ImageProcessing
                     {
                         for (int x = 0; x < bmp.Width; x++)
                         {
-                            rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[0 + 3 * (x + bmp.Width * y)];
-                            rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[1 + 3 * (x + bmp.Width * y)];
-                            rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[2 + 3 * (x + bmp.Width * y)];
+                            rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[0 + 3 * (x + bmp.Width * y)]; // B
+                            rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[1 + 3 * (x + bmp.Width * y)]; // G
+                            rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[2 + 3 * (x + bmp.Width * y)]; // R
                         }
                     }
                     break;
