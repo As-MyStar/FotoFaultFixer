@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace FotoFaultFixerUI.Controls
 {
@@ -12,11 +9,19 @@ namespace FotoFaultFixerUI.Controls
     public partial class CropCanvas : UserControl
     {
         public bool CropIsActive = false;
-        public event Action<int, int, int, int> CropCanvas_TriggerCropEvent;
+        public event Action<double, double, double, double> CropCanvas_TriggerCropEvent;
 
         public CropCanvas()
         {
             InitializeComponent();
+        }
+
+        public void Setup(int x, int y, int width, int height)
+        {
+            Canvas.SetLeft(this, x);
+            Canvas.SetTop(this, y);
+            this.Width = width;
+            this.Height = height;            
         }
 
         public void ActivateCrop()
@@ -76,6 +81,7 @@ namespace FotoFaultFixerUI.Controls
 
             // Update Rectangle width and height            
             var mousePos = e.GetPosition(this);
+
             int newWidth = (int)(mousePos.X - Canvas.GetLeft(CropRectangle));
             int newHeight = (int)(mousePos.Y - Canvas.GetTop(CropRectangle));
 
@@ -98,19 +104,21 @@ namespace FotoFaultFixerUI.Controls
         {
             if (CropCanvas_TriggerCropEvent != null)
             {
-                var cropRectanglePoint = new System.Windows.Point(
-                        (int)Canvas.GetLeft(CropRectangle),
-                        (int)Canvas.GetTop(CropRectangle)
-                    );
+                // Convert absolute position of Crop rectangle start/EndInit to % values
+                
+                // Transform the topleft Point (Rectangle start point)
+                double startXPrc = (Canvas.GetLeft(CropRectangle) / this.Width) ;
+                double startYPrc = (Canvas.GetTop(CropRectangle) / this.Height);
 
-                var ToScreenPoint2 = PresentationSource.FromVisual(CropRectangle).CompositionTarget.TransformToDevice.Transform(cropRectanglePoint);
-                var ToScreenPoint = this.PointToScreen(ToScreenPoint2);                
+                // Transform the BottomRight Point (Current Mouse Position)
+                double endXPrc = ((Canvas.GetLeft(CropRectangle) + CropRectangle.Width) / this.Width);
+                double endYPrc = ((Canvas.GetTop(CropRectangle) +CropRectangle.Height) / this.Height);
 
                 CropCanvas_TriggerCropEvent(
-                    (int)ToScreenPoint.X,
-                    (int)ToScreenPoint.Y,
-                    (int)CropRectangle.Width,
-                    (int)CropRectangle.Height
+                    startXPrc,
+                    startYPrc,
+                    endXPrc,
+                    endYPrc
                 );
             }
         }

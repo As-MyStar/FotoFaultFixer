@@ -28,14 +28,12 @@
                 Grid.Row="0">
 
                 <Grid>
-                    <Image Name="workspaceImage">
-                    </Image>
+                    <Image Name="workspaceImage"/>
 
                     <local:CropCanvas 
                         x:Name="CropCanvas"
                         Visibility="Collapsed"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"/>
+                    />
                 </Grid>
             </local:ZoomBorder>
 

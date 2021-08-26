@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace FotoFaultFixerUI.Controls
@@ -22,32 +23,45 @@ namespace FotoFaultFixerUI.Controls
             CropCanvas.CropCanvas_TriggerCropEvent += CropCanvas_CropCanvas_TriggerCropEvent;
         }
 
-        private void CropCanvas_CropCanvas_TriggerCropEvent(int screenX, int screenY, int width, int height)
+        private void CropCanvas_CropCanvas_TriggerCropEvent(double startXPrc, double startYPrc, double endXPrc, double endYPrc)
         {
-            // these coords are position on the screen.
-            // We need to translate those to where they sit on the image (if at all)
-            var newStartingPoint = workspaceImage.PointFromScreen(new System.Windows.Point(screenX, screenY));
+            // We need to translate the % values to actual coordinates on the real image
+            // Get the true pixel dimensions of the image
+            var bitmapSource = (workspaceImage.Source as BitmapSource);
+            double imgWidth = bitmapSource.PixelWidth;
+            double imgHeight = bitmapSource.PixelHeight;
+            
+            // Top-left Point
+            int startX = (int)(imgWidth * startXPrc);
+            int startY = (int)(imgHeight * startYPrc);                        
+            startX = Math.Max(0, startX);
+            startY = Math.Max(0, startY);
 
-            if (newStartingPoint.X < 0)
-            {
-                width = Math.Max(0, width - Math.Abs((int)newStartingPoint.X));
-                newStartingPoint.X = 0;
-            }
+            // Bottom-Right Point
+            int endX = (int)(imgWidth * endXPrc);
+            int endY = (int)(imgHeight * endYPrc);
+            endX = (int)Math.Min(imgWidth, endX);
+            endY = (int)Math.Min(imgHeight, endY);
 
-            if (newStartingPoint.Y < 0)
-            {
-                height = Math.Max(0, height - Math.Abs((int)newStartingPoint.Y));
-                newStartingPoint.Y = 0;
-            }
+            // Calc width/height based on start/end points
+            int cropWidth = Math.Abs(endX - startX);
+            int cropHeight = Math.Abs(endY - startY);
 
+            // Perform the crop!
             if (Workspace_TriggerCropEvent != null)
             {
-                Workspace_TriggerCropEvent((int)newStartingPoint.X, (int)newStartingPoint.Y, width, height);
+                Workspace_TriggerCropEvent(startX, startY, cropWidth, cropHeight);
             }
         }
 
         public void ActivateCrop()
-        {                                  
+        {                                              
+            CropCanvas.Setup((
+                int)Canvas.GetLeft(workspaceImage),
+                (int)Canvas.GetTop(workspaceImage),
+                (int)workspaceImage.ActualWidth,
+                (int)workspaceImage.ActualHeight
+            );
             CropCanvas.ActivateCrop();
         }
         
@@ -58,10 +72,8 @@ namespace FotoFaultFixerUI.Controls
 
         public void SetImage(BitmapImage bmpImg)
         {
-            workspaceImage.Source = bmpImg;
-            CropCanvas.Height = workspaceImage.Height;
-            CropCanvas.Width = workspaceImage.Width;
-            CropCanvas.Margin = workspaceImage.Margin;
+            workspaceImage.Source = bmpImg;            
+
             zoomBtnsBar.Visibility = System.Windows.Visibility.Visible;
         }
 
