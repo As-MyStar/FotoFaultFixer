@@ -9,7 +9,7 @@ namespace FotoFaultFixerLib.ImageProcessing
     /// </summary>
     /// <remarks>
     /// We need individual pixel access, but .Net's Bitmap implementation is WAY too slow
-    /// By storing all RGB data in a single Byte array, its MUCH more efficient and simpler to work with image data
+    /// By storing all data in a single Byte array, its MUCH more efficient and simpler to work with image data
     /// </remarks>
     public class CImage
     {
@@ -18,19 +18,21 @@ namespace FotoFaultFixerLib.ImageProcessing
         public int NBits { get; set; }
         public byte[] Grid { get; set; }
         public PixelFormat PixelFormat { get; set; }
+        public ColorSpace ColorSpace { get; set; } // Possible only descriptive for now
 
         #region Input        
 
-        public CImage(int w, int h, int nBits)
+        public CImage(int w, int h, int nBits, ColorSpace colorSpace = ColorSpace.RGB)
         {
             PixelFormat = PixelFormat.Format24bppRgb;
             Width = w;
             Height = h;
             NBits = nBits;
             Grid = new byte[Width * Height * nBits / 8];
+            ColorSpace = colorSpace;
         }
 
-        public CImage(int w, int h, int nBits, PixelFormat pf, byte[] img) : this(w, h, nBits)
+        public CImage(int w, int h, int nBits, PixelFormat pf, byte[] img, ColorSpace colorSpace = ColorSpace.RGB) : this(w, h, nBits, colorSpace)
         {
             PixelFormat = pf;
 

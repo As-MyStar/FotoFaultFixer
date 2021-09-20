@@ -123,9 +123,9 @@ namespace FotoFaultFixerUI.Services
             InvokeCmdAndUpdate(new CropCommand(x, y, newWidth, newHeight), progressReporter);
         }
 
-        internal void FourPointStraighten(Point[] points, bool shouldCrop, IProgress<int> progressReporter)
+        internal void FourPointStraighten(Point[] points, IProgress<int> progressReporter)
         {
-            InvokeCmdAndUpdate(new FourPointStraightenCommand(points, shouldCrop), progressReporter);
+            InvokeCmdAndUpdate(new FourPointStraightenCommand(points), progressReporter);
         }
         #endregion
 

@@ -20,9 +20,28 @@ namespace FotoFaultFixerUI.Controls.ImageFunctions
     /// </summary>
     public partial class FourPointStraightenPanel : UserControl
     {
+        public event Action FourPointStraightenTriggerEvent;
+
         public FourPointStraightenPanel()
         {
-            InitializeComponent();
+            InitializeComponent();            
+        }
+
+        public void RemoveEventHandlers()
+        {
+            // Remove any attached handlers in deconstruction to avoid memory leaks
+            foreach (Delegate d in FourPointStraightenTriggerEvent.GetInvocationList())
+            {
+                FourPointStraightenTriggerEvent -= (System.Action)d;
+            }
+        }
+
+        private void RunFourPointTransformButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FourPointStraightenTriggerEvent != null)
+            {
+                FourPointStraightenTriggerEvent();
+            }
         }
     }
 }

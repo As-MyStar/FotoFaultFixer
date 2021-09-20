@@ -4,12 +4,14 @@ using FotoFaultFixerUI.Services;
 using FotoFaultFixerUI.ViewModels;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Point = System.Drawing.Point;
 
 namespace FotoFaultFixerUI.Views
 {
@@ -30,7 +32,7 @@ namespace FotoFaultFixerUI.Views
             InitializeComponent();
             this.DataContext = _mainWindowVM;
             ToolBarControl.DataContext = _mainWindowVM;
-            imageWorkspace.Workspace_TriggerCropEvent += ImageWorkspace_Workspace_TriggerCropEvent;
+            imageWorkspace.Workspace_TriggerCropEvent += ImageWorkspace_Workspace_TriggerCropEvent;            
         }
 
         #region Event Handlers
@@ -54,6 +56,11 @@ namespace FotoFaultFixerUI.Views
         private void ImageWorkspace_Workspace_TriggerCropEvent(int x, int y, int width, int height)
         {
             _appService.Crop(x, y, width, height, null);
+        }
+
+        private void ImageWorkspace_Workspace_TriggerFourPointStraightenEvent(System.Drawing.Point topLeft, System.Drawing.Point topRight, System.Drawing.Point bottomleft, System.Drawing.Point bottomRight)
+        {
+            _appService.FourPointStraighten(new Point[] { topLeft, topRight, bottomleft, bottomRight}, null);
         }
         #endregion
 
@@ -102,11 +109,14 @@ namespace FotoFaultFixerUI.Views
                     _appService.Redo(progressIndicator);
                     break;
                 case "Crop":
+
                     imageWorkspace.ActivateCrop();
                     break;
                 case "4-pt Straighten":
+                    imageHasBeenModified = false;
                     _toolBarOptionsContent = new FourPointStraightenPanel();
-                    // TODO: Assign handler to TriggerEvent                    
+                    ((FourPointStraightenPanel)_toolBarOptionsContent).FourPointStraightenTriggerEvent += MainWindow_FourPointStraightenTriggerEvent;                   
+                    imageWorkspace.ActivateFourPointTransform();                                   
                     break;
                 case "Rotate Left":
                     _appService.RotateCounterClockWise();
@@ -149,6 +159,21 @@ namespace FotoFaultFixerUI.Views
             {
                 _mainWindowVM.HasUnsavedChanges = true;
             }
+        }
+
+        private void MainWindow_FourPointStraightenTriggerEvent()
+        {
+            ClearToolOptionsPanel();
+            
+            var progressIndicator = new Progress<int>(ReportImageFunctionProgress);
+            progressReporter.Start();
+
+            // Convert these to 1 call inside image workspace than handles all this internally
+            var prcPoints = imageWorkspace.SubSelectionCanvas.RequestPointsAndClose();            
+            var absPoints = imageWorkspace.TransformPercentagePointsToAbsolutePoints(prcPoints);            
+
+            _appService.FourPointStraighten(absPoints, progressIndicator);
+            _mainWindowVM.HasUnsavedChanges = true;
         }
 
         private void Inr_ImpulseNoiseReductionTriggerEvent(int arg1, int arg2)

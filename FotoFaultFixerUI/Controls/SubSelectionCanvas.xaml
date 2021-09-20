@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="FotoFaultFixerUI.Controls.SubSelectionCanvas"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FotoFaultFixerUI.Controls"
+             mc:Ignorable="d">
+
+    <Canvas Name="SelectionMask" MouseDown="SelectionMask_MouseDown" Background="Black" Opacity="0.5" ForceCursor="true" Cursor="Hand">
+        <Polygon 
+            Name="selectionPolygon"
+            Canvas.Top="0" Canvas.Left="0"
+            Fill="Gray"
+            Stroke="White"
+            Opacity="0.5"
+            Height="0" Width="0"/>
+        
+        <Ellipse Name="CornerPoint1" Canvas.Top="0" Canvas.Left="0" Height="10" Width="10" Fill="White"/>
+        <Ellipse Name="CornerPoint2" Canvas.Top="0" Canvas.Left="0" Height="10" Width="10" Fill="White"/>
+        <Ellipse Name="CornerPoint3" Canvas.Top="0" Canvas.Left="0" Height="10" Width="10" Fill="White"/>
+        <Ellipse Name="CornerPoint4" Canvas.Top="0" Canvas.Left="0" Height="10" Width="10" Fill="White"/>
+    </Canvas>
+    
+</UserControl>

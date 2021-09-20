@@ -9,18 +9,16 @@ namespace FotoFaultFixerUI.Services.Commands
     {
         CImage _original = null;
         Point[] _newCornerPoints = null;
-        bool _shouldCrop;
 
-        public FourPointStraightenCommand(Point[] newCornerPoints, bool shouldCrop)
+        public FourPointStraightenCommand(Point[] newCornerPoints)
         {
             _newCornerPoints = newCornerPoints;
-            _shouldCrop = shouldCrop;
         }
 
         public CImage Execute(CImage img, IProgress<int> progressReporter)
         {
             _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
-            return Transformations.FourPointStraighten(img, _newCornerPoints, _shouldCrop);
+            return Transformations.FourPointStraighten(img, _newCornerPoints);
         }
 
         public CImage UnExecute(CImage img)

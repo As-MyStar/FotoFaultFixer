@@ -29,7 +29,6 @@ namespace FotoFaultFixerUI.Controls.ImageFunctions
             InitializeComponent();
         }
 
-        // TODO: COmeback to this...
         public void RemoveEventHandlers()
         {
             // Remove any attached handlers in deconstruction to avoid memory leaks

@@ -5,8 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FotoFaultFixerUI.Controls.ImageFunctions"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="70" d:DesignWidth="120">
+    <Grid VerticalAlignment="Top" 
+          HorizontalAlignment="Stretch">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button 
+            Name="runFourPointTransformButton"                        
+            Click="RunFourPointTransformButton_Click"
+            Height="40" Width="90"
+            Padding="0" ToolTip="Run 4-Point Transformation"
+            Style="{StaticResource MaterialDesignRaisedButton}"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            Transform
+        </Button>
     </Grid>
 </UserControl>

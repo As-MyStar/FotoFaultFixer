@@ -33,16 +33,20 @@
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
-            <RowDefinition Height="42"/>
             <!--Crop-->
-            <RowDefinition Height="0"/>
+            <RowDefinition Height="42"/>
             <!--4-pt transform-->
             <RowDefinition Height="42"/>
+            
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
             <RowDefinition Height="42"/>
+            <RowDefinition Height="42"/>
+            
+            <!-- Spacer -->
             <RowDefinition Height="*"/>
+            <!-- Exit -->
             <RowDefinition Height="42"/>
         </Grid.RowDefinitions>
 
@@ -143,7 +147,7 @@
             <materialDesign:PackIcon Height="30" Width="30" Kind="AirFilter"/>
         </Button>
 
-        <!-- Invisible row (11)-->
+        <!-- Invisible spacer row (11)-->
 
         <Button Grid.Row="12"
                 ToolTip="Exit" Tag="Exit" 

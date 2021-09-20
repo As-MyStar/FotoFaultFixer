@@ -13,7 +13,6 @@ namespace FotoFaultFixerUI.Controls
     /// </summary>
     public partial class Workspace : UserControl
     {        
-
         public bool CropIsActive = false;
         public event Action<int, int, int, int> Workspace_TriggerCropEvent;
 
@@ -22,7 +21,7 @@ namespace FotoFaultFixerUI.Controls
             InitializeComponent();
             CropCanvas.CropCanvas_TriggerCropEvent += CropCanvas_CropCanvas_TriggerCropEvent;
         }
-
+        
         private void CropCanvas_CropCanvas_TriggerCropEvent(double startXPrc, double startYPrc, double endXPrc, double endYPrc)
         {
             // We need to translate the % values to actual coordinates on the real image
@@ -54,6 +53,24 @@ namespace FotoFaultFixerUI.Controls
             }
         }
 
+        public System.Drawing.Point[] TransformPercentagePointsToAbsolutePoints(System.Windows.Point[] prcPoints)
+        {
+            // We need to translate the % values to actual coordinates on the real image
+            // Get the true pixel dimensions of the image
+            var bitmapSource = (workspaceImage.Source as BitmapSource);
+            double imgWidth = bitmapSource.PixelWidth;
+            double imgHeight = bitmapSource.PixelHeight;
+
+            var absolutePoints = new System.Drawing.Point[prcPoints.Length];
+
+            for(int i = 0; i< prcPoints.Length; i++)
+            {
+                absolutePoints[i] = new System.Drawing.Point((int)(imgWidth * prcPoints[i].X), (int)(imgHeight * prcPoints[i].Y));
+            }
+
+            return absolutePoints;
+        }
+
         public void ActivateCrop()
         {                                              
             CropCanvas.Setup((
@@ -63,6 +80,17 @@ namespace FotoFaultFixerUI.Controls
                 (int)workspaceImage.ActualHeight
             );
             CropCanvas.ActivateCrop();
+        }
+
+        public void ActivateFourPointTransform()
+        {
+            SubSelectionCanvas.Setup((
+                int)Canvas.GetLeft(workspaceImage),
+                (int)Canvas.GetTop(workspaceImage),
+                (int)workspaceImage.ActualWidth,
+                (int)workspaceImage.ActualHeight
+            );
+            SubSelectionCanvas.ActivateSubSelection();
         }
         
         public void ZoomReset()
