@@ -8,23 +8,22 @@ namespace FotoFaultFixerLib.ImageProcessing
     {
         private int[][] _index;  // saving all pixels of the image ordered by lightness
         private int[] _comp;     // contains indices of pixels of a connected component
-        private int[] _nPixel;   // number of pixels with certain lightness in the image
-        private int _maxSize;    // admissible size of a component
-        private Point[] _v;
-        private CQueue _cQueue;  // Custom Queue iemplmentation
+        private int[] numPixelsWithLightness;   // number of pixels with certain lightness in the image
+        private int maxSizeOfComponent;    // admissible size of a component
+        private CQueue customQueue;  // Custom Queue iemplmentation
+        private Func<int,int,int,int> memoizeMaxC = Utilities.MaxC.Memoize();
 
         public CPnoise(int[] histo, int Qlength, int Size)
         {
-            _maxSize = Size;
-            _cQueue = new CQueue(Qlength);   // necessary to find connected components
-            _comp = new int[_maxSize];
-            _nPixel = new int[256];          // 256 is the number of lightness values
-            _v = new Point[20];
+            maxSizeOfComponent = Size;
+            customQueue = new CQueue(Qlength);   // necessary to find connected components
+            _comp = new int[maxSizeOfComponent];
+            numPixelsWithLightness = new int[256];          // 256 is the number of lightness values
             _index = new int[256][];
 
             for (int lightValue = 0; lightValue < 256; lightValue++)
             {
-                _nPixel[lightValue] = 0;
+                numPixelsWithLightness[lightValue] = 0;
                 _index[lightValue] = new int[histo[lightValue] + 2];
 
                 for (int light1 = 0; light1 < histo[lightValue] + 1; light1++)
@@ -69,8 +68,6 @@ namespace FotoFaultFixerLib.ImageProcessing
             int lightValue, 
                 pixelIdx;
 
-            var memoizeMaxC = Utilities.MaxC.Memoize();
-
             for (int y = 0; y < Image.Height; y++)
             {
                 for (int x = 0; x < Image.Width; x++)
@@ -86,10 +83,10 @@ namespace FotoFaultFixerLib.ImageProcessing
                     lightValue = Math.Max(lightValue, 0);
                     lightValue = Math.Min(lightValue, 255);
 
-                    _index[lightValue][_nPixel[lightValue]] = pixelIdx; // record of pixel with lightness "light"
-                    if (_nPixel[lightValue] < histo[lightValue])
+                    _index[lightValue][numPixelsWithLightness[lightValue]] = pixelIdx; // record of pixel with lightness "light"
+                    if (numPixelsWithLightness[lightValue] < histo[lightValue])
                     {
-                        _nPixel[lightValue]++;
+                        numPixelsWithLightness[lightValue]++;
                     }
                 }
             }
@@ -110,10 +107,10 @@ namespace FotoFaultFixerLib.ImageProcessing
                     lightValue = Math.Max(lightValue, 0);
                     lightValue = Math.Min(lightValue, 255);
 
-                    _index[lightValue][_nPixel[lightValue]] = pixelIdx; // record of pixel with lightness "light"
-                    if (_nPixel[lightValue] < histo[lightValue])
+                    _index[lightValue][numPixelsWithLightness[lightValue]] = pixelIdx; // record of pixel with lightness "light"
+                    if (numPixelsWithLightness[lightValue] < histo[lightValue])
                     {
-                        _nPixel[lightValue]++;
+                        numPixelsWithLightness[lightValue]++;
                     }
                 }
             }
@@ -172,7 +169,7 @@ namespace FotoFaultFixerLib.ImageProcessing
             // color of a pixel with minimum lightness among pixels near the subset
             int[] MinBound = new int[3] { 300, 300, 300 };
 
-            for (int p = 0; p < _maxSize; p++)
+            for (int p = 0; p < maxSizeOfComponent; p++)
             {
                 _comp[p] = -1; // MaxSize is element of class CPnoise
             }
@@ -185,12 +182,12 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             Image.Grid[index] |= 1; // Labeling as in Comp            
 
-            _cQueue.Reset();
-            _cQueue.Put(index); // putting index into the queue
+            customQueue.Reset();
+            customQueue.Put(index); // putting index into the queue
 
-            while (!_cQueue.IsEmpty()) 
+            while (!customQueue.IsEmpty()) 
             {
-                nextIndex = _cQueue.Get();
+                nextIndex = customQueue.Get();
                 for (int n = 0; n <= maxNeib; n++) 
                 {
                     Neib = Neighb(Image, nextIndex, n); // the index of the nth neighbor of nextIndex 
@@ -226,7 +223,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                             break;
                         }
 
-                        _cQueue.Put(Neib);
+                        customQueue.Put(Neib);
                     }
                     else // lightNeb < light
                     {
@@ -289,7 +286,7 @@ namespace FotoFaultFixerLib.ImageProcessing
             // color of a pixel with minimum lightness among pixels near the subset
             int[] MinBound = new int[3] { 300, 300, 300 };
 
-            for (int p = 0; p < _maxSize; p++)
+            for (int p = 0; p < maxSizeOfComponent; p++)
             {
                 _comp[p] = -1; // MaxSize is element of class CPnoise
             }
@@ -302,14 +299,12 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             Image.Grid[1 + 3 * index] |= 1; // Labeling as in Comp (LabelQ1)
 
-            _cQueue.Reset();
-            _cQueue.Put(index); // putting index into the queue
+            customQueue.Reset();
+            customQueue.Put(index); // putting index into the queue
 
-            var memoizeMaxC = Utilities.MaxC.Memoize();
-
-            while (!_cQueue.IsEmpty()) 
+            while (!customQueue.IsEmpty()) 
             {
-                nextIndex = _cQueue.Get();
+                nextIndex = customQueue.Get();
                 for (int n = 0; n <= maxNeib; n++) 
                 {
                     Neib = Neighb(Image, nextIndex, n); // the index of the nth neighbor of nextIndex 
@@ -350,7 +345,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                             break;
                         }
 
-                        _cQueue.Put(Neib);
+                        customQueue.Put(Neib);
                     }
                     else // lightNeb < light
                     {
@@ -420,7 +415,7 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             for (int light = maxLight - 2; light >= minLight; light--)
             {
-                for (int i = 0; i < _nPixel[light]; i++)
+                for (int i = 0; i < numPixelsWithLightness[light]; i++)
                 {                                        
                     LabelBig2 = Image.Grid[_index[light][i]] & 2;
                     Lum = Image.Grid[_index[light][i]] & 252;
@@ -451,11 +446,9 @@ namespace FotoFaultFixerLib.ImageProcessing
                 return 0;
             }
 
-            var memoizeMaxC = Utilities.MaxC.Memoize();
-
             for (int light = maxLight - 2; light >= minLight; light--)
             {
-                for (int i = 0; i < _nPixel[light]; i++)
+                for (int i = 0; i < numPixelsWithLightness[light]; i++)
                 {
                     ind3 = 3 * _index[light][i];                    
                     LabelBig2 = Image.Grid[2 + ind3] & 1;
@@ -488,7 +481,7 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             for (int light = minLight; light <= 255; light++)
             {
-                for (int i = 0; i <= _nPixel[light]; i++)
+                for (int i = 0; i <= numPixelsWithLightness[light]; i++)
                 {
                     LabelBig2 = Image.Grid[_index[light][i]] & 2;
                     Lum = Image.Grid[_index[light][i]];                    
@@ -513,11 +506,10 @@ namespace FotoFaultFixerLib.ImageProcessing
             {
                 return 0;
             }
-
-            var memoizeMaxC = Utilities.MaxC.Memoize();
+            
             for (int light = minLight; light <= 255; light++) 
             {
-                for (int i = 0; i <= _nPixel[light]; i++) 
+                for (int i = 0; i <= numPixelsWithLightness[light]; i++) 
                 {
                     ind3 = 3 * _index[light][i];
 
@@ -553,7 +545,7 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             index = _index[light][i];
 
-            for (int p = 0; p < _maxSize; p++)
+            for (int p = 0; p < maxSizeOfComponent; p++)
             {
                 _comp[p] = -1;
             }
@@ -564,12 +556,12 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             Image.Grid[index] |= 1; // Labeling as in Comp            
 
-            _cQueue.Reset();
-            _cQueue.Put(index); // putting index into the queue
+            customQueue.Reset();
+            customQueue.Put(index); // putting index into the queue
 
-            while (!_cQueue.IsEmpty())
+            while (!customQueue.IsEmpty())
             {
-                nextIndex = _cQueue.Get();
+                nextIndex = customQueue.Get();
                 for (int n = 0; n <= maxNeib; n++)
                 {
                     Neib = Neighb(Image, nextIndex, n); // the index of the nth neighbor of nextIndex 
@@ -606,7 +598,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                             break;
                         }
 
-                        _cQueue.Put(Neib);
+                        customQueue.Put(Neib);
                     }
                     else // lightNeb < light
                     {
@@ -677,7 +669,7 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             index = _index[light][i];
 
-            for (int p = 0; p < _maxSize; p++)
+            for (int p = 0; p < maxSizeOfComponent; p++)
             {
                 _comp[p] = -1;
             }
@@ -688,14 +680,12 @@ namespace FotoFaultFixerLib.ImageProcessing
 
             Image.Grid[1 + 3 * index] |= 1; // Labeling as in Comp
 
-            _cQueue.Reset();
-            _cQueue.Put(index); // putting index into the queue
+            customQueue.Reset();
+            customQueue.Put(index); // putting index into the queue
 
-            var memoizeMaxC = Utilities.MaxC.Memoize();
-
-            while (!_cQueue.IsEmpty()) 
+            while (!customQueue.IsEmpty()) 
             {
-                nextIndex = _cQueue.Get();
+                nextIndex = customQueue.Get();
                 for (int n = 0; n <= maxNeib; n++) 
                 {
                     Neib = Neighb(Image, nextIndex, n); // the index of the nth neighbor of nextIndex 
@@ -737,7 +727,7 @@ namespace FotoFaultFixerLib.ImageProcessing
                             break;
                         }
 
-                        _cQueue.Put(Neib);
+                        customQueue.Put(Neib);
                     }
                     else // lightNeb < light
                     {
@@ -792,26 +782,6 @@ namespace FotoFaultFixerLib.ImageProcessing
             }
 
             return nChanged; // numbPix;
-        }
-
-        // Calculates bounds of the rectangle defined by global "fm1.v" and returns the condition
-        // that the point (x, y) lies inside the rectangle.
-        private bool getCond(int i, int x, int y, double marginX, double marginY, double Scale)
-        {
-            double fxmin = (_v[i].X - marginX) / Scale; // "marginX" is the space of pictureBox1 left of image (may be 0)
-            int xmin = (int)fxmin;
-
-            double fxmax = (_v[i + 1].X - marginX) / Scale; // Scale is the scale of the presentation of image
-            int xmax = (int)fxmax;
-
-            double fymin = (_v[i].Y - marginY) / Scale; // "marginY" is the space of pictureBox1 above the image  (may be 0)
-            int ymin = (int)fymin;
-
-            double fymax = (_v[i + 1].Y - marginY) / Scale;
-            int ymax = (int)fymax;
-
-            bool Condition = (y >= ymin && y <= ymax && x >= xmin && x <= xmax);
-            return Condition;
         }
     }
 }

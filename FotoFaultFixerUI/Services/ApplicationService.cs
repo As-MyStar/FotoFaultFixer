@@ -1,10 +1,9 @@
 ﻿using FotoFaultFixerLib.ImageProcessing;
 using FotoFaultFixerUI.Services.Commands;
+using FotoFaultFixerUI.Services.Commands.Base;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace FotoFaultFixerUI.Services
 {
@@ -13,7 +12,8 @@ namespace FotoFaultFixerUI.Services
     {
         const string FILE_EXTENSION_FILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png; *.tiff";
 
-        ImageStateManager _ism;
+        StateHandlerService<CImage> _ism;
+        //ImageStateManager _ism;
         internal event EventHandler<ImageUpdateEventArgs> ImageUpdated;
 
         public ApplicationService() { }
@@ -21,11 +21,11 @@ namespace FotoFaultFixerUI.Services
         public bool CanUndo => (_ism != null && _ism.CanUndo());
         public bool CanRedo => (_ism != null && _ism.CanRedo());
 
-        private async void InvokeCmdAndUpdate(ICommandCImage cmd, IProgress<int> progressReporter)
+        private async void InvokeCmdAndUpdate(ICommand<CImage> cmd, IProgress<int> progressReporter)
         {
             try
             {
-                await _ism.Invoke(cmd, progressReporter);
+                _ism.SetNewState(cmd.Execute(_ism.GetCurrentState(), progressReporter));
                 FireImageUpdate();
             } 
             catch(Exception exc)
@@ -60,7 +60,7 @@ namespace FotoFaultFixerUI.Services
                 using (Bitmap loadedFile = (Bitmap)Image.FromFile(selectFileDialog.FileName))
                 {
                     CImage cImg = new CImage(loadedFile);
-                    _ism = new ImageStateManager(cImg);
+                    _ism = new StateHandlerService<CImage>(cImg);
                     FireImageUpdate();
                 }
             }
@@ -84,15 +84,15 @@ namespace FotoFaultFixerUI.Services
         #endregion
 
         #region Edit Actions
-        internal async void Undo()
+        internal void Undo()
         {
-            await _ism.Undo();
+            _ism.Undo();
             FireImageUpdate();
         }
 
-        internal async void Redo(IProgress<int> progressReporter)
+        internal void Redo()
         {
-            await _ism.Redo(progressReporter);
+            _ism.Redo();
             FireImageUpdate();
         }
         #endregion

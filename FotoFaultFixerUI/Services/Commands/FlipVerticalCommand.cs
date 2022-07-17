@@ -1,19 +1,15 @@
 ﻿using FotoFaultFixerLib.ImageFunctions;
 using FotoFaultFixerLib.ImageProcessing;
+using FotoFaultFixerUI.Services.Commands.Base;
 using System;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
-    class FlipVerticalCommand : ICommandCImage
+    class FlipVerticalCommand : ICommand<CImage>
     {
         public FlipVerticalCommand() { }
 
         public CImage Execute(CImage img, IProgress<int> progressReporter)
-        {
-            return Transformations.FlipVertical(img);
-        }
-
-        public CImage UnExecute(CImage img)
         {
             return Transformations.FlipVertical(img);
         }

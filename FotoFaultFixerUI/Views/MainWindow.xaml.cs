@@ -103,13 +103,11 @@ namespace FotoFaultFixerUI.Views
                 case "Undo":
                     _appService.Undo();
                     break;
-                case "Redo":
-                    var progressIndicator = new Progress<int>(ReportImageFunctionProgress);
-                    progressReporter.Start();
-                    _appService.Redo(progressIndicator);
+                case "Redo":                    
+                    _appService.Redo();
                     break;
                 case "Crop":
-
+                    imageHasBeenModified = false;
                     imageWorkspace.ActivateCrop();
                     break;
                 case "4-pt Straighten":

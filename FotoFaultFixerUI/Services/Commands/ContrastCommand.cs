@@ -1,10 +1,11 @@
 ﻿using FotoFaultFixerLib.ImageFunctions;
 using FotoFaultFixerLib.ImageProcessing;
+using FotoFaultFixerUI.Services.Commands.Base;
 using System;
 
 namespace FotoFaultFixerUI.Services.Commands
 {
-    public class ContrastCommand : ICommandCImage
+    public class ContrastCommand : ICommand<CImage>
     {
         CImage _original = null;
         int _contrastFactor = 0;
@@ -18,11 +19,6 @@ namespace FotoFaultFixerUI.Services.Commands
         {
             _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
             return Coloring.AdjustContrast(img, _contrastFactor);
-        }
-
-        public CImage UnExecute(CImage img)
-        {
-            return _original;
         }
     }
 }
