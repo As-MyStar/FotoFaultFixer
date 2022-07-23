@@ -7,7 +7,7 @@ namespace FotoFaultFixerLib.ImageFunctions
     {
         public static CImage ConvertRGBToYIQ(CImage rgbImg)
         {
-            CImage yiqImg = new CImage(rgbImg.Width, rgbImg.Height, rgbImg.NBits, ColorSpace.YIQ);
+            CImage yiqImg = new CImage(rgbImg.Width, rgbImg.Height, rgbImg.nBytes);
             var yFunc = RGB2YIQCalculateY.Memoize();
             var iFunc = RGB2YIQCalculateI.Memoize();
             var qFunc = RGB2YIQCalculateQ.Memoize();
@@ -34,7 +34,7 @@ namespace FotoFaultFixerLib.ImageFunctions
 
         public static CImage ConvertYIQToRGB(CImage yiqImg)
         {
-            CImage rgbImg = new CImage(yiqImg.Width, yiqImg.Height, yiqImg.NBits);
+            CImage rgbImg = new CImage(yiqImg.Width, yiqImg.Height, yiqImg.nBytes);
             var rFunc = YIQ2RGBCalculateR.Memoize();
             var gFunc = YIQ2RGBCalculateG.Memoize();
             var bFunc = YIQ2RGBCalculateB.Memoize();

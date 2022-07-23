@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Text;
-using System.Windows.Media.Imaging;
-
-namespace FotoFaultFixerUI.Services
+﻿namespace FotoFaultFixerUI.Services
 {
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Media.Imaging;
+
     public static class Utilities
     {
         /// <summary>

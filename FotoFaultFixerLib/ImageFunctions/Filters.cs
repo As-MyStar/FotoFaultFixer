@@ -22,7 +22,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             int[] histo = new int[256];
             int maxLight = 0, minLight = 0;
 
-            CImage workingCopy = new CImage(original.Width, original.Height, original.NBits, original.PixelFormat, original.Grid); //new CImage(original);
+            CImage workingCopy = (CImage)original.Clone();            
             workingCopy.DeleteBit0();
 
             GenerateLightHistogram(workingCopy, ref histo, ref maxLight, ref minLight);

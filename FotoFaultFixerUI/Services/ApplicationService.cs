@@ -1,19 +1,19 @@
-﻿using FotoFaultFixerLib.ImageProcessing;
-using FotoFaultFixerUI.Services.Commands;
-using FotoFaultFixerUI.Services.Commands.Base;
-using Microsoft.Win32;
-using System;
-using System.Drawing;
-
-namespace FotoFaultFixerUI.Services
+﻿namespace FotoFaultFixerUI.Services
 {
-
+    using FotoFaultFixerLib.ImageProcessing;
+    using FotoFaultFixerUI.Extensions;
+    using FotoFaultFixerUI.Services.Commands;
+    using FotoFaultFixerUI.Services.Commands.Base;
+    using Microsoft.Win32;
+    using System;
+    using System.Drawing;
+    using System.Threading.Tasks;
+    
     class ApplicationService
     {
         const string FILE_EXTENSION_FILTER = "Image File|*.bmp; *.jpg; *.jpeg; *.png; *.tiff";
 
         StateHandlerService<CImage> _ism;
-        //ImageStateManager _ism;
         internal event EventHandler<ImageUpdateEventArgs> ImageUpdated;
 
         public ApplicationService() { }
@@ -25,7 +25,10 @@ namespace FotoFaultFixerUI.Services
         {
             try
             {
-                _ism.SetNewState(cmd.Execute(_ism.GetCurrentState(), progressReporter));
+                await Task.Run(() => {
+                    _ism.SetNewState(cmd.Execute(_ism.GetCurrentState(), progressReporter));
+                });
+
                 FireImageUpdate();
             } 
             catch(Exception exc)
@@ -58,8 +61,8 @@ namespace FotoFaultFixerUI.Services
             if (selectFileDialog.ShowDialog() == true)
             {
                 using (Bitmap loadedFile = (Bitmap)Image.FromFile(selectFileDialog.FileName))
-                {
-                    CImage cImg = new CImage(loadedFile);
+                {                    
+                    CImage cImg = CImageExtensions.FromBitmap(loadedFile);
                     _ism = new StateHandlerService<CImage>(cImg);
                     FireImageUpdate();
                 }

@@ -34,9 +34,8 @@ namespace FotoFaultFixerLib.ImageProcessing
         }
 
         public void NoiseFilter(ref CImage image, int[] histo, int minLight, int maxLight, int maxSizeD, int maxSizeL, IProgress<int> progressReporter = null)
-        {
-            bool isColorImage = (image.NBits == 24);
-            if (isColorImage)
+        {            
+            if (image.nBytes == 3)
             {
                 Sort_Color(image, histo);
                 Utilities.SetProgress(progressReporter, 25);

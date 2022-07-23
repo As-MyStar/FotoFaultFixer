@@ -1,20 +1,17 @@
-﻿using FotoFaultFixerLib;
-using FotoFaultFixerUI.Controls.ImageFunctions;
-using FotoFaultFixerUI.Services;
-using FotoFaultFixerUI.ViewModels;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using Point = System.Drawing.Point;
-
-namespace FotoFaultFixerUI.Views
+﻿namespace FotoFaultFixerUI.Views
 {
+    using FotoFaultFixerUI.Controls.ImageFunctions;
+    using FotoFaultFixerUI.Extensions;
+    using FotoFaultFixerUI.Services;
+    using FotoFaultFixerUI.ViewModels;
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media.Imaging;
+    using Point = System.Drawing.Point;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -29,6 +26,7 @@ namespace FotoFaultFixerUI.Views
             _mainWindowVM = new MainWindowViewModel();
             _appService = new ApplicationService();
             _appService.ImageUpdated += AppService_ImageUpdated;
+
             InitializeComponent();
             this.DataContext = _mainWindowVM;
             ToolBarControl.DataContext = _mainWindowVM;
@@ -38,11 +36,7 @@ namespace FotoFaultFixerUI.Views
         #region Event Handlers
         private void AppService_ImageUpdated(object sender, ImageUpdateEventArgs e)
         {
-            imageWorkspace.SetImage(
-                Utilities.BitmapToImageSource(
-                    e.Image.ToBitmap()
-                )
-            );
+            imageWorkspace.SetImage(Utilities.BitmapToImageSource(CImageExtensions.ToBitmap(e.Image)));
 
             // When an image updates it due to an ImageFunction
             // So progressReporter is no longer required.
@@ -56,11 +50,6 @@ namespace FotoFaultFixerUI.Views
         private void ImageWorkspace_Workspace_TriggerCropEvent(int x, int y, int width, int height)
         {
             _appService.Crop(x, y, width, height, null);
-        }
-
-        private void ImageWorkspace_Workspace_TriggerFourPointStraightenEvent(System.Drawing.Point topLeft, System.Drawing.Point topRight, System.Drawing.Point bottomleft, System.Drawing.Point bottomRight)
-        {
-            _appService.FourPointStraighten(new Point[] { topLeft, topRight, bottomleft, bottomRight}, null);
         }
         #endregion
 
@@ -81,6 +70,8 @@ namespace FotoFaultFixerUI.Views
                 _appService.Exit();
             }
         }
+
+        // CFR: Better to split out?
         private void Toolbar_ToolbarItemClicked(object sender, RoutedEventArgs e)
         {
             bool imageHasBeenModified = true;
@@ -128,16 +119,6 @@ namespace FotoFaultFixerUI.Views
                 case "Flip Vertical":
                     _appService.FlipVertical();
                     break;
-                //case "Convert To Greyscale":
-                //    _appService.ConvertToGreyScale();
-                //    break;
-                //case "Convert to Sepia":
-                //    _appService.ConvertToSepia();
-                //    break;
-                //case "Colorize with Reference":
-                //    break;
-                //case "Colorize with Annotations":
-                //    break;
                 case "Impulse Noise Reduction":
                     imageHasBeenModified = false;
                     _toolBarOptionsContent = new ImpulseNoiseReductionPanel();
@@ -189,7 +170,7 @@ namespace FotoFaultFixerUI.Views
         }
         #endregion
 
-        // TODO: Refactor
+        // CFR : Really need to review error handling here
         public void SetSourceImage(string path)
         {
             _mainWindowVM.SetImage(path);

@@ -1,13 +1,11 @@
-﻿using FotoFaultFixerLib.ImageFunctions;
-using FotoFaultFixerLib.ImageProcessing;
-using FotoFaultFixerUI.Services.Commands.Base;
-using System;
-
-namespace FotoFaultFixerUI.Services.Commands
+﻿namespace FotoFaultFixerUI.Services.Commands
 {
+    using FotoFaultFixerLib.ImageFunctions;
+    using FotoFaultFixerLib.ImageProcessing;
+    using FotoFaultFixerUI.Services.Commands.Base;
+    using System;
     public class CropCommand : ICommand<CImage>
     {
-        CImage _original = null;
         int _x = 0;
         int _y = 0;
         int _width = 0;
@@ -23,7 +21,6 @@ namespace FotoFaultFixerUI.Services.Commands
 
         public CImage Execute(CImage img, IProgress<int> progressReporter)
         {
-            _original = new CImage(img.Width, img.Height, img.NBits, img.PixelFormat, img.Grid);
             return Transformations.Crop(img, _x, _y, _width, _height);
         }
     }

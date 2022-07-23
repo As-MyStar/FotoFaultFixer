@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace FotoFaultFixerLib.ImageFunctions
 {
+    // CFR: All of the methods heer assume a 3Byte image and don't handle a 1-bit one well.
     public static class Transformations
     {
         public static CImage FlipVertical(CImage original)
@@ -13,7 +14,7 @@ namespace FotoFaultFixerLib.ImageFunctions
                 throw new ArgumentNullException();
             }
 
-            CImage verticallyFlipped = new CImage(original.Width, original.Height, original.NBits);
+            CImage verticallyFlipped = new CImage(original.Width, original.Height, original.nBytes);
 
             int i_orig;
             int i_flipped;
@@ -40,7 +41,7 @@ namespace FotoFaultFixerLib.ImageFunctions
                 throw new ArgumentNullException();
             }
 
-            CImage horizontallyFlipped = new CImage(original.Width, original.Height, original.NBits);
+            CImage horizontallyFlipped = new CImage(original.Width, original.Height, original.nBytes);
 
             int i_orig;
             int i_flipped;
@@ -68,7 +69,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             }
 
             // Height and width are switched here
-            CImage rotatedCW = new CImage(original.Height, original.Width, original.NBits);
+            CImage rotatedCW = new CImage(original.Height, original.Width, original.nBytes);
 
             // TODO: Review - this seems real wonky
             int i_orig;
@@ -99,7 +100,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             }
 
             // Height and width are switched here
-            CImage rotatedCCW = new CImage(original.Height, original.Width, original.NBits);
+            CImage rotatedCCW = new CImage(original.Height, original.Width, original.nBytes);
 
             int i_orig;
             int i_rotated;
@@ -164,7 +165,7 @@ namespace FotoFaultFixerLib.ImageFunctions
             int originalPixelIdx;
             int croppedPixelIdx;
 
-            CImage cropped = new CImage(newWidth, newHeight, original.NBits);
+            CImage cropped = new CImage(newWidth, newHeight, original.nBytes);
 
             for (int y = startY; y < (startY + newHeight); y++)
             {
@@ -220,7 +221,7 @@ namespace FotoFaultFixerLib.ImageFunctions
 
             int width = source.Width;
             int height = source.Height;
-            int N_Bits = source.NBits;
+            int nBytes = source.nBytes;
 
             int MaxSize;
             double focalLength,
@@ -263,7 +264,7 @@ namespace FotoFaultFixerLib.ImageFunctions
 
             Width = focalLength * (Math.Cos(alphaY) / Math.Sin(alphaY - phiY) + Math.Cos(betaY) / Math.Sin(betaY + phiY));
             Height = focalLength * (Math.Cos(alphaX) / Math.Sin(alphaX - phiX) + Math.Cos(betaX) / Math.Sin(betaX + phiX));
-            destination = new CImage((int)Width, (int)Height, N_Bits);
+            destination = new CImage((int)Width, (int)Height, nBytes);
 
             double OptCX = 0.0;
             double OptCY = 0.0;
@@ -317,7 +318,7 @@ namespace FotoFaultFixerLib.ImageFunctions
 
                     if ((int)xp >= 0 && (int)xp < width && (int)yp >= 0 && (int)yp < height)
                     {
-                        if (N_Bits == 24)
+                        if (nBytes == 24)
                         {
                             for (int ic = 0; ic < 3; ic++)
                             {

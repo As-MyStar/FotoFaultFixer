@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-
-namespace FotoFaultFixerLib.ImageProcessing
+﻿namespace FotoFaultFixerLib.ImageProcessing
 {
+    using System;
+
     /// <summary>
     /// Computation Image or 'Fast' Image.
     /// </summary>
@@ -11,141 +9,33 @@ namespace FotoFaultFixerLib.ImageProcessing
     /// We need individual pixel access, but .Net's Bitmap implementation is WAY too slow
     /// By storing all data in a single Byte array, its MUCH more efficient and simpler to work with image data
     /// </remarks>
-    public class CImage
+    public class CImage : ICloneable
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public int NBits { get; set; }
+        public int nBytes { get; set; }
         public byte[] Grid { get; set; }
-        public PixelFormat PixelFormat { get; set; }
-        public ColorSpace ColorSpace { get; set; } // Possible only descriptive for now
 
-        #region Input        
-
-        public CImage(int w, int h, int nBits, ColorSpace colorSpace = ColorSpace.RGB)
+        public CImage(int w, int h, int nBytes)
         {
-            PixelFormat = PixelFormat.Format24bppRgb;
             Width = w;
             Height = h;
-            NBits = nBits;
-            Grid = new byte[Width * Height * nBits / 8];
-            ColorSpace = colorSpace;
+            this.nBytes = nBytes;
+            Grid = new byte[Width * Height * nBytes];
         }
 
-        public CImage(int w, int h, int nBits, PixelFormat pf, byte[] img, ColorSpace colorSpace = ColorSpace.RGB) : this(w, h, nBits, colorSpace)
+        /// <summary>
+        /// Clones this CImage and returns an Identical copy
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
         {
-            PixelFormat = pf;
-
-            for (int i = 0; i < (Width * Height * NBits / 8); i++)
+            return new CImage(this.Width, this.Height, this.nBytes)
             {
-                Grid[i] = img[i];
-            }
+                Grid = (byte[])this.Grid.Clone()
+            };
         }
 
-        public CImage(Bitmap bmp)
-        {
-            Width = bmp.Width;
-            Height = bmp.Height;
-            PixelFormat = bmp.PixelFormat;
-            Grid = new byte[3 * bmp.Width * bmp.Height];
-
-            switch (PixelFormat) {
-                case PixelFormat.Format8bppIndexed:
-                    NBits = 8;
-                    BitmapToGrid_8bppIndexed(bmp);
-                    break;
-                case PixelFormat.Format24bppRgb:
-                    NBits = 24;
-                    BitmapToGrid_24bppRGB(bmp);
-                    break;
-                //case PixelFormat.Format32bppArgb:
-                //    NBits = 32;
-                //    BitmapToGrid_32bppARGB(bmp);
-                //    break;
-            }
-        }
-
-        public void CopyFrom(CImage inp)
-        {
-            Width = inp.Width;
-            Height = inp.Height;
-            NBits = inp.NBits;
-            PixelFormat = inp.PixelFormat;
-
-            for (int i = 0; i < Width * Height * NBits / 8; i++)
-            {
-                Grid[i] = inp.Grid[i];
-            }
-        }
-
-        private void BitmapToGrid_8bppIndexed(Bitmap bmp)
-        {
-            Color color;
-            for (int y = 0; y < bmp.Height; y++)
-            {
-                for (int x = 0; x < bmp.Width; x++)
-                {                    
-                    int i = (x + (bmp.Width * y));
-                    color = bmp.GetPixel(x, y);
-
-                    Grid[3 * i + 0] = color.B;
-                    Grid[3 * i + 1] = color.G;
-                    Grid[3 * i + 2] = color.R;
-                }
-            }
-        }
-
-        private void BitmapToGrid_24bppRGB(Bitmap bmp)
-        {
-            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
-
-            IntPtr ptr = bmpData.Scan0;
-            int length = Math.Abs(bmpData.Stride) * bmp.Height;
-            byte[] rgbValues = new byte[length];
-            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, length);
-
-            for (int y = 0; y < bmp.Height; y++)
-            {
-                for (int x = 0; x < bmp.Width; x++)
-                {
-                    Grid[0 + 3 * (x + (bmp.Width * y))] = rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y]; // B
-                    Grid[1 + 3 * (x + (bmp.Width * y))] = rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y]; // G
-                    Grid[2 + 3 * (x + (bmp.Width * y))] = rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y]; // R
-                }
-            }
-
-            bmp.UnlockBits(bmpData);
-        }
-
-        private void BitmapToGrid_32bppARGB(Bitmap bmp)
-        {
-            throw new NotImplementedException();
-
-            //Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            //BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
-
-            //IntPtr ptr = bmpData.Scan0;
-            //int length = Math.Abs(bmpData.Stride) * bmp.Height;
-            //byte[] rgbaValues = new byte[length];
-            //System.Runtime.InteropServices.Marshal.Copy(ptr, rgbaValues, 0, length);
-
-            //for (int y = 0; y < bmp.Height; y++)
-            //{
-            //    for (int x = 0; x < bmp.Width; x++)
-            //    {
-            //        Grid[0 + 3 * (x + (bmp.Width * y))] = rgbaValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y];
-            //        Grid[1 + 3 * (x + (bmp.Width * y))] = rgbaValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y];
-            //        Grid[2 + 3 * (x + (bmp.Width * y))] = rgbaValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y];
-            //        Grid[3 + 3 * (x + (bmp.Width * y))] = rgbaValues[3 + 3 * x + Math.Abs(bmpData.Stride) * y];
-            //    }
-            //}
-
-            //bmp.UnlockBits(bmpData);
-        }
-        #endregion
-
-        #region Util
         /// <summary>
         /// If "this" is a 8 bit image, then sets the bits 0 and 1 of each pixel to 0.
         /// Else it is a 24 bit one, then sets the bit 0 of green and red chanels to 0.
@@ -153,9 +43,8 @@ namespace FotoFaultFixerLib.ImageProcessing
         /// <param name="nbyte"></param>
         /// <returns></returns>
         public void DeleteBit0()
-        {
-            int nByte = GetNBytesFromPixelFormat(PixelFormat);
-            if (nByte == 1)
+        {            
+            if (this.nBytes == 1)
             {
                 for (int i = 0; i < Width * Height; i++)
                 {
@@ -166,71 +55,10 @@ namespace FotoFaultFixerLib.ImageProcessing
             {
                 for (int i = 0; i < Width * Height; i++)
                 {
-                    Grid[nByte * i + 2] = (byte)(Grid[nByte * i + 2] & 254);
-                    Grid[nByte * i + 1] = (byte)(Grid[nByte * i + 1] & 254);
+                    Grid[3 * i + 2] = (byte)(Grid[3 * i + 2] & 254);
+                    Grid[3 * i + 1] = (byte)(Grid[3 * i + 1] & 254);
                 }
             }
         }
-
-        private static int GetNBytesFromPixelFormat(PixelFormat pf)
-        {
-            switch (pf)
-            {
-                case PixelFormat.Format24bppRgb:
-                    return 3;
-                case PixelFormat.Format8bppIndexed:
-                    return 1;
-                default:
-                    throw new Exception("Unsuitable Pixel Format");
-            }
-        }
-        #endregion
-
-        #region Output
-        public Bitmap ToBitmap()
-        {
-            Bitmap bmp = new Bitmap(Width, Height, PixelFormat);
-            Rectangle rect = new Rectangle(0, 0, Width, Height);
-            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
-
-            IntPtr ptr = bmpData.Scan0;
-            int length = Math.Abs(bmpData.Stride) * bmp.Height;
-            byte[] rgbValues = new byte[length];
-
-            switch (PixelFormat)
-            {
-                case PixelFormat.Format24bppRgb:
-                    for (int y = 0; y < bmp.Height; y++)
-                    {
-                        for (int x = 0; x < bmp.Width; x++)
-                        {
-                            rgbValues[0 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[0 + 3 * (x + bmp.Width * y)]; // B
-                            rgbValues[1 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[1 + 3 * (x + bmp.Width * y)]; // G
-                            rgbValues[2 + 3 * x + Math.Abs(bmpData.Stride) * y] = Grid[2 + 3 * (x + bmp.Width * y)]; // R
-                        }
-                    }
-                    break;
-                case PixelFormat.Format8bppIndexed:
-                    for (int y = 0; y < bmp.Height; y++)
-                    {
-                        for (int x = 0; x < bmp.Width; x++)
-                        {
-                            Color color = bmp.Palette.Entries[Grid[3 * (x + bmp.Width * y)]];
-                            rgbValues[3 * (x + Math.Abs(bmpData.Stride) * y) + 0] = color.B;
-                            rgbValues[3 * (x + Math.Abs(bmpData.Stride) * y) + 1] = color.G;
-                            rgbValues[3 * (x + Math.Abs(bmpData.Stride) * y) + 2] = color.R;
-                        }
-                    }
-                    break;
-                default:
-                    throw new Exception("Unsuitable Pixel Format");
-            }
-
-            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, length);
-
-            bmp.UnlockBits(bmpData);
-            return bmp;
-        }
-        #endregion
     }
 }
