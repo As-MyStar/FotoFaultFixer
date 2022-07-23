@@ -16,12 +16,33 @@
         public int nBytes { get; set; }
         public byte[] Grid { get; set; }
 
-        public CImage(int w, int h, int nBytes)
+        /// <summary>
+        /// CTor for CImage
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="nBytes">1 for B&W image, 3 for Color/RGB Image</param>
+        public CImage(int width, int height, int nBytes)
         {
-            Width = w;
-            Height = h;
+            if (width <= 0)
+            {
+                throw new ArgumentException(nameof(width), "width has to be greater than 0");
+            }
+
+            if (height <= 0)
+            {
+                throw new ArgumentException(nameof(height), "height has to be greater than 0");
+            }
+
+            if (nBytes != 1 && nBytes != 3)
+            {
+                throw new ArgumentException(nameof(nBytes), "nBytes has to be either 1 or 3");
+            }
+
+            this.Width = width;
+            this.Height = height;
             this.nBytes = nBytes;
-            Grid = new byte[Width * Height * nBytes];
+            this.Grid = new byte[this.Width * this.Height * this.nBytes];
         }
 
         /// <summary>
@@ -43,7 +64,7 @@
         /// <param name="nbyte"></param>
         /// <returns></returns>
         public void DeleteBit0()
-        {            
+        {
             if (this.nBytes == 1)
             {
                 for (int i = 0; i < Width * Height; i++)
